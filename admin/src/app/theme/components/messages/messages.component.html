@@ -1,0 +1,88 @@
+
+<ul class="notifications"> 
+ 
+    <li class="dropdown message-menu">
+        <a href class="dropdown-toggle message" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-envelope-o"></i>
+            <span>7</span>
+            <div class="pulsate"></div>
+        </a>
+        <div class="top-dropdown-menu dropdown-menu">
+            <i class="dropdown-arr"></i>
+            <div class="header clearfix">
+                <span>Messages</span>
+                <a href="javascript:void(0);" class="transition">Mark All as Read</a>
+                <a href="javascript:void(0);" class="transition">Settings</a>
+            </div>
+            <div class="list" slim-scroll [slimScrollOptions]="{height: 250}">
+                <a *ngFor="let message of messages" href class="transition">
+                    <img src="{{ ( message.image || (message.name | profilePicture)) }}">                    
+                    <div class="list-content">
+                        <h3>{{message.name}} <span class="pull-right"><i class="fa fa-clock-o"></i> {{message.time}}</span></h3>
+                        <p>{{message.text}}</p>
+                    </div>
+                </a>
+            </div> 
+            <div class="footer">
+                <a href="javascript:void(0);" class="transition">View all messages</a>
+            </div> 
+        </div>
+    </li>
+
+    <li class="dropdown notification-menu">
+        <a href class="dropdown-toggle notification" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-bell-o"></i>
+            <span>5</span>
+            <div class="pulsate"></div>
+        </a>
+
+        <div class="top-dropdown-menu dropdown-menu">
+            <i class="dropdown-arr"></i>
+            <div class="header clearfix">
+                <span>Notifications</span>
+                <a href="javascript:void(0);" class="transition">Mark All as Read</a>
+                <a href="javascript:void(0);" class="transition">Settings</a>
+            </div>
+            <div class="list" slim-scroll [slimScrollOptions]="{height: 250}"> 
+                <a *ngFor="let notification of notifications" href class="transition">
+                    <img src="{{ ( notification.image || (notification.name | profilePicture)) }}">                    
+                    <div class="list-content">
+                        <h3>{{notification.name}} <span class="pull-right"> {{notification.time}}</span></h3>
+                        <p>{{notification.text}}</p>
+                    </div>
+                </a>
+            </div> 
+            <div class="footer">
+                <a href="javascript:void(0);" class="transition">View all notifications</a>
+            </div> 
+        </div> 
+    </li>
+
+    <li class="dropdown task-menu">
+        <a href class="dropdown-toggle task" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-tasks"></i>
+            <span>6</span>
+            <div class="pulsate"></div>
+        </a>
+        <div class="top-dropdown-menu dropdown-menu">
+            <i class="dropdown-arr"></i>
+            <div class="header clearfix">
+                <span>Tasks</span>
+                <a href="javascript:void(0);" class="transition">Mark All as Read</a>
+                <a href="javascript:void(0);" class="transition">Settings</a>
+            </div>
+            <div class="list" slim-scroll [slimScrollOptions]="{height: 250}">
+                <a *ngFor="let task of tasks" href class="transition">
+                    <h3>{{task.text}} <span class="pull-right">{{task.value}}</span></h3>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-{{task.class}}" role="progressbar" [style.width]="task.value"  aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </a>
+            </div>
+            <div class="footer">
+                <a href="javascript:void(0);" class="transition">View all tasks</a>
+            </div>     
+        </div>
+    </li>
+
+</ul>

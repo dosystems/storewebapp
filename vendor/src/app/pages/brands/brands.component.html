@@ -1,0 +1,246 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Brands</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="onClickActions('add','')">
+        Add Brand
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllBrands()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <div class="card-body widget-body">
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Name/LongName/Category" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p-table #dt [value]="brandsList" [columns]="ExportCsv" exportFilename ="Brands" [lazy]="true" (onLazyLoad)="getAllBrands($event)" [paginator]="true"
+      [totalRecords]="totalRecords" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [resizableColumns]="true"
+      [responsive]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:50px">Sno</th>
+          <th pResizableColumn style="width:150px">Name
+            <span [pSortableColumn]="'name'">
+              <p-sortIcon [field]="'name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'name','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn>Long Name
+            <span [pSortableColumn]="'longName'">
+              <p-sortIcon [field]="'longName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'longName','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn>Category
+            <span [pSortableColumn]="'category'">
+              <p-sortIcon [field]="'category'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'category','startsWith')" placeholder="Search">
+          </th>
+
+          <th pResizableColumn>Created On
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created','startsWith')" placeholder="MM/DD/YYYY">
+          </th>
+          <th pResizableColumn>Created By
+            <span [pSortableColumn]="'createdBy.name'">
+              <p-sortIcon [field]="'createdBy.name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'createdBy.name','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn style="width:80px">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-brand>
+        <tr>
+          <td>{{ brand.srNo }}</td>
+          <td>
+            <span class="linkColor" (click)="onClickActions('details',brand)">{{brand?.name}}</span>
+          </td>
+          <td>{{ brand.longName}}</td>
+          <td>{{ brand.category}}</td>
+          <td>{{ brand.created }}</td>
+          <td>{{ brand.createdBy?.name }}</td>
+          <td class="text-center">
+            <span (click)="onClickActions( 'edit' , brand)" class="badge badge-primary cursor" data-toggle="tooltip" title="Edit">
+              <i class=" fa fa-edit"></i>
+            </span>&nbsp;
+            <span (click)="onClickActions( 'delete' , brand)" class="badge badge-danger cursor" data-toggle="tooltip" title="Delete">
+              <i class=" fa fa-trash-o"></i>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>       
+    </p-table>
+
+  </div>
+</div>
+
+<!--For Adding and Editing Brand -->
+<div class="modal" id="AddorEdit" role="dialog">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header noborder">
+        <div class="col-sm-12 ">
+          <ng-template [ngIf]="brandData._id" [ngIfElse]="addEdit">
+            <h5>Edit Brand</h5>
+          </ng-template>
+          <ng-template #addEdit>
+            <h5>Add Brand</h5>
+          </ng-template>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="brandsForm">
+
+          <div class="form-group row">
+            <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right">Name</label>
+            <div class="col-sm-8 text-l">
+              <input type="text" [ngClass]="{active:submitted && brandsForm.controls['name'].invalid }" [maxlength]="20" class="form-control"
+                [formControl]="brandsForm.controls['name']" [(ngModel)]="brandData.name" required>
+              <span class="help-block text-danger" *ngIf="brandsForm.get('name').touched && brandsForm.get('name').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right">Long Name</label>
+            <div class="col-sm-8 text-l">
+              <input type="text" [ngClass]="{active:submitted && brandsForm.controls['longName'].invalid }" [maxlength]="40" class="form-control"
+                [formControl]="brandsForm.controls['longName']" [(ngModel)]="brandData.longName" required>
+              <span class="help-block text-danger" *ngIf="brandsForm.get('longName').touched && brandsForm.get('longName').invalid">Maximum of 40 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right">Category</label>
+            <div class="col-sm-7 ">
+              <p-autoComplete [(ngModel)]="brandData.category" [formControl]="brandsForm.controls['category']" name="tree" (completeMethod)="getAllCategories($event)"
+                [suggestions]="totalCategories" field="name" [size]="28" placeholder="Search category" [minLength]="3">
+              </p-autoComplete>
+              <span class="help-block text-danger" *ngIf = "submitted && !brandData.category">Please Select Category</span>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="brandData">
+            <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right">SizeChart</label>
+            <div class="col-sm-8 text-l">
+              <input type="file" class="form-control" name="files[]" (change)="uploadChart($event.target.files)" #input>
+              <img *ngIf="brandData.sizeChart" class="img-fluid logo-height mt-2" style="height: 120px;width: 150px" src={{sizeChartPath}}{{brandData.sizeChart}}>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-info btn-rounded btn-sm" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-outline-info btn-rounded btn-sm" (click)="AddOrUpdate()" type="submit">
+          <ng-template [ngIf]="brandData._id" [ngIfElse]="createUpdate">
+            <span>Update</span>
+          </ng-template>
+          <ng-template #createUpdate>
+            <span>Create</span>
+          </ng-template>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Of Adding and Editing Brand -->
+
+<!-- Delete  Modal-->
+<div class="modal fade" id="deleteBrand">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteBrand()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Of Delete  Modal-->
+
+<!-- Modal for displaying review details -->
+<div class="modal" id="openBrandDetailsModal" role="dialog">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title text-color">
+          <b>Brand Details</b>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="col bottom-30">
+          <div *ngIf="brandData?.name" class="row">
+            <dt class="col-sm-5 text-right">Brand Name :</dt>
+            <dd class="col-sm-7">{{brandData?.name}}</dd>
+          </div>
+
+          <div *ngIf="brandData?.longName" class="row">
+            <dt class="col-sm-5 text-right">Long Name :</dt>
+            <dd class="col-sm-7">{{brandData?.longName}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-5 text-right">Category :</dt>
+            <dd class="col-sm-7">{{brandData?.category}}</dd>
+          </div>
+
+
+          <div class="row">
+            <dt class="col-sm-5 text-right">Created By :</dt>
+            <dd class="col-sm-7">{{brandData?.createdBy?.employee?.displayName}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-5 text-right">Created :</dt>
+            <dd class="col-sm-7">{{appService.getDisplayDateFormat(brandData?.created)}}</dd>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

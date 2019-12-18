@@ -1,0 +1,166 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Activities</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" (click)="getAllActivitie()" type="button">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Form header content end -->
+  <div class="card-body widget-body">
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Context/ContextType/Desc" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-table #dt class="overflowvisible" [value]="totalActivities" [columns]="exportCsv" exportFilename="Activities" [lazy]="true"
+      (onLazyLoad)="getAllActivitie($event)" [paginator]="true" [rows]="appService.rowNum" [rows]="20" [rowsPerPageOptions]="appService.rowValue"
+      [totalRecords]="totalRecords" [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSNo">S.No</th>
+          <th pResizableColumn>Context
+            <span [pSortableColumn]="'context'">
+              <p-sortIcon [field]="'context'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'context','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn>Context Type
+            <span [pSortableColumn]="'contextType'">
+              <p-sortIcon [field]="'contextType'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'contextType','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn>Desc
+            <span [pSortableColumn]="'desc'">
+              <p-sortIcon [field]="'desc'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'desc','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn>Created
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created','startsWith')" placeholder="MM/DD/YYYY">
+          </th>
+          <th pResizableColumn>Created By
+            <span [pSortableColumn]="'createdBy.name'">
+              <p-sortIcon [field]="'createdBy.name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'createdBy.name','startsWith')" placeholder="Search">
+          </th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-activity>
+        <tr>
+          <td>{{activity?.srNo}}</td>
+          <td>{{activity?.context}}</td>
+          <td>{{activity?.contextType}}</td>
+          <td>{{activity?.desc}}</td>
+          <td>{{appService.getDisplayDateFormat(activity?.created,'MM/DD/YYYY hh:mm:ss a')}}</td>
+          <td class="linkColor" (click)="BuyerorSeller(activity)">
+            <span *ngIf="activity?.createdBy?.employee;else ShowName"> {{activity?.createdBy?.employee?.displayName}} #</span>
+            <ng-template #ShowName>
+              <span> {{activity?.createdBy?.name}} </span>
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            No Records Found
+          </td>
+        </tr>
+      </ng-template>
+      </p-table>
+
+  </div>
+</div>
+
+<!-- View modal box content start -->
+<!-- The Modal -->
+<div class="modal" id="viewEmployee" role="dialog">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title text-color">
+          <b>Employee Details</b>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="col bottom-30">
+          <div *ngIf="employeeData.firstName" class="row">
+            <dt class="col-sm-5 text-right">First Name :</dt>
+            <dd class="col-sm-7">{{employeeData.firstName}}</dd>
+          </div>
+
+          <div *ngIf="employeeData.lastName" class="row">
+            <dt class="col-sm-5 text-right">Last Name :</dt>
+            <dd class="col-sm-7">{{employeeData.lastName}}</dd>
+          </div>
+
+          <div *ngIf="employeeData.email" class="row">
+            <dt class="col-sm-5 text-right">Email :</dt>
+            <dd class="col-sm-7"> {{employeeData.email}}</dd>
+          </div>
+
+          <div *ngIf="employeeData.phoneNumber" class="row">
+            <dt class="col-sm-5  text-right">Phone :</dt>
+            <dd class="col-sm-7"> {{employeeData.phoneNumber}}</dd>
+          </div>
+
+          <div *ngIf="employeeData.address" class="row">
+            <dt class="col-sm-5  text-right">Address :</dt>
+            <dd class="col-sm-7"> {{employeeData.address.address }}</dd>
+          </div>
+
+          <div *ngIf="employeeData.status" class="row">
+            <dt class="col-sm-5  text-right">Status :</dt>
+            <dd class="col-sm-7">
+              <span *ngIf="employeeData.status" class="badge badge-{{ appService.getStatusColor(employeeData.status) }}">{{employeeData.status}} </span>
+            </dd>
+          </div>
+
+          <div *ngIf="employeeData.role" class="row">
+            <dt class="col-sm-5  text-right">Role :</dt>
+            <dd class="col-sm-7">
+              <span *ngIf="employeeData.role" class="badge badge-{{appService.getStatusColor(employeeData.role)}}">{{employeeData.role }}</span>
+            </dd>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View modal box content end -->

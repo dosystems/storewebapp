@@ -1,0 +1,23 @@
+<!-- Product Wise Categories -->
+<div class="title" *ngIf="products&&products.length>0">
+  <h2 class="custom-color" > 
+      <span *ngIf="selectedCategory=='Deals'">Hot Deals Of The Day</span>
+    <span *ngIf="(router.url=='/cart')&&selectedCategory!='Deals'">CUSTOMERS ALSO PURCHASED</span>
+    <span *ngIf="(router.url=='/')&&selectedCategory!='Deals'">{{selectedCategory}}</span>
+    <span *ngIf="detailsPage&&selectedCategory!='Deals'">Related Products</span>
+   
+  </h2>
+  <div class="toggle-arrow"></div>
+  <div class="carousel-arrows"></div>
+</div>
+
+<div class="collapsed-content" id="{{selectedCategory}}" >
+  <div  id="{{selectedCategory}}" class="deal-carousel-24 {{selectedCategory}} products-grid seven-in-row product-variant-3">
+    <!-- Product Item -->
+    <div   *ngFor="let product of products;let i=index" class="product-item large" >
+      <ross-product   [Product]="product"></ross-product>
+  </div>
+    <!-- /Product Item -->
+  </div>
+</div>
+<!-- /Product Wise Categories -->

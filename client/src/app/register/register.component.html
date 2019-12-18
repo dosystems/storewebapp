@@ -1,0 +1,173 @@
+<div class="block">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 offset-md-3 col-md-6">
+        <!-- create account form  -->
+        <div class="form-card" *ngIf="showcreateForm">
+          <h3>Personal Information</h3>
+          <form class="account-create" (ngSubmit)="createAccountOrChangePassword(form,'account')">
+            <div>
+              <label>First Name
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && form.controls['firstName'].invalid}" [maxlength]="30" [formControl]="form.controls['firstName']"
+                [(ngModel)]='firstName' class="form-control" type="text">
+              <span class="text-danger" *ngIf="form.get('firstName').touched && form.get('firstName').hasError('required')">First Name is required</span>
+            </div>
+            <div>
+              <label>Last Name
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && form.controls['lastName'].invalid}" [maxlength]="30" [formControl]="form.controls['lastName']"
+                [(ngModel)]='lastName' class="form-control" type="text">
+              <span class="text-danger" *ngIf="form.get('lastName').touched && form.get('lastName').hasError('required')">Last Name is required</span>
+            </div>
+            <div>
+              <label>Phone Number
+                <span class="required">*</span>
+              </label>
+              <input [maxlength]="15" minlength="10" [ngClass]="{active:submitted && form.controls['phoneNumber'].invalid}" [maxlength]="30"
+                [formControl]="form.controls['phoneNumber']" [(ngModel)]='phoneNumber' class="form-control" type="text" (keypress)="appService.Validate($event,'int')">
+              <span class="text-danger" *ngIf="form.get('phoneNumber').touched && form.get('phoneNumber').hasError('required')">Phone Number is required</span>
+              <span class="text-danger" *ngIf="form.get('phoneNumber').hasError('minlength')">Minimum of 10 numbers</span>
+            </div>
+            <div>
+
+              <label>E-mail
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && form.controls['email'].invalid}" [maxlength]="50" [formControl]="form.controls['email']"
+                [(ngModel)]='email' class="form-control" type="text">
+              <span class="text-danger" *ngIf="form.get('email').touched && form.get('email').hasError('required')">Email is required</span>
+              <span class="text-danger" *ngIf="form.get('email').touched && form.get('email').hasError('invalidEmailAddress')">Invalid email address</span>
+            </div>
+            <div>
+              <label>Password
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && form.controls['password'].invalid}" [maxlength]="30" [formControl]="form.controls['password']"
+                [(ngModel)]='password' class="form-control" type="password" minlength="6">
+              <span class="text-danger" *ngIf="form.get('password').touched && form.get('password').hasError('required')">Password is required</span>
+
+              <span class="text-danger" *ngIf="form.get('password').hasError('invalidPassword')">Your password must contain 3 of the following: one upper case, one lower case, one numeric, or one special
+                character.</span>
+              <span class="text-danger" *ngIf="form.get('password').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
+            </div>
+
+            <div>
+              <button class="btn btn-lg" type="submit">Create</button>
+              <span class="required-text">* Required Fields</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- change password Form -->
+        <div class="form-card" *ngIf="changePassword">
+          <h3> Change Password</h3>
+          <form class="account-create" (ngSubmit)="createAccountOrChangePassword(changePasswordForm,'changePassword')">
+            <div>
+              <label> Current Password
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && changePasswordForm.controls['currentPassword'].invalid}" [maxlength]="30" [formControl]="changePasswordForm.controls['currentPassword']"
+                [(ngModel)]='currentPassword' class="form-control" type="password" minlength="6">
+              <span class="text-danger" *ngIf="changePasswordForm.get('currentPassword').touched && changePasswordForm.get('currentPassword').hasError('required')">Current Password is required</span>
+              <span class="text-danger" *ngIf="changePasswordForm.get('currentPassword').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
+              <span class="text-danger" *ngIf="changePasswordForm.get('currentPassword').hasError('invalidPassword')">Your password must contain 3 of the following: one upper case, one lower case, one numeric, or one special
+                character.</span>
+            </div>
+            <div>
+              <label>New Password
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && changePasswordForm.controls['newPassword'].invalid}" [maxlength]="30" [formControl]="changePasswordForm.controls['newPassword']"
+                [(ngModel)]='newPassword' class="form-control" type="password" minlength="6">
+              <span class="text-danger" *ngIf="changePasswordForm.get('newPassword').touched && changePasswordForm.get('newPassword').hasError('required')">New Password is required</span>
+              <span class="text-danger" *ngIf="changePasswordForm.get('newPassword').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
+              <span class="text-danger" *ngIf="changePasswordForm.get('newPassword').hasError('invalidPassword')">Your password must contain 3 of the following: one upper case, one lower case, one numeric, or one special
+                character.</span>
+            </div>
+
+            <div>
+              <label>Confirm Password
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && changePasswordForm.controls['confirmPassword'].invalid}" [maxlength]="30" [formControl]="changePasswordForm.controls['confirmPassword']"
+                [(ngModel)]='confirmPassword' class="form-control" type="password" minlength="6">
+              <span class="text-danger" *ngIf="changePasswordForm.get('confirmPassword').touched && changePasswordForm.get('confirmPassword').hasError('required')">Confirm Password is required</span>
+              <span class="text-danger" *ngIf="changePasswordForm.get('confirmPassword').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
+              <span class="text-danger" *ngIf="changePasswordForm.get('confirmPassword').touched && changePasswordForm.get('confirmPassword').hasError('mismatchedPasswords')">New Password and Confirm Password does not match</span>
+              <span class="text-danger" *ngIf="changePasswordForm.get('confirmPassword').hasError('invalidPassword')">Your password must contain 3 of the following: one upper case, one lower case, one numeric, or one special
+                character.</span>
+            </div>
+
+            <div>
+              <button class="btn btn-lg" type="submit">Submit</button>
+              <span class="required-text">* Required Fields</span>
+            </div>
+          </form>
+        </div>
+        <!-- forgot password Form -->
+
+        <div class="form-card" *ngIf="forgotPassword">
+          <h3>Forgot Password</h3>
+          <form class="account-create" (ngSubmit)="createAccountOrChangePassword(forgotPasswordform,'forgotPassword')">
+
+            <div>
+
+              <label>E-mail
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && forgotPasswordform.controls['email'].invalid}" [maxlength]="50" [formControl]="forgotPasswordform.controls['email']"
+                [(ngModel)]='email' class="form-control" type="text">
+              <span class="text-danger" *ngIf="forgotPasswordform.get('email').touched && forgotPasswordform.get('email').hasError('required')">Email is required</span>
+              <span class="text-danger" *ngIf="forgotPasswordform.get('email').touched && forgotPasswordform.get('email').hasError('invalidEmailAddress')">Invalid email address</span>
+            </div>
+
+            <div>
+              <button class="btn btn-lg" type="submit">Send Password</button>
+              <span class="required-text">* Required Fields</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- reset Password Form -->
+        <div class="form-card" *ngIf="showResetPassword">
+          <h3> Reset Password</h3>
+          <form class="account-create" (ngSubmit)="resetPassword(resetPasswordForm)">
+            <div>
+              <label>New Password
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && resetPasswordForm.controls['newPassword'].invalid}" [maxlength]="30" [formControl]="resetPasswordForm.controls['newPassword']"
+                [(ngModel)]='newPassword' class="form-control" type="password" minlength="6">
+              <span class="text-danger" *ngIf="resetPasswordForm.get('newPassword').touched && resetPasswordForm.get('newPassword').hasError('required')">New Password is required</span>
+              <span class="text-danger" *ngIf="resetPasswordForm.get('newPassword').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
+              <span class="text-danger" *ngIf="resetPasswordForm.get('newPassword').hasError('invalidPassword')">Your password must contain 3 of the following: one upper case, one lower case, one numeric, or one special
+                character.</span>
+            </div>
+
+            <div>
+              <label>Confirm Password
+                <span class="required">*</span>
+              </label>
+              <input [ngClass]="{active:submitted && resetPasswordForm.controls['confirmPassword'].invalid}" [maxlength]="30" [formControl]="resetPasswordForm.controls['confirmPassword']"
+                [(ngModel)]='confirmPassword' class="form-control" type="password" minlength="6">
+              <span class="text-danger" *ngIf="resetPasswordForm.get('confirmPassword').touched && resetPasswordForm.get('confirmPassword').hasError('required')">Confirm Password is required</span>
+              <span class="text-danger" *ngIf="resetPasswordForm.get('confirmPassword').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
+              <span class="text-danger" *ngIf="resetPasswordForm.get('confirmPassword').touched && resetPasswordForm.get('confirmPassword').hasError('mismatchedPasswords')">New Password and Confirm Password does not match</span>
+              <span class="text-danger" *ngIf="resetPasswordForm.get('confirmPassword').hasError('invalidPassword')">Your password must contain 3 of the following: one upper case, one lower case, one numeric, or one special
+                character.</span>
+            </div>
+
+            <div>
+              <button class="btn btn-lg" type="submit">Submit</button>
+              <span class="required-text">* Required Fields</span>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

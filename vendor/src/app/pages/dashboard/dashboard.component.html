@@ -1,0 +1,782 @@
+<!-- <div class="row dashboard-card">
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.totalActiveOrdersCount ;else zeroOrders">{{dashBoardDetails.totalActiveOrdersCount}}</h3>
+        <p>
+          <ng-template #zeroOrders>
+            <h3>0</h3>
+          </ng-template>
+          <strong>Orders </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="orders"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-shopping-cart"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/orders">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box ">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.activeBuyersCount ;else zeroBuyers">{{dashBoardDetails.activeBuyersCount}}</h3>
+        <ng-template #zeroBuyers>
+          <h3>0</h3>
+        </ng-template>
+        <p>
+          <strong>Buyers </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="orders"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-users"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/buyers">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box bg-warn">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.activeSellersCount ;else zeroSellers">{{dashBoardDetails.activeSellersCount}}</h3>
+        <ng-template #zeroSellers>
+          <h3>0</h3>
+        </ng-template>
+        <p>
+          <strong>Sellers </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="orders"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-institution"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/sellers">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box bg-green">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.totalActiveProductsCount ;else zeroProduct">{{dashBoardDetails.totalActiveProductsCount}}</h3>
+        <ng-template #zeroProduct>
+          <h3>0</h3>
+        </ng-template>
+
+        <p>
+          <strong>Products </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="orders"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-shopping-cart"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/products">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="row">
+  <div class="col-sm-4 col-lg-4 bottom-15">
+    <div widget class="card piechartCardHeight">
+      <div class="card-header">
+        <span>
+          <strong>Your Orders</strong>
+        </span>
+      </div>
+      <div class="card-body widget-body ">
+        <!-- <ul class="list-group">
+          <li class="small anchor list-group-item d-flex justify-content-between">
+            Pending
+            <b>0</b>
+          </li>
+          <li class="small anchor list-group-item d-flex justify-content-between">
+            Gauranteed Delivery Unshipped
+            <b>0</b>
+          </li>
+          <li class="small anchor list-group-item d-flex justify-content-between">
+            Unshipped
+            <b *ngIf="ordersCount && ordersCount[3] && ordersCount[3].count;else zeroUnshipped">{{ordersCount[3].count}}</b>
+            <ng-template #zeroUnshipped>0</ng-template>
+          </li>
+          <li class="small anchor list-group-item d-flex justify-content-between">
+            Return Requests
+            <b *ngIf="ordersCount && ordersCount[1] && ordersCount[1].count;else zeroOrderReturn">{{ordersCount[1].count}}</b>
+            <ng-template #zeroOrderReturn>0</ng-template>
+          </li>
+
+
+        </ul>
+        <ul class="list-group">
+          <li class="small list-group-item d-flex justify-content-between">
+            In last day
+          </li>
+          <li class="small list-group-item d-flex justify-content-between">
+            In last 7days
+          </li>
+        </ul> -->
+        <!-- <canvas *ngIf="sellerBuyerData && sellerBuyerData.length > 0;else showNoData" baseChart [datasets]="sellerBuyerData" [labels]="sellerBuyerLabels"
+          [options]="commanChartOptions" [colors]="commonChartColor" [chartType]="'bar'">
+        </canvas> -->
+        <div class="chart-container"  style="position: relative; height:200px; width:100%">
+        <canvas baseChart *ngIf="totalOrdersSummayData && totalOrdersSummayData.length > 0" [data]="totalOrdersSummayData" [labels]="totalOrdersSummayLabels"
+          [options]="pieChartOptions" [colors]="pieChartColors" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          ></canvas>
+        </div>
+
+        <!-- <ng-template #showNoData>
+            <div style="min-height: 240px;"></div>
+          </ng-template> -->
+
+        <!-- <div class="card-body widget-body">
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between" *ngFor="let totalSummary of ordersCount">
+              {{totalSummary._id}}
+              <span class="badge badge-main badge-pill">{{totalSummary.count}}</span>
+            </li>
+          </ul>
+          <div class="text-center">
+            <a class="linkView" routerLink="/orders">View Orders
+              <i class="fa fa-arrow-circle-right ml-1"></i>
+            </a>
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-sm-4 col-lg-4 ">
+    <!-- <div widget class="card bottom-15">
+          <div class="card-header">
+            <span>
+              <strong>Notifications</strong>
+            </span>
+          </div>
+          <div class="card-body widget-body">
+             <p >Technical Notification:Easy Shipment <span class="small">Due to technical issue you  are requested to  resend the new label due to technical issue you  are requested to  resend the new label</span></p>
+          </div>
+        </div> -->
+    <div widget class="card bottom-15 paymentSummaryheight">
+      <div class="card-header">
+        <span>
+          <strong>Payment Summary</strong>
+        </span>
+      </div>
+      <div class="card-body widget-body">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between"> Balance
+            <b *ngIf="dashBoardDetails && dashBoardDetails.paymentSummary;else zero">{{dashBoardDetails.paymentSummary}}</b>
+            <ng-template #zero>
+               <span>0</span>
+            </ng-template>
+          </li>
+        </ul>
+        <div class="text-center">
+          <!--<a routerLink="/summary/payment" >View Payment Summary</a>-->
+        </div>
+      </div>
+    </div>
+    <div widget class="card bottom-15">
+      <div class="card-header">
+        <span>
+          <strong>Reports</strong>
+        </span>
+      </div>
+      <div class="card-body widget-body">
+        <!-- <ul class="list-group">
+          <li *ngIf="lowStockProducts&&lowStockProducts.length>0" class="small list-group-item d-flex justify-content-between"> Low Stock Products
+            <span class="">{{lowStockProducts.length}}</span>
+          </li>
+          <li *ngIf="neverPurchasedProducts&&neverPurchasedProducts.length>0" class="small list-group-item d-flex justify-content-between">Products Never Purchased
+            <span class="">{{neverPurchasedProducts.length}}</span>
+          </li>
+        </ul> -->
+        <div class="col-12">
+          <a class="linkView" routerLink="/reports/productSalesReport">
+            Product Sales Report
+            <i class="fa fa-arrow-circle-right ml-1"></i>
+          </a>
+        </div>
+        <div class="col-12">
+          <a class="linkView" routerLink="/reports/shippingReport">Shipping Report
+            <i class="fa fa-arrow-circle-right ml-1"></i>
+          </a>
+        </div>
+        <div class="col-12">
+          <a class="linkView" routerLink="/reports/subscriptionReport">Subscription Report
+            <i class="fa fa-arrow-circle-right ml-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 col-lg-4 bottom-15">
+    <div widget class="card piechartCardHeight">
+      <div class="card-header">
+        <span>
+          <strong>Sales Summary</strong>
+        </span>
+      </div>
+      <div class="card-body widget-body">
+        <ul class="list-group ">
+          <li class="text-right">
+            <div class="media">
+              <div class="col-12 row">
+                <span class="col-5 text-left">
+
+                </span>
+                <span class="col-4 text-left">
+                  <b>Amount</b>
+                </span>
+                <span class="col-3 text-right">
+                  <b> Units</b>
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <hr>
+        <ul class="list-group">
+          <li class="text-right">
+            <div class="media">
+              <div class="col-12 row">
+                <span class="col-5 text-left">
+                  Today
+                </span>
+                <span class="col-4 text-left">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.todaySalesSummary && dashBoardDetails.todaySalesSummary[0] && dashBoardDetails.todaySalesSummary[0].totalAmount;else zerotodaySaleVol ">{{dashBoardDetails.todaySalesSummary[0].totalAmount}}</b>
+                  <ng-template #zerotodaySaleVol>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+                <span class="col-3 text-right">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.todaySalesSummary && dashBoardDetails.todaySalesSummary[0] && dashBoardDetails.todaySalesSummary[0].totalQuantit;else zerotodaySaleQuan ">{{dashBoardDetails.todaySalesSummary[0].totalQuantit}}</b>
+                  <ng-template #zerotodaySaleQuan>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+              </div>
+            </div>
+          </li>
+          <li class="text-right">
+            <div class="media">
+              <div class="col-12 row">
+                <span class="col-5 text-left">
+                  Last Week
+                </span>
+                <span class="col-4 text-left">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.weekSalesSummary && dashBoardDetails.weekSalesSummary[0] && dashBoardDetails.weekSalesSummary[0].totalAmount;else zeroWeekSaleVol ">{{dashBoardDetails.weekSalesSummary[0].totalAmount}}</b>
+                  <ng-template #zeroWeekSaleVol>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+                <span class="col-3 text-right">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.weekSalesSummary && dashBoardDetails.weekSalesSummary[0] && dashBoardDetails.weekSalesSummary[0].totalQuantit;else zeroWeekSaleQuan ">{{dashBoardDetails.weekSalesSummary[0].totalQuantit}}</b>
+                  <ng-template #zeroWeekSaleQuan>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+              </div>
+            </div>
+          </li>
+          <li class="text-right">
+            <div class="media">
+              <div class="col-12 row">
+                <span class="col-5 text-left">
+                  Last Month
+                </span>
+                <span class="col-4 text-left">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.monthSalesSummary && dashBoardDetails.monthSalesSummary[0] && dashBoardDetails.monthSalesSummary[0].totalAmount;else zeroMonthSaleVol ">{{dashBoardDetails.monthSalesSummary[0].totalAmount}}</b>
+                  <ng-template #zeroMonthSaleVol>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+                <span class="col-3 text-right">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.monthSalesSummary && dashBoardDetails.monthSalesSummary[0] && dashBoardDetails.monthSalesSummary[0].totalQuantit;else zeroMonthSaleQuant ">{{dashBoardDetails.monthSalesSummary[0].totalQuantit}}</b>
+                  <ng-template #zeroMonthSaleQuant>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+              </div>
+            </div>
+          </li>
+          <li class="text-right">
+            <div class="media">
+              <div class="col-12 row">
+                <span class="col-5 text-left">
+                  Last 6 Months
+                </span>
+                <span class="col-4 text-left">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.sixMonthSalesSummary && dashBoardDetails.sixMonthSalesSummary[0] && dashBoardDetails.sixMonthSalesSummary[0].totalAmount;else zeroSixMonthSaleVol ">{{dashBoardDetails.sixMonthSalesSummary[0].totalAmount}}</b>
+                  <ng-template #zeroSixMonthSaleVol>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+                <span class="col-3 text-right">
+                  <b *ngIf="dashBoardDetails && dashBoardDetails.sixMonthSalesSummary && dashBoardDetails.sixMonthSalesSummary[0] && dashBoardDetails.sixMonthSalesSummary[0].totalQuantit;else zeroSixMonthSaleQuant ">{{dashBoardDetails.sixMonthSalesSummary[0].totalQuantit}}</b>
+                  <ng-template #zeroSixMonthSaleQuant>
+                    <span>0</span>
+                  </ng-template>
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <!-- <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between"> Balance
+                       <span class="">0</span></li>
+                  </ul> -->
+        <hr>
+        <div class="text-center">
+          <a class="anchor" routerLink="/reports/salesSummery">View Sales Summary</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest orders</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/orders/orders">
+            View All Orders
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getVendorLatestOrderDetails()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="latestOrders" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Product</th>
+              <th pResizableColumn class="widthPrice">Customer
+              </th>
+              <th class="widthQuant" pResizableColumn>Quantity</th>
+              <th class="widthStatus text-center" pResizableColumn>Status</th>
+              <th class="widthDate" pResizableColumn>Date</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-order>
+            <tr>
+              <td>{{order.sno}}</td>
+              <td>
+                <a  routerLink="/productdetails" [queryParams]="{id:order?.entityId}">
+                  {{order.entityName}}
+                </a>
+              </td>
+              <td> <a routerLink="/details/Customer" [queryParams]="{id:order?.userId}"> {{order?.userName}} </a> </td>
+              <td>{{order.quantity}}</td>
+              <td class="text-center">
+                <span *ngIf="order.status" class="badge badge-{{appService.getStatusColor(order.status)}}">{{order.status }}</span>
+              </td>
+              <td>{{appService.getDisplayDateFormat(order.created)}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Orders Shipping Update</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" [routerLink]="['/orders']" [queryParams]="{type:'shipped'}"> 
+            View All Orders
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getVendorLatestOrderDetails('Shipped')">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="shippingOrders" class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Product</th>
+              <th pResizableColumn class="widthPrice">Customer</th>
+              <th class="widthQuant" pResizableColumn>Quantity</th>
+              <th class="widthStatus" pResizableColumn>Status</th>
+              <th class="widthDate" pResizableColumn>Date</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-order>
+            <tr>
+              <td>{{order.sno}}</td>
+              <td>
+                <a routerLink="/productdetails" [queryParams]="{id:order?.entityId}">
+                  {{order.entityName}}
+                </a>
+              </td>
+              <td><a routerLink="/details/Customer" [queryParams]="{id:order?.userId}">{{order?.userName}}</a></td>
+              <td>{{order.quantity}}</td>
+              <td class="text-center">
+                <span *ngIf="order.status" class="badge badge-{{appService.getStatusColor(order.status)}}">{{order.status }}</span>
+              </td>
+              <td>{{appService.getDisplayDateFormat(order.created)}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Low Inventory Alert</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" [routerLink]="['/products']" [queryParams]="{type:'lowStock'}">
+            View All
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getLowStockProducts()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="lowStockProducts" class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Product</th>
+              <th pResizableColumn class="widthPrice">Available</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td>{{product.sno}}</td>
+              <td>
+                <a class="linkView" routerLink="/productdetails/{{product._id}}">
+                  {{product?.name}}
+                </a>
+              </td>
+              <td>{{product?.totalAvailable}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-6 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Reviews</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/reports/reviews">
+            View All Reviews
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getLatestReviews()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="latestReviews" class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn style="width:50px">S.No</th>
+              <th pResizableColumn style="width:60px">Title</th>
+              <th pResizableColumn >Review</th>
+              <th pResizableColumn >Product</th>
+              <th pResizableColumn style="width:90px">Customer</th>
+              <th pResizableColumn style="width:90px">Created</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+            <tr>
+              <td>{{product.sno}}</td>
+              <td>{{product?.title}}</td>
+              <td title="{{product?.comment}}" >{{product?.comment}}</td>
+              <td title="{{product?.entityName}}" >
+                <a routerLink="/productdetails" [queryParams]="{id:product.entityId}">
+                  {{product?.entityName}}
+                </a>
+              </td>
+              <td><a routerLink="/details/Customer" [queryParams]="{ id:product.userId }" >{{product?.userName}}</a></td>
+              <td>{{appService.getDisplayDateFormat(product?.created)}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card">
+      <div class="card-header">
+        <span>
+          <strong>Bestsellers by amount</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="topSellers" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Name</th>
+              <th pResizableColumn class="widthPrice">Quantity</th>
+              <th class="widthSize" pResizableColumn>Total amount</th>
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-topSellers>
+            <tr>
+              <td>{{topSellers.sno}}</td>
+              <td>{{topSellers?._id?.name}}</td>
+              <td>{{topSellers.count}}</td>
+              <td>{{topSellers.totalAmount}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<div class="row">
+  <div class="col-sm-6 col-lg-6 bottom-15">
+    <div widget class="card">
+      <div class="card-header">
+        <span>
+          <strong>Monthly Customers</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <canvas *ngIf="CustomerChartData && CustomerChartData.length" baseChart [datasets]="CustomerChartData" [labels]="sellerBuyerLabels" [options]="commanChartOptions" [colors]="commonChartColor"
+          [chartType]="'line'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-6 bottom-15">
+    <div widget class="card">
+      <div class="card-header">
+        <span>
+          <strong>Monthly Orders</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <canvas *ngIf="ordersLineChartData && ordersLineChartData.length" baseChart [datasets]="ordersLineChartData" [labels]="sellerBuyerLabels" [options]="commanChartOptions" [colors]="commonChartColor"
+          [chartType]="'line'">
+        </canvas>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 balancefont bottom-15">
+    <az-pie-chart></az-pie-chart>
+  </div>
+  <!--For Cancelled Orders-->
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card CancelledCardHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Cancelled Orders</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" [routerLink]="['/orders']" [queryParams]="{status:'Cancelled'}">
+            View All Orders
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="CancelOrders" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Product</th>
+              <th pResizableColumn class="widthPrice">Customer</th>
+              <th class="widthSize" pResizableColumn>Price (USD)</th>
+              <th class="widthSize" pResizableColumn>Date</th>
+              <th class="status" pResizableColumn>Status</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-order>
+            <tr>
+              <td>{{order.sno}}</td>
+              <td>
+                <a  routerLink="/details/Product" [queryParams]="{id:order.entityId}" >{{order?.entityName}}</a>
+              </td>
+              <td>
+                <a  routerLink="/productdetails" [queryParams]="{id:order.userId}">{{order?.userName}}</a>
+              </td>
+              <td class="text-right">
+                {{order?.inventory?.Price}}
+              </td>
+              <td>{{order.created}}</td>
+              <td>
+                  <span class="badge badge-{{appService.getStatusColor(order?.status)}}">{{order?.status }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+  <!--End Cancelled Orders-->
+
+</div>

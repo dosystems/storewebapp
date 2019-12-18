@@ -1,0 +1,204 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header">
+    <span class="card-heading text-uppercase">News Letters</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="onClickActions('add')">
+        Add News Letter
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getTotalNewsLetters()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Form header content end -->
+
+  <!-- Global filter content start-->
+  <div class="card-body widget-body">
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Title/News/Subject" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    Global Filter End
+-->
+
+    <!-- Table body content start -->
+    <p-table #dt [value]="totalNewsLetter" [columns]="exportCsv" exportFilename="News Letters" [lazy]="true" (onLazyLoad)="getTotalNewsLetters($event)"
+      [paginator]="true" [rows]="appService.rowNum" [rows]="20" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+      [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="sno_size">S.No</th>
+          <th pResizableColumn>Title
+            <span [pSortableColumn]="'name'">
+              <p-sortIcon [field]="'name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'name','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn>Subject
+            <span [pSortableColumn]="'subject'">
+              <p-sortIcon [field]="'subject'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'subject','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn>Created By
+            <span [pSortableColumn]="'createdBy'">
+              <p-sortIcon [field]="'createdBy'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'createdBy.name','startsWith')" placeholder="Search">
+          </th>
+          <th class="width_80px">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-news>
+        <tr>
+          <td>{{news?.srNo}}</td>
+          <td>
+            <a class="linkView" (click)="onClickActions('product',news)">
+              {{news?.name}}
+            </a>
+          </td>
+          <td title="{{news?.subject}}">{{news?.subject}}</td>
+          <td>{{ news?.createdBy.name }}</td>
+          <td class="text-center">
+            <!--            <span class="badge badge-primary pointer cursor mr-1" title="Edit" (click)="onClickActions('edit',news)">
+              <i class="fa fa-edit"></i>
+            </span>-->
+            <span class="badge badge-danger pointer cursor mr-1" title="delete" (click)="onClickActions('delete',news)">
+              <i class="fa fa-trash"></i>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            No Records Found
+          </td>
+        </tr>
+      </ng-template>
+      </p-table>
+      <!--P Table End-->
+  </div>
+</div>
+
+<!--Add Or Edit Modal For Creating & Updating-->
+<div class="modal fade" id="AddOrEdit" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered margi_top_90">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+        <div class="col-sm-12 ">
+          <ng-template [ngIf]="newsLetterData._id" [ngIfElse]="addEdit">
+            <h5>Edit News Letter</h5>
+          </ng-template>
+          <ng-template #addEdit>
+            <h5>Add News Letter</h5>
+          </ng-template>
+        </div>
+      </div>
+      <div class="modal-body padding" slim-scroll [slimScrollOptions]="{height: 550}">
+        <form [formGroup]="newsForm" novalidate>
+          <div class="form-group row">
+            <label class="col-sm-2 form-control-label m-t-5 text-right">Name</label>
+            <div class="col-sm-8">
+              <input [ngClass]="{active:submitted && newsForm.controls['name'].invalid }" [maxlength]="20" [formControl]="newsForm.controls['name']"
+                class="form-control" type="text" name="Name" [(ngModel)]="newsLetterData.name">
+                <span class="help-block text-danger" *ngIf="newsForm.get('name').touched && newsForm.get('name').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 form-control-label m-t-5 text-right"> Subject</label>
+            <div class="col-sm-8">
+              <textarea class="form-control" id="input-5" [ngClass]="{active:submitted && newsForm.controls['subject'].invalid }" [formControl]="newsForm.controls['subject']"
+                [(ngModel)]="newsLetterData.subject" placeholder="">
+                <span class="help-block text-danger" *ngIf="newsForm.get('subject').touched && newsForm.get('subject').invalid">Maximum of 40 characters</span>
+                </textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 form-control-label m-t-5 text-right">Type</label>
+            <div class="col-sm-9 ui-g" style="width:250px;margin-bottom:10px">
+              <div class="col-sm-3">
+                <p-radioButton name="group2" value="buyers" label="Buyers" [(ngModel)]="newsLetterData.type" [ngModelOptions]="{standalone: true}" inputId="Buyers"></p-radioButton>
+              </div>
+              <div class="col-sm-3">
+                <p-radioButton name="group2" value="sellers" label="Sellers" [(ngModel)]="newsLetterData.type" [ngModelOptions]="{standalone: true}" inputId="Sellers"></p-radioButton>
+              </div>
+              <div class="col-sm-3">
+                <p-radioButton name="group2" value="both" label="Both" [(ngModel)]="newsLetterData.type" [ngModelOptions]="{standalone: true}" inputId="Both"></p-radioButton>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 form-control-label m-t-5  text-right" for="SummerNote">Description</label>
+            <div class="col-sm-8" id="description">
+              <div id="summernote"></div><br>
+              <span class="help-block text-danger" *ngIf="submitted && !newsLetterData.data">Please enter description</span>
+            </div>
+          </div>
+
+
+        </form>
+        <div class="form-group row text-right">
+          <div class="col-sm-12" role="group" aria-label="Second group">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="createOrUpdate(newsForm)">
+              <ng-template [ngIf]="newsLetterData._id" [ngIfElse]="createUpdate">
+                <span>Update</span>
+              </ng-template>
+              <ng-template #createUpdate>
+                <span>Create</span>
+              </ng-template>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Add Or Edit Modal For Creating & Updating-->
+
+
+<!--Delete Modal for Deleting Plan-->
+<div class="modal fade" id="delete">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteNewsLetter()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal End-->

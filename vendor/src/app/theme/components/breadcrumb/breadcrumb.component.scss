@@ -1,0 +1,31 @@
+@import "../../styles/variables";
+
+.here{
+    padding-right: 5px;
+}
+.breadcrumb{
+    padding: 0;
+    // background: transparent;
+    color: $text-color;
+    font-size: 14px;
+}
+.breadcrumb-item + .breadcrumb-item::before {  
+    color: $text-color;
+    content: ">";
+    font-size: 16px;
+    margin-top: -2px;
+    padding-right: 0.3rem;
+}
+.breadcrumb-item{
+    float: left;
+    &.active{
+       color: $text-color;
+       font-weight: bold;
+    }
+}
+
+.sub-breadcrumb{
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+    margin-top: -15px;
+}

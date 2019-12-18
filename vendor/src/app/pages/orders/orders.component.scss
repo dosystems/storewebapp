@@ -1,0 +1,58 @@
+td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.linkView{
+    color: dodgerblue!important;
+    cursor: pointer;
+}
+
+
+textarea {
+  width: 240px;
+  height: 80px;
+}
+.scrollModal {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+.widthSno{
+    width:40px;
+}
+.widthPro{
+width: 280px;
+}
+.widthPrice{
+ width: 53px;
+}
+.widthUser{
+width: 75px;
+}
+.widthOwner{
+    width:80px;
+}
+.widthUnit{
+width: 55px;
+}
+
+.widthStatus{
+width: 80px;
+}
+.widthCre{
+width: 80px;
+}
+.widthCby{
+width: 80px;
+}
+.widthAction{
+    width:90px;
+}
+.widthRetStat{
+    width:105px
+}
+
+
+
+

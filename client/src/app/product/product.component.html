@@ -1,0 +1,154 @@
+<!--Dynamic View Of Products-->
+<div class="product-item-inside">
+  <div class="product-item-info">
+      <div class="product-item-label label-new">
+          <span>New</span>
+        </div>
+        <div class="product-item-label label-sale" *ngIf="Product.savePercentage&& Product.savePercentage!='0.00'"><span class="small">{{Product?.savePercentage}}%OFF</span></div>
+    <!--product-item-photo-->
+    <div class="product-item-photo productImageHeight">
+        <!-- <div class="product-item-label label-sale"><span>-20%</span></div> -->
+      <!--Carousel For Images-->
+      <div class="carousel-inside slide" data-ride="carousel">
+        <div class="carousel-inner pointer product-item-gallery-main" role="listbox">
+          <div class="item active">
+            <a (click)="gotoDetails(Product)" >
+              <img class="product-image-photo" src={{productImages}}{{Product?.images[0]?.images[0]}} onerror="this.src='/assets/images/default/product-medium.jpg'">
+            </a>
+          </div>
+          <div class="item" *ngIf="Product.images[0]&&Product.images[0].images[1]">
+            <a (click)="gotoDetails(Product)" >
+              <img class="product-image-photo" src={{productImages}}{{Product?.images[0]?.images[1]}} onerror="this.src='/assets/images/default/product-medium.jpg'">
+            </a>
+          </div>
+          <div class="item" *ngIf="Product.images[0]&&Product.images[0].images[2]">
+            <a (click)="gotoDetails(Product)" >
+              <img class="product-image-photo" src={{productImages}}{{Product?.images[0]?.images[2]}} onerror="this.src='/assets/images/default/product-medium.jpg'">
+            </a>
+          </div>
+        </div>
+        <a *ngIf="Product.images&&Product.images[0]&&Product.images[0].images.length != 1" class="carousel-control next"></a>
+        <a *ngIf="Product.images&&Product.images[0]&&Product.images[0].images.length != 1" class="carousel-control prev"></a>
+      </div>
+      <!--    <ul class="color-swatch hidden-xs">
+        <li class="active">
+          <a data-image="assets/images/products/product-16-c1.jpg" href="#"><img src="assets/images/colorswatch/color-blue.png" alt="Blue"></a>
+        </li>
+        <li>
+          <a data-image="assets/images/products/product-16-c2.jpg" href="#"><img src="assets/images/colorswatch/color-grey.png" alt="Gray"></a>
+        </li>
+        <li>
+          <a data-image="assets/images/products/product-16-c3.jpg" href="#"><img src="assets/images/colorswatch/color-red.png" alt="Red"></a>
+        </li>
+        <li>
+          <a data-image="assets/images/products/product-16-c4.jpg" href="#"><img src="assets/images/colorswatch/color-violet.png" alt="Violet"></a>
+        </li>
+        <li>
+          <a data-image="assets/images/products/product-16-c5.jpg" href="#"><img src="assets/images/colorswatch/color-green.png" alt="Green"></a>
+        </li>
+      </ul>-->
+      <!--/ Carousel For Images-->
+
+      <!--      <a  class="quick-view-link quick-view-btn">
+        <i class="icon icon-eye"></i>
+        <span> quickview</span>
+      </a>-->
+      <!--      <a href="#" title="add to wishlist" class="wishlist-active rosswish">
+        <i class="icon icon-heart"></i>
+         <span>Add to WishList</span>
+      </a>-->
+      <!--For Sharing -->
+      <!-- <div class="product-item-actions"> -->
+      <!-- <div class="share-button toBottom">
+          <span class="toggle"></span> -->
+      <!-- <ul class="social-list">
+            <li>
+              <a href="#" class="icon icon-google google"></a>
+            </li>
+            <li>
+              <a href="#" class="icon icon-fancy fancy"></a>
+            </li>
+            <li>
+              <a href="#" class="icon icon-pinterest pinterest"></a>
+            </li>
+            <li>
+              <a href="#" class="icon icon-twitter-logo twitter"></a>
+            </li>
+            <li>
+              <a href="#" class="icon icon-facebook-logo facebook"></a>
+            </li>
+          </ul> -->
+
+      <!-- </div> -->
+      <!-- </div> -->
+      <!--End Of Sharing-->
+    </div>
+    <!--/product-item-photo-->
+    <!-- Product Details-->
+    <div class="product-item-details pointer" (click)="gotoDetails(Product)">
+      <div class="product-item-name">
+        <a title="{{Product?.name}}" (click)="gotoDetails(Product)" class="product-item-link">
+          <span class="textOverflow" data-toggle="tooltip" title="{{Product?.name }}">{{Product?.name}}</span>
+        </a>
+      </div>
+      <div class="product-item-description">
+        <div class="textFloatable">
+            <span  title="{{Product?.shortDesc}}">{{Product?.shortDesc}}</span>
+        </div>
+         
+      </div>
+      <div class="price-box" (click)="gotoDetails(Product)" *ngIf="Product&&Product.inventories[0]&&Product.inventories[0].Currency">
+        <span class="price-container">
+          <span class="price-wrapper">
+            <span class="special-price">
+               <span *ngFor="let c of Product.inventories[0].Currency | currencyConvertor : appService?.selectedCurrency?.name" title="{{c[appService.selectedCurrency.name]}}">
+                  {{appService?.selectedCurrency?.symbol}} {{ appService.decimalValues(c[appService.selectedCurrency.name])}}
+                </span><br>
+                <span *ngFor="let c of Product.inventories[0].Currency | currencyConvertor : appService?.buxCurrency" title="{{c[appService.buxCurrency]}}">
+                    <img class="bitcoinSmall" src="assets/images/bitcoin.png" /> {{ appService.decimalValues(c[appService.buxCurrency])}}
+                </span>
+              </span>
+          </span>
+        </span>
+      </div>
+     
+        <ul class="color-swatch hidden-xs" *ngIf="Product && Product.reviews">
+            <li *ngFor="let rate of rates;let i=index"  class="active2" >
+                <span>
+                    <i *ngIf="Product &&(i<Product.reviews)" class="icon icon-star-fill"></i>
+                    <i *ngIf="Product &&(i>=Product.reviews)" class="icon icon-star"></i>
+                  </span>
+            </li>
+          </ul>
+          
+     
+      <!-- <div class="product-item-rating" >
+            <i class="icon icon-star-fill"></i>
+            <i class="icon icon-star-fill"></i>
+            <i class="icon icon-star-fill"></i>
+            <i class="icon icon-star-fill"></i>
+            <i class="icon icon-star-fill"></i>
+      </div> -->
+     <!-- <button class="btn add-to-cart" data-product="789123"> <i class="icon icon-cart"></i><span>Add to Cart</span> </button>-->
+      <!-- </div> -->
+      <!-- / Product Details-->
+    </div>
+  </div>
+</div>
+  <!--End Of Dynamic VIew OF Products -->
+
+  <!--Modal for Quick View of Products-->
+  <div class="modal quick-view zoom" id="quickView">
+    <div class="modal-dialog">
+      <div class="modalLoader-wrapper">
+        <div class="modalLoader bg-striped"></div>
+      </div>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&#10006;</button>
+      </div>
+      <div class="modal-content">
+        <iframe></iframe>
+      </div>
+    </div>
+  </div>
+  <!--End of MOdal for Quick View Of Products-->

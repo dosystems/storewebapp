@@ -1,0 +1,86 @@
+
+<div class="block mt-1">
+    <div class="container">
+      <ul class="breadcrumbs mt-1">
+        <li>
+          <span>My Addresses</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+<div class="block">
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <div class="white-sideblock">
+              <ul class="category-list">
+                  <li><a routerLink="/myAccount">Account Details</a></li>
+                  <li class="active"><a routerLink="/myaddresses">My Addresses</a></li>
+                  <li><a routerLink="/myWishList">My Wishlist</a></li>
+                  <li><a routerLink="/myorders">My Order History</a></li>
+                </ul>
+          </div>
+          <div class="divider divider-lg"></div>
+        </div>
+        <div class="col-12 col-md-9">
+       
+          <h2 *ngIf="previousAddresses&& previousAddresses.length>0">My Addresses</h2>
+          <div class="white-card" *ngFor="let address of previousAddresses; let i=index;">
+            <h3>Address {{i+1}}</h3>
+            <p>{{address.name}}
+              <br> {{address.street}}
+              <br>{{address.city}} {{address.state}} {{address.zip}}
+              <br>{{address.country}}
+              <br>
+            </p>
+            <p>
+              <a class="pointer textColorBlue" title="Edit" (click)="onSelectOptions(address,'Edit')">Edit</a> |
+              <a class="pointer textColorBlue"  title="Delete" (click)="onSelectOptions(address,'Delete')" >Delete</a>
+            </p>
+          </div>
+          <div class="form-card">
+            <h4 *ngIf="!addressId">Add a New Address</h4>
+            <h4 *ngIf="addressId">Edit Address</h4>
+            <label>Name</label>
+            <input [maxlength]="100" [formControl]="form.controls['name']" [(ngModel)]='addressDetails.name' type="text" class="form-control">
+            <span class="help-block text-danger" *ngIf="submitted && form.get('name') && form.get('name').invalid">Name is required</span>
+            <label>City</label>
+            <input [maxlength]="100" [formControl]="form.controls['city']" [(ngModel)]='addressDetails.city' type="text" class="form-control">
+            <span class="help-block text-danger" *ngIf="submitted && form.get('city') && form.get('city').invalid">City is required</span>
+            <label>Country</label>
+            <p-autoComplete [(ngModel)]="addressDetails.country"  [ngModelOptions]="{standalone: true}" name="name" (completeMethod)="getAllCountries($event)"
+            [suggestions]="countries" field="name" [size]="15" placeholder="Search country" class="pautocomplete"
+            [minLength]="2" >
+        </p-autoComplete>
+        <span class="help-block text-danger" *ngIf="submitted&&(!this.addressDetails.country)">Country is required</span>
+            <div>
+              <label>State/Province</label>
+              <input [maxlength]="100" [formControl]="form.controls['state']" [(ngModel)]='addressDetails.state' type="text" class="form-control">
+              <span class="help-block text-danger" *ngIf="submitted && form.get('state') && form.get('state').invalid">State is required</span>
+            </div>
+            <label>Postal/Zip Code</label> 
+            <input [maxlength]="20" [formControl]="form.controls['zip']" [(ngModel)]='addressDetails.zip' type="text" class="form-control">
+            <span class="help-block text-danger" *ngIf="submitted && form.get('zip') && form.get('zip').invalid">Postcode / Zip is required</span>
+            <label>Phone</label>
+            <input [maxlength]="15" minlength="10" [formControl]="form.controls['phone']" [(ngModel)]='addressDetails.phone' type="text"
+            class="form-control" (keypress)="appService.Validate($event,'int')">
+            <span class="help-block text-danger" *ngIf="submitted && form.get('phone') && form.get('phone').invalid">Phone Number is required</span>
+            <p>
+              <span class="checkbox-group">Street
+                  <input [maxlength]="100" [formControl]="form.controls['street']" [(ngModel)]='addressDetails.street' type="text" class="form-control"
+                  placeholder="Street address, P.O. box, company name, c/o ">
+                <span class="help-block text-danger" *ngIf="submitted && form.get('street') && form.get('street').invalid">Street is required</span>
+                <!-- <label for="address_default_address_new" class="inline"><span class="check"></span><span class="box"></span>Set as default address</label> -->
+              </span>
+            </p>
+            <p>
+              <input  *ngIf="addressId" type="submit" class="btn pointer"  (click)="addOrUpdateShipmentAddress(form)" value="update Address">
+              <input  *ngIf="!addressId" type="submit" class="btn pointer"  (click)="addOrUpdateShipmentAddress(form)" value="Add Address">
+            </p>
+            <!-- <p><a (click)="this.form.reset()" >Cancel</a></p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

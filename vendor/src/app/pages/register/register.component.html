@@ -1,0 +1,427 @@
+<!-- <div class="row">
+  <div class="col-lg-6 col-md-8 col-sm-12 middle">
+    <div class="card" widget>
+      <div class="card-body  ">
+        <div class="row justify-content-center mb-2">
+          <h5>Create account</h5>
+        </div>
+        <form [formGroup]="regForm" novalidate>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputFirstName" class="text-left ">
+                  <strong>Company Name</strong>
+                </label>
+                <input type="text" class="form-control form-control-sm text-capitalize" [ngClass]="{active:submitted && regForm.controls['companyName'].invalid}"
+                  [formControl]="regForm.controls['companyName']">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputLastName">
+                  <strong>Contact Person</strong>
+                </label>
+                <input type="text" class="form-control form-control-sm text-capitalize" [ngClass]="{active:submitted && regForm.controls['displayName'].invalid}"
+                  [formControl]="regForm.controls['displayName']">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputFirstName" class="text-left">
+                  <strong>Email</strong>
+                </label>
+                <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && regForm.controls['email'].invalid}"
+                  [formControl]="regForm.controls['email']">
+                <span class="help-block text-danger" *ngIf="regForm.get('email').touched && regForm.get('email').hasError('invalidEmailAddress')">Enter valid email</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputWebsite" class="text-left">
+                  <strong>Phone</strong>
+                </label>
+                <input type="number" class="form-control form-control-sm" [ngClass]="{active:submitted && regForm.controls['phoneNumber'].invalid}"
+                  [formControl]="regForm.controls['phoneNumber']">
+                <span class="help-block text-danger" *ngIf="regForm.get('phoneNumber').touched && regForm.get('phoneNumber').invalid">Enter valid phone number</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputFirstName" class="text-left">
+                  <strong>Password</strong>
+                </label>
+                <input type="password" class="form-control form-control-sm" [ngClass]="{active:submitted && regForm.controls['password'].invalid}"
+                  [formControl]="regForm.controls['password']">
+                <span class="help-block text-danger" *ngIf="regForm.get('password').touched && regForm.get('password').hasError('invalidPassword')">Your password must be a minimum of 8 characters and must contain 3 of the following: one upper case, one
+                  lower case, one numeric, or one special character</span>
+
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputWebsite" class="text-left">
+                  <strong>Confirm Password</strong>
+                </label>
+                <input type="password" class="form-control form-control-sm" [ngClass]="{active:submitted && regForm.controls['confirmPassword'].invalid}"
+                  [formControl]="regForm.controls['confirmPassword']">
+                <span class="help-block text-danger" *ngIf="regForm.get('confirmPassword').touched && regForm.get('confirmPassword').hasError('mismatchedPasswords')">Password does not match</span>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputFirstName" class="text-left">
+                  <strong>Product Category</strong>
+                </label>
+                <div class="ui-fluid text-left">
+                  <p-autoComplete field="tree" [suggestions]="categories" (completeMethod)="getAllCategories($event)" [formControl]="regForm.controls['productCategory']"
+                    [size]="30"></p-autoComplete>
+                  <span class="help-block text-danger" *ngIf="submitted && regForm.controls['productCategory'].invalid">Please select product category</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputWebsite" class="text-left">
+                  <strong>Brands</strong>
+                </label>
+                <div class="ui-fluid text-left">
+                  <p-autoComplete field="name" [suggestions]="brands" (completeMethod)="searchBrands($event)" [formControl]="regForm.controls['brand']"
+                    [size]="30"></p-autoComplete>
+                  <span class="help-block text-danger" *ngIf="submitted && regForm.controls['brand'].invalid">Please select brand</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputFirstName" class="text-left">
+                  <strong>Retail Outlets</strong>
+                </label>
+                <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && regForm.controls['outlets'].invalid}"
+                  [formControl]="regForm.controls['outlets']">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputWebsite" class="text-left">
+                  <strong>Website</strong>
+                </label>
+                <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && regForm.controls['website'].invalid}"
+                  [formControl]="regForm.controls['website']">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="inputFirstName" class="text-left">
+                  <strong>Location</strong>
+                </label>
+                <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && regForm.controls['location'].invalid}"
+                  [formControl]="regForm.controls['location']">
+              </div>
+            </div>
+       
+          </div>
+        </form>
+        <div class="row justify-content-center ">
+          <p-captcha siteKey="6Ler52gUAAAAAHXHV9VU7mMj6JFO0FDIPk6Zbmp0" (onResponse)="showResponse($event)"></p-captcha>
+        </div>
+
+        <div class="row justify-content-center mt-2">
+          <button class="btn btn-outline-info btn-rounded btn-sm" (click)="createVendor()">Create your Bux Super Store account</button>
+        </div>
+        <div class="row justify-content-center mt-2">
+          Already have an account?&nbsp;
+          <a class="cursor link" routerLink="/login">Sign in</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="row">
+  <div class="col-lg-5 col-md-8 col-sm-12 middle">
+    <div class="row justify-content-center">
+      <!-- <img src="{{appService.fullLogoPath}}" alt="logo"  > -->
+      <!-- <h5><span style="color: red"> BUX</span> <span style="color: blue"> SUPER STORE SELLER</span>  </h5> -->
+      <h5>MERCHANT REGISTRATION</h5>
+    </div>
+    <div *ngIf="showForm == 'company'" class="card" widget>
+      <div class="card-header head-color">
+        <strong>
+          <h6>Store Details</h6>
+        </strong>
+      </div>
+      <div class="card-body ">
+        <form [formGroup]="storeDetails" novalidate>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Store Name:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && storeDetails.controls['shopTitle'].invalid}"
+              [formControl]="storeDetails.controls['shopTitle']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Website:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && storeDetails.controls['website'].invalid}"
+              [formControl]="storeDetails.controls['website']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Email:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && storeDetails.controls['email'].invalid}"
+              [formControl]="storeDetails.controls['email']">
+            <span class="help-block text-danger" *ngIf="storeDetails.get('email').touched && storeDetails.get('email').hasError('invalidEmailAddress')">Please
+              enter valid email address</span>
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Password:</strong>
+            </label>
+            <input type="password" class="form-control form-control-sm" [ngClass]="{active:submitted && storeDetails.controls['password'].invalid}"
+              [formControl]="storeDetails.controls['password']">
+            <span class="help-block text-danger" *ngIf="storeDetails.get('password').touched && storeDetails.get('password').hasError('invalidPassword')">Your
+              password must be a minimum of 8 characters and must contain 3 of the following: one upper case, one lower case,
+              one numeric, or one special character</span>
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Confirm Password:</strong>
+            </label>
+            <input type="password" class="form-control form-control-sm" [ngClass]="{active:submitted && storeDetails.controls['confirmPassword'].invalid}"
+              [formControl]="storeDetails.controls['confirmPassword']">
+            <span class="help-block text-danger" *ngIf="storeDetails.get('password').touched && storeDetails.get('confirmPassword').hasError('mismatchedPasswords')">Password
+              does not match</span>
+
+          </div>
+          <div class="row">
+            <div class="col-12 text-right">
+              <button class="btn btn-outline-info btn-rounded btn-sm" (click)="onClickNext(storeDetails,'customer')">Next</button>
+            </div>
+          </div>
+          <div class="row justify-content-center mt-2">
+            Already have an account?&nbsp;
+            <a class="cursor link" routerLink="/login">Sign in</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div *ngIf="showForm == 'customer'" class="card" widget>
+      <div class="card-header head-color">
+        <strong>
+          <h6>Merchant Details</h6>
+        </strong>
+      </div>
+      <div class="card-body ">
+        <form [formGroup]="sellerDetails" novalidate>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>First Name:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['firstName'].invalid}"
+              [formControl]="sellerDetails.controls['firstName']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Last Name:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['lastName'].invalid}"
+              [formControl]="sellerDetails.controls['lastName']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Company Leagal Name:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['companyName'].invalid}"
+              [formControl]="sellerDetails.controls['companyName']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Company Phone Number:</strong>
+            </label>
+            <input type="text" [maxlength]="15" [minlength]="10" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['phoneNumber'].invalid}"
+              [formControl]="sellerDetails.controls['phoneNumber']" (keypress)="appService.Validate($event,'int')">
+            <span class="help-block text-danger" *ngIf="sellerDetails.get('phoneNumber').touched && sellerDetails.get('phoneNumber').invalid">Enter
+              valid phone number</span>
+          </div>
+
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Street Name:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['street'].invalid}"
+              [formControl]="sellerDetails.controls['street']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>City:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['city'].invalid}"
+              [formControl]="sellerDetails.controls['city']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>State:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['state'].invalid}"
+              [formControl]="sellerDetails.controls['state']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Country:</strong>
+            </label>
+            <br>
+            <p-dropdown [options]="countries" [style]="{'width':'100%'}" filter="true" placeholder="Select Country" [formControl]="sellerDetails.controls['country']"></p-dropdown>
+            <span class="help-block text-danger" *ngIf="submitted && sellerDetails.controls['country'].invalid">Please select
+              Country
+            </span>
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Zip Code:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && sellerDetails.controls['zip'].invalid}"
+              [formControl]="sellerDetails.controls['zip']">
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <button class="btn btn-outline-info btn-rounded btn-sm" (click)="onClickBack('company')">Back</button>
+            </div>
+            <div class="col-6 text-right">
+              <button class="btn btn-outline-info btn-rounded btn-sm" (click)="onClickNext(sellerDetails,'Document')">Next</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div *ngIf="showForm == 'Document'" class="card" widget>
+      <div class="card-header head-color">
+        <strong>
+          <h6>Document Verification</h6>
+        </strong>
+      </div>
+      <div class="card-body ">
+        <div class="form-group pb-2">
+          <div class="row ml-2">
+            <label for="inputFirstName" class="text-left">
+              <strong>Upload KYC Documents:</strong>
+            </label>
+          </div>
+          <div class="row ml-2">
+            <input type="file" (change)="uploadFile($event.target.files)" multiple>
+          </div>
+        </div>
+        <!-- <div class="form-group pb-2">
+          <div class="row ml-2">
+            <label for="inputFirstName" class="text-left">
+              <strong>Upload National Id:</strong>
+            </label>
+          </div>
+          <div class="row ml-2">
+            <input type="file">
+          </div>
+        </div>
+        <div class="form-group pb-2">
+          <div class="row ml-2">
+            <label for="inputFirstName" class="text-left">
+              <strong>Tax Registration Certificate:</strong>
+            </label>
+          </div>
+          <div class="row ml-2">
+            <input type="file">
+          </div>
+        </div> -->
+
+
+        <p *ngIf="kycValidation" class='help-block text-danger'> Please Upload Kyc Documents</p>
+        <div class="row">
+          <div class="col-6">
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="onClickBack('customer')">Back</button>
+          </div>
+          <div class="col-6 text-right">
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="onClickNext('file','bank')">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showForm == 'bank'" class="card" widget>
+      <div class="card-header head-color">
+        <strong>
+          <h6>Bank Details</h6>
+        </strong>
+      </div>
+      <div class="card-body ">
+        <form [formGroup]="bankDetails" novalidate>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Beneficiary Name:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && bankDetails.controls['beneficiaryName'].invalid}"
+              [formControl]="bankDetails.controls['beneficiaryName']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Bank Name:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && bankDetails.controls['bankName'].invalid}"
+              [formControl]="bankDetails.controls['bankName']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Branch:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && bankDetails.controls['branch'].invalid}"
+              [formControl]="bankDetails.controls['branch']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Account Number:</strong>
+            </label>
+            <input type="number" class="form-control form-control-sm" [ngClass]="{active:submitted && bankDetails.controls['accountNumber'].invalid}"
+              [formControl]="bankDetails.controls['accountNumber']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>IBAN:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && bankDetails.controls['IBAN'].invalid}"
+              [formControl]="bankDetails.controls['IBAN']">
+          </div>
+          <div class="form-group ">
+            <label for="inputFirstName" class="text-left">
+              <strong>Swift Code:</strong>
+            </label>
+            <input type="text" class="form-control form-control-sm" [ngClass]="{active:submitted && bankDetails.controls['swiftCode'].invalid}"
+              [formControl]="bankDetails.controls['swiftCode']">
+          </div>
+          <div class="row">
+            <div class="col-6 ">
+              <button class="btn btn-outline-info btn-rounded btn-sm" (click)="onClickBack('Document')">Back</button>
+            </div>
+            <div class="col-6 text-right">
+              <button class="btn btn-outline-info btn-rounded btn-sm" (click)="createSeller(bankDetails)">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

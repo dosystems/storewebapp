@@ -1,0 +1,213 @@
+<div class="card changeBackgroung">
+  <!--Card Header-->
+  <div class="card-header">
+    <ng-template [ngIf]="settingsId" [ngIfElse]="addEdit">
+      <h5>Edit Settings</h5>
+    </ng-template>
+    <ng-template #addEdit>
+      <h5>Edit Settings</h5>
+    </ng-template>
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" title="Back" onclick="window.history.back()">
+        <span class="fa fa-arrow-left"></span>
+      </button>
+    </div>
+  </div>
+  <!--End Of Card Header-->
+  <!--Card Body-->
+  <div class="card-body">
+
+    <!--Other Details -->
+    <div class="card bottom-30">
+      <div class="card-header">
+        <b>Other Settings</b>
+      </div>
+      <div class="card-body">
+        <div class="card boxshadownull bottom-15">
+          <div class="card-body background-white">
+            <form [formGroup]="commonSettingsForm" novalidate>
+
+              <div class="form-group">
+                <div class="col-md-8 row">
+                  <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right"><b>Support Countries :</b>
+                  </label>
+                  <div class="col-sm-8 ui-fluid text-l">
+                    <p-multiSelect appendTo="body" [options]="countries" [style]="{'height':'100%'}" [(ngModel)]="supportedCountries"
+                      [ngModelOptions]="{standalone: true}"></p-multiSelect>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-8 row">
+                  <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right"><b>Support Languages :</b>
+                  </label>
+                  <div class="col-sm-8 ui-fluid text-l">
+                    <p-multiSelect appendTo="body" [options]="Languages" [style]="{'height':'100%'}" [(ngModel)]="supportedLanguages"
+                      [ngModelOptions]="{standalone: true}"></p-multiSelect>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-8 row">
+                  <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right"><b>Categories Limit :</b>
+                  </label>
+                  <div class="col-sm-8 ui-fluid text-l">
+                    <input type="number" [maxlength]="20" style="width:100%" class="form-control" [ngClass]="{active:submitted && commonSettingsForm.controls['categoryLevelsLimit'].invalid }"
+                      [(ngModel)]="setting.categoryLevelsLimit" [formControl]="commonSettingsForm.controls['categoryLevelsLimit']"
+                      required>
+                    <span class="help-block text-danger" *ngIf="commonSettingsForm.get('categoryLevelsLimit').touched && commonSettingsForm.get('categoryLevelsLimit').invalid">
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-8 row">
+                  <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right"><b>Expiry Time :</b>
+                  </label>
+                  <div class="col-sm-8 ui-fluid text-l">
+                    <input type="number" [maxlength]="20" style="width:100%" [ngClass]="{active:submitted && commonSettingsForm.controls['expireTime'].invalid }"
+                      class="form-control" [formControl]="commonSettingsForm.controls['expireTime']" [(ngModel)]="setting.expireTime"
+                      required>
+                    <span class="help-block text-danger" *ngIf="commonSettingsForm.get('expireTime').touched && commonSettingsForm.get('expireTime').invalid">
+                    </span>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-8 row">
+                  <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right"><b>Default Commison :</b>
+                  </label>
+                  <div class="col-sm-8 ui-fluid text-l">
+                    <input type="number" [maxlength]="20" [ngClass]="{active:submitted && commonSettingsForm.controls['defaultPercentage'].invalid }"
+                      style="width:100%" class="form-control" [formControl]="commonSettingsForm.controls['defaultPercentage']"
+                      [(ngModel)]="setting.defaultPercentage" required>
+                    <span class="help-block text-danger" *ngIf="commonSettingsForm.get('defaultPercentage').touched && commonSettingsForm.get('defaultPercentage').invalid">
+                    </span>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-8 row">
+                  <label for="company-h-f" class="col-sm-4 form-control-label m-t-5 text-right"><b>Expected Delivery
+                      Days :</b> </label>
+                  <div class="col-sm-8 ui-fluid text-l">
+                    <input type="number" [maxlength]="20" [ngClass]="{active:submitted && commonSettingsForm.controls['estimatedDeliveryDays'].invalid }"
+                      style="width:100%" class="form-control" [formControl]="commonSettingsForm.controls['estimatedDeliveryDays']"
+                      [(ngModel)]="setting.estimatedDeliveryDays" required>
+                    <span class="help-block text-danger" *ngIf="commonSettingsForm.get('estimatedDeliveryDays').touched && commonSettingsForm.get('estimatedDeliveryDays').invalid">
+                    </span>
+
+                  </div>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--Other Details -->
+
+    <!-- Privacy Policy-->
+    <div class="card bottom-30">
+      <div class="card-header">
+        <b>Privacy Policy</b>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12" id="description">
+            <div class="summernote"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Privacy Policy-->
+    <div class="card bottom-30">
+      <div class="card-header">
+        <b>Products Settings</b>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-8">
+            <button type="button" class="btn btn-outline-info transition btn-rounded btn-xs pointer" data-toggle="modal"
+              data-target="#productsBulkUpload">Bulk Upload Products</button>
+            <button type="button" class="btn btn-outline-info transition btn-rounded btn-xs pointer" (click)="saveImagesForUploadedProducts()">SaveImagesForUploadedProducts</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- <p class="active" *ngIf="submitted && isCategoryValidation === true">
+      Please select Categories & Charge</p>
+    <p class="active" *ngIf="submitted && isVendorValidation === true">
+      Please select Vendor & Charge</p> -->
+    <p class="active" *ngIf="submitted && (settingsData?.supportedCountries.length == 0 ||settingsData?.supportedCountries.length < 1) ">
+      Please select Supported Countries</p>
+    <p class="active" *ngIf="submitted && (settingsData?.supportedLanguages.length == 0  || settingsData?.supportedLanguages.length < 1 )">
+      Please select Supported Languages </p>
+
+    <button class="btn btn-outline-info btn-rounded btn-sm float-right" [disabled]="disabled" (click)="save(commonSettingsForm)"
+      type="submit">
+      <span *ngIf="settingsId;else showCreateButton">
+        Update
+      </span>
+      <ng-template #showCreateButton>
+        Update
+      </ng-template>
+    </button>
+    <button class="btn btn-outline-info btn-rounded btn-sm float-right" onclick="window.history.back()"> Cancel</button>
+
+  </div>
+  <!--End Of Card Body-->
+</div>
+
+
+
+<!-- Modal For Bulk Upload -->
+<div class="modal fade" id="productsBulkUpload" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Products Bulk Upload</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 row">
+            <div class="col-4 text-right">Sample Document</div>
+            <div class="col-6"><a type="button" class="btn btn-info btn-sm" href="/assets/sample.xlsx">Download
+              </a></div>
+          </div>
+        </div>
+        <div class="row pt-4">
+          <div class="col-12 row">
+            <div class="col-4 text-right">Upload Document</div>
+            <div class="col-6"><input type="file" accept=".xls,.xlsx" #input></div>
+          </div>
+        </div>
+        <div class="row pt-2">
+          <div class="col-12 text-right">
+            <button class="btn btn-outline-info btn-rounded btn-sm" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="bulkUpload(input)">Upload</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

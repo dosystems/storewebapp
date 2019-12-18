@@ -1,0 +1,265 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3  aside">
+      <!--For Fixed Side Menu Bar-->
+      <div class="filter-container productFilter">
+        <div class="fstart"></div>
+        <div class="fixed-wrapper">
+          <div class="fixed-scroll">
+            <div class="filter-col-header">
+              <div class="title">Filters</div>
+              <a href="#" class="filter-col-toggle"></a>
+            </div>
+            <div class="filter-col-content">
+              <div class="sidebar-block-top">
+                <!-- <h2>Shoping By</h2> -->
+              </div>
+              <ul class="selected-filters">
+                <li *ngFor="let selectedColor of selectedColors; let i=index;">
+                  <a title="Remove tag {{selectedColor}}" class="pointer selected-filter">
+                    <span>{{selectedColor}}</span>
+                    <span class="remove">
+                      <i class="icon icon-close" (click)="removeSelectedItems(i,'color')"></i>
+                    </span>
+                  </a>
+                  <div class="bg-striped"></div>
+                </li>
+                <li *ngFor="let selectedBrand of selectedBrands; let j=index;">
+                  <a title="Remove tag {{selectedBrand}}" class="pointer selected-filter">
+                    <span>{{selectedBrand}}</span>
+                    <span class="remove">
+                      <i class="icon icon-close" (click)="removeSelectedItems(j,'brand')"></i>
+                    </span>
+                  </a>
+                  <div class="bg-striped"></div>
+                </li>
+              </ul>
+              <!-- Displating side category and subcatogaries through recursion -->
+              <!-- <div class="sidebar-block collapsed"> -->
+              <ng-template #recursiveList let-menu>
+                <div class="col-12">
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
+                    <div *ngFor="let list of menu;let i = index;">
+                        <div class="card mt-3" *ngIf="list.count&&list.count>0">
+                            <div *ngIf="menu[i].subpath.length > 0&&list.count&&list.count>0" class="nopadding card-header collapsed" role="tab" data-toggle="collapse" data-parent="#accordion"
+                              [attr.data-target]="'#collapse'+ list.id" aria-expanded="false" [attr.aria-controls]="['collapse-'+ list.id]">
+                              <h6 (click)="getAllProducts(list,'menu')">
+                                {{list.title}}
+                                <a >&nbsp;&nbsp;({{list?.count}})</a>
+                              </h6>
+                            </div>
+                            <div class="nopadding card-header noicon" *ngIf="menu[i].subpath.length == 0&&(list.count&&list.count>0)" (click)="getAllProducts(list,'menu')">
+                              <ul class="category-list">
+                                <li class="active">
+                                  <a (click)="getAllProducts(list,'menu')" class="value pointer text-uppercase">{{list.title}}  <span >&nbsp;&nbsp;({{list?.count}})</span></a>
+                                 
+                                </li>
+                              </ul>
+                            </div>
+                            <div  *ngIf="list.count" [attr.id]="'collapse' + list.id" class="collapse" role="tabpanel" [attr.aria-labelledby]="['heading-'+ list.id]">
+      
+                              <div class="card-body">
+                                <div *ngIf="menu[i].subpath.length > 0">
+                                  <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menu[i].subpath }"></ng-container>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menu }"></ng-container>
+              <!-- </div> -->
+              <!-- <div class="sidebar-block collapsed"> -->
+              <div class="col-12 mt-3">
+                <div id="accordion1" role="tablist" aria-multiselectable="true">
+                  <div class="card">
+                    <div class="card-header nopadding collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion1"
+                      href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <h6>
+                        Price
+                      </h6>
+                    </div>
+                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="card-body">
+                          <ul class="category-list">
+                              <li *ngFor="let price of prices;let j= index;">
+                                <a class="pointer listItemClass" title="{{price}}" (click)="onPriceRangeChange(price)">{{price}}</a>
+                                <!-- <a class="clear" title="Remove {{brand.name}}"></a> -->
+                              </li>
+                            </ul>
+
+                        <!-- Price Under ₹500 ₹500 - ₹1,000 ₹1,000 - ₹2,500 ₹2,500 - ₹5,000 Over ₹5,000 -->
+                        <!-- {{rangeValues[0] + ' - ' + rangeValues[1]}}
+                              <p-slider [(ngModel)]="rangeValues" [range]="true"  [min]="0" [max]="3000" (onChange)="onPriceRangeChange($event)"></p-slider> -->
+                        <!-- <div class="price-slider-wrapper">
+                              <div class="price-values">
+                                <div class="pull-left">
+                                  <span id="priceMin"></span>
+                                </div>
+                                <div class="pull-right">
+                                  <span id="priceMax"></span>
+                                </div>
+                              </div>
+                              <div id="priceSlider" class="price-slider"></div>
+                              <div class="bg-striped"></div>
+                            </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- </div> -->
+              <!-- <div class="sidebar-block collapsed"> -->
+              <div class="col-12 mt-3">
+                <div id="accordion2" role="tablist" aria-multiselectable="true">
+                  <div class="card">
+                    <div class="card-header nopadding collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion2"
+                      href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                      <h6>
+                        Color
+                      </h6>
+                    </div>
+                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="card-body">
+                        <ul class="color-list">
+                          <li *ngFor="let color of colors;let i= index;">
+                            <a class="pointer" title="{{color.color}}" (click)="onSelectMenuItem(color.color,i,'color')">
+                              <span class="clear" *ngIf="colors[i].active"></span>
+                              <span class="value">
+                                <img src="assets/images/colorswatch/color-{{color.color}}.png" alt="">
+                              </span>
+                            </a>
+                          </li>
+
+                        </ul>
+                        <div class="bg-striped"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- </div> -->
+
+
+              <div class="col-12 mt-3" *ngIf="brands&&brands.length>0">
+                <div id="accordion3" role="tablist" aria-multiselectable="true">
+                  <div class="card">
+                    <div class="card-header nopadding collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion3"
+                      href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                      <h6>
+                        Brands
+                      </h6>
+                    </div>
+                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="card-body">
+                        <ul class="category-list">
+                          <li *ngFor="let brand of brands;let j= index;">
+                            <a *ngIf="brand.productCount" class="pointer listItemClass" title="{{brand.name}}" (click)="onSelectMenuItem(brand.name,j,'brand')">{{brand.name}}</a>
+                            <a *ngIf="brand.productCount" class="clear" title="Remove {{brand.name}}"></a>
+                          </li>
+                        </ul>
+                        <div class="bg-striped"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fend"></div>
+      </div>
+      <!-- End of Fixed Side Menu Bar-->
+    </div>
+
+    <div class="col-lg-9 aside productsearchpage" >
+      <div *ngIf="!noProducts">
+         <!-- Filter Row -->
+      <div class="filter-row">
+          <div class="row">
+            <div class="col-xs-8 col-sm-7 col-lg-5 col-left">
+              <!-- <div class="filter-button">
+                <a href="#" class="btn filter-col-toggle">
+                  <i class="icon icon-filter"></i>
+                  <span>FILTER</span>
+                </a>
+              </div> -->
+              <div class="form-label">Sort by:</div>
+              <div class="select-wrapper-sm">
+                <select class="form-control input-sm" (change)="arrangeFilterData($event.target.value)"  >
+                  <option value="dateNewToOld">New to old</option>
+                  <option value="dateOldToNew">Old to new</option>
+                  <option value="priceLowToHigh">Price, low to high</option>
+                  <option value="priceHighToLow">Price, high to low</option>
+                  <option value="nameAsc">Alphabetically, A-Z</option>
+                  <option value="nameDesc">Alphabetically, Z-A</option>
+                  <!-- <option value="manual">Featured</option>
+                    <option value="best-selling">Best Selling</option> -->
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-2 col-lg-2 hidden-xs">
+              <div class="view-mode">
+                <a class="grid-view active" (click)="viewMode('.grid-view')">
+                  <i class="icon icon-th"></i>
+                </a>
+                <a class="list-view" (click)="viewMode('.list-view')">
+                  <i class="icon icon-th-list"></i>
+                </a>
+              </div>
+            </div>
+            <div class="col-xs-4 col-sm-3 col-lg-5 col-right">
+              <div class="form-label">Show:</div>
+              <div class="select-wrapper-sm">
+                <select class="form-control input-sm"  [ngModelOptions]="{standalone: true}" [(ngModel)]="productsLimit" (change)="arrangeFilterData($event.target.value)">
+                  <option value=15>15</option>
+                  <option value=50>50</option>
+                  <option value=100>100</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="bg-striped"></div>
+        </div>
+        <p *ngIf="totalRecords">({{totalRecords}}) results Found</p>
+        <!-- /Filter Row -->
+  
+        <!-- products list -->
+        <div class="products-grid five-in-row product-variant-3" >
+          <div *ngFor="let product of totalProducts" class="product-item large colorvariants category2">
+            <ross-product [Product]="product"></ross-product>
+          </div>
+        </div>
+  
+        <!-- paginator -->
+        <div class="d-flex p-2 bd-highlight justify-content-center mt-100 mb-3" *ngIf="pages>1">
+          <p-paginator [rows]="productsLimit" (onPageChange)="paginate($event)" [pageLinkSize]="3" [totalRecords]="totalRecords"></p-paginator>
+        </div>
+      </div>
+      <div class="block empty-cart mt-5" *ngIf="noProducts">
+          <div class=" text-center">
+            <div class="image-empty-cart">
+              <h2 class="mt-100 text-center danger"> No results found</h2>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+
+  <!-- Latest trends products Start-->
+  <div class="block bottom-space mt-5" *ngIf="showLatestTrending">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-12">
+          <ross-latest-trending></ross-latest-trending>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Latest trends products End -->
+</div>

@@ -1,0 +1,295 @@
+<!--Display all tickets list here-->
+<div class="card" widget="">
+    <div class="card-header">
+        <span class="card-heading text-uppercase">TICKETS</span>
+        <!-- <span class="card-heading">TICKETS</span> -->
+        <div class="widget-controls">
+            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllTickets()">
+                <span class="fa fa-refresh"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+                <span class="fa fa-chevron-down"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+                <span class="fa fa-chevron-up"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+                <span class="fa fa-expand"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+                <span class="fa fa-compress"></span>
+            </button>
+        </div>
+    </div>
+    <div class="card-body widget-body buttons">
+        <div class="row">
+            <div class="col-sm-4 ml-auto">
+                <div class="input-group input-group-sm bottom-15">
+                    <input type="text" class="form-control" placeholder="Search Subject/Name" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                 <i class="fa fa-search"></i>
+             </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Of Global Filter-->
+
+        <p-table #dt [value]="tickets" [responsive]="true" [paginator]="true" [rows]="20" [resizableColumns]="true" [rowsPerPageOptions]="[20,50]"
+            [lazy]="true" (onLazyLoad)="getAllTickets($event)" [totalRecords]="totalRecords">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pResizableColumn style="width:50px">S.No</th>
+                    <th pResizableColumn style=" width: 100px;">Ticket Id
+                        <span [pSortableColumn]="'ticketId'">
+                            <p-sortIcon></p-sortIcon>
+                        </span>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value,'ticketId','startsWith')" style="width:100%" placeholder=" Search">
+                    </th>
+                    <th pResizableColumn style=" width: 100px;">Name
+                        <span [pSortableColumn]="'userName'">
+                            <p-sortIcon></p-sortIcon>
+                        </span>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value,'userName','startsWith')" style="width:100%" placeholder=" Search">
+                    </th>
+                    <th pResizableColumn style=" width: 120px;">Subject
+                        <span [pSortableColumn]="'subject'">
+                            <p-sortIcon></p-sortIcon>
+                        </span>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value,'subject','startsWith')" style="width:100%" placeholder=" Search">
+                    </th>
+
+                    <th pResizableColumn style=" width: 100px">Category
+                        <span [pSortableColumn]="'category'">
+                            <p-sortIcon></p-sortIcon>
+                        </span>
+                        <p-dropdown appendTo="body" [options]="categoryTypes" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'category','equals')"
+                            styleClass="ui-column-filter"></p-dropdown>
+                    </th>
+
+                    <th pResizableColumn style=" width: 120px;">Created On
+                        <span [pSortableColumn]="'created'">
+                            <p-sortIcon></p-sortIcon>
+                        </span>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value,'created','equals')" style="width:100%" placeholder=" Search">
+                    </th>
+                    <th pResizableColumn style=" width: 160px;">Last Updated
+                        <span [pSortableColumn]="'userLastUpdated'">
+                            <p-sortIcon></p-sortIcon>
+                        </span>
+                        <input pInputText type="text" (input)="dt.filter($event.target.value,'userLastUpdated','equals')" style="width:100%" placeholder=" Search">
+                    </th>
+                    <th pResizableColumn style=" width: 80px;">Status
+                        <span [pSortableColumn]="'status'">
+                            <p-sortIcon></p-sortIcon>
+                        </span>
+                        <p-dropdown appendTo="body" [options]="tickectStatusList" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'status', 'equals')"></p-dropdown>
+                    </th>
+
+                    <th pResizableColumn style=" width: 90px;">Options</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-ticket>
+                <tr>
+                    <td class="text-center">{{ticket.serialNo}}</td>
+                    <td class="text-left">
+                        <span *ngIf="ticket.ticketId">{{ticket.ticketId}}</span>
+                    </td>
+
+                    <td class="text-left">
+                        <span>{{ticket.userName}}</span>
+                    </td>
+                    <td class="text-left">
+                        <span>{{ticket.subject}}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-info text-capitalize">{{ ticket.category }}</span>
+                    </td>
+                    <td>
+                        {{appService.getDisplayDateFormat(ticket.created)}}
+                    </td>
+                    <td>
+                        {{appService.getDisplayDateFormat(ticket.adminLastUpdated,'MM/DD/YYYY hh:mm:ss a')}}
+                    </td>
+                    <td class="text-center">
+                        <span *ngIf="ticket.status" class="badge badge-{{appService.getStatusColor(ticket.status)}}">{{ ticket.status }}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-danger pointer cursor" data-toggle="tooltip" title="Delete" id="pointer" (click)="onSelectOptions('Delete', ticket)">
+                            <i class="fa fa-trash"></i>
+                        </span>&nbsp;
+                        <span class="badge badge-primary pointer cursor" data-toggle="tooltip" title="Details" id="pointer" (click)="onSelectOptions('Details', ticket)">
+                            <i class="fa fa-edit"></i>
+                        </span>
+                    </td>
+                </tr>
+            </ng-template>
+            </p-table>
+
+    </div>
+</div>
+
+
+<!-- To show ticket details in modal box -->
+<div class="modal fade" id="ticketDetailsReplyModal" role="dialog" *ngIf="ticketDetails">
+    <div class="modal-dialog modal-lg  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-color">
+                    <span>Ticket Details</span>
+                </h5>
+                <div class="test">
+                    <button class="btn btn-outline-info btn-rounded btn-xs " type="button" title="Refresh Conversation" (click)="getTicketConversationBasedOnId(ticketId)">
+                   <span class="fa fa-refresh"></span>
+                </button>
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-left">
+                <form [formGroup]="form" novalidate *ngIf="ticketDetails">
+                    <div class="form-group row text-right">
+                        <label class="col-sm-2 form-control-label m-t-5" for="ticketId">Ticket Id</label>
+                        <div class="col-sm-8">
+                            <input [ngClass]="{active:submitted && !form.controls['ticketId'].valid}" [formControl]="form.controls['ticketId']" class="form-control checking-field"
+                                readonly="readonly" [(ngModel)]="ticketDetails.ticketId" type="text" name="ticketId">
+                        </div>
+                    </div>
+                    <div class="form-group row text-right">
+                        <label class="col-sm-2 form-control-label m-t-5" for="subject">Subject</label>
+                        <div class="col-sm-8">
+                            <input [ngClass]="{active:submitted && !form.controls['subject'].valid}" [formControl]="form.controls['subject']" class="form-control checking-field"
+                                readonly="readonly" [(ngModel)]="ticketDetails.subject" type="text" name="subject">
+                        </div>
+                    </div>
+                    <div class="form-group row text-right">
+                        <label class="col-sm-2 form-control-label m-t-5" for="reply">Category</label>
+                        <div class="col-sm-8">
+                            <select class="form-control checking-field" [(ngModel)]="ticketDetails.category" [formControl]="form.controls['category']"
+                                name="category" [ngClass]="{active:submitted && !form.controls['category'].valid}" disabled>
+                                <option [ngValue]="undefined" [selected]="true" [disabled]="true">Select Category</option>
+                                <option *ngFor="let option of categoryList" [value]="option">{{option}}</option>
+                            </select>
+                        </div>
+                    </div>
+                     <div class="form-group row text-right">
+                         <label class="col-sm-2 form-control-label m-t-5" for="reply">Status</label>
+                         <div class="col-sm-3 text-left">
+                            <p-dropdown   [options]="tempStatus" [style]="{'width':'100%'}" placeholder="Select Status" 
+                                [(ngModel)] = "ticketDetails.status"  [formControl]="form.controls['status']" (onChange)="UpdateTicket(ticketDetails)">
+                             </p-dropdown>  
+                             <span class="help-block text-danger" *ngIf="submitted && !form.get('status').valid">Please Select Status</span>
+                         </div>
+                         <label class="col-sm-2 form-control-label m-t-5" for="reply">Assigned</label>
+                         <div class="col-sm-3 text-left">
+                            <p-dropdown   [options]="employees" [style]="{'width':'100%'}" placeholder="Assign Employee" 
+                                [(ngModel)] = "ticketDetails.assignedTo"  [formControl]="form.controls['assignedTo']" (onChange)="UpdateTicket(ticketDetails)">
+                             </p-dropdown>
+                             <span class="help-block text-danger" *ngIf="submitted && !form.get('assignedTo').valid">Please Assign Employee</span>
+                         </div>
+                     </div>
+
+                    <!--<div class="col-sm-3">
+                            <div class="custom-controls-stacked">
+                                <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input checkbox-success checkbox-circle" [formControl]="form.controls['status']"
+                                        [(ngModel)]="ticketDetails.status" (change)="updateTicketStatus(ticketDetails.status)">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Mark As Closed</span>
+                                </label>
+                            </div>
+                        </div>-->
+
+                </form>
+
+                <!-- chat container code start-->
+                <div class="chat-container bottom-15" slim-scroll [slimScrollOptions]="{height: modalHeight}">
+                    <ul class="media-list" id="media-list">
+                        <li *ngIf="ticketDetails" class="media">
+                            <div class="media-left pull-left">
+                                <img class="media-object rounded-circle" src="{{_appConfig.imageUrl}}user/{{ticketDetails.profileImage}}" altSrc="assets/img/users/user.png"
+                                    onerror="this.src=$(this).attr('altSrc')" alt="author image">
+                            </div>
+                            <div class="media-body rounded left">
+                                <div class="media-heading">
+                                    <span class="d-inline text-capitalize pull-left"><b> {{ticketDetails.userName}} </b></span>
+                                    <span class="d-inline pull-right">
+                                        <i class="fa fa-clock-o"></i>
+                                        {{appService.getDisplayDateFormat(ticketDetails.created,'DD MMMM, YYYY HH:mm a')}}
+                                    </span>
+                                </div>
+                                <p>{{ticketDetails.message}}</p>
+                            </div>
+
+                        </li>
+                    </ul>
+
+                    <ul class="media-list" id="media-list">
+                        <li *ngFor="let item of chatList" class="media">
+                            <div *ngIf="item.side=='left'" class="media-left">
+                                <img class="media-object rounded-circle" src="{{_appConfig.imageUrl}}user/{{ticketDetails.profileImage}}" altSrc="assets/img/users/user.png"
+                                    onerror="this.src=$(this).attr('altSrc')" alt="author image">
+                            </div>
+                            <div class="media-body rounded {{item.side}}">
+                                <div class="media-heading">
+                                    <span class="d-inline text-capitalize" [ngClass]="{'pull-left': item.side=='left', 'pull-right': item.side=='right'}"> <b> {{item.userName}}</b> </span>
+                                    <span class="d-inline" [ngClass]="{'pull-right': item.side=='left', 'pull-left': item.side=='right'}">
+                                        <i class="fa fa-clock-o"></i>{{appService.getDisplayDateFormat(item.created,'DD MMMM, YYYY HH:mm a')}}</span>
+                                </div>
+                                <p>{{item.message}}</p>
+                            </div>
+                            <div *ngIf="item.side=='right'" class="media-right">
+                                <img class="media-object rounded-circle" src="{{item.image}}" altSrc="assets/img/users/admin.png" onerror="this.src=$(this).attr('altSrc')"
+                                    alt="author image">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- chat container -->
+
+            </div>
+
+            <!-- To show reply button -->
+            <form [formGroup]="replyForm" novalidate>
+                <div class="form-group col-12">
+                    <div class="input-group">
+                        <input type="text" value="" class="form-control" placeholder="Enter your text..." [ngClass]="{active:submitted && !replyForm.controls['reply'].valid}"
+                            [formControl]="replyForm.controls['reply']" [(ngModel)]="reply">
+                            <div class="input-group-btn">
+                                <button class="btn btn-main" type="button" (click)="addReplyToTicket(replyForm)">
+                                <i class="fa fa-paper-plane send"></i>
+                            </button>
+                            </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Ticket delete confirmation modal -->
+<div class="modal" id="ticketDetailsDeleteModal" role="dialog">
+    <div class="modal-dialog modal-md  modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-8 offset-sm-2">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="text-beautify">
+                                    <p>Are you sure want to Delete ?</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-warning mr-1 btn-sm" type="button" data-dismiss="modal">No</button>
+                                <button class="btn btn-warning mr-1 btn-sm" (click)="deleteTicket(ticketId)" type="submit">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

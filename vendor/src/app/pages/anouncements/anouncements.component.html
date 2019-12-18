@@ -1,0 +1,203 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header ">
+    <span class="card-heading text-uppercase">ANNOUNCEMENTS</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-toggle="modal" (click)="addOrEditAnnouncement()">
+        Add Announcement
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllAnnouncement()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <div class="card-body widget-body">
+
+    <!-- All announcement data grid Starts -->
+
+    <p-table #dt [value]="allAnnouncements" [scrollable]="true" class="overflowvisible" (onLazyLoad)="getAllAnnouncement($event)"
+      [lazy]="true" [responsive]="true" [resizableColumns]="true" [lazy]="true" [paginator]="true" [rows]="appService.rowNum"
+      [totalRecords]="totalRecords" [rowsPerPageOptions]="appService.rowValue">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSno">S.No</th>
+          <th pResizableColumn>Announcements
+            <span [pSortableColumn]="'header'">
+              <p-sortIcon [field]="'header'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'header',filterMatchMode)" placeholder="Search">
+
+          </th>
+          <th pResizableColumn>Type
+            <span [pSortableColumn]="'header'">
+              <p-sortIcon [field]="'type'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'type',filterMatchMode)" placeholder="Search">
+
+          </th>
+          
+          <th pResizableColumn class="widthDate">Created On
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created',filterMatchMode)" placeholder="MM/DD/YYYY">
+
+          </th>
+          <th pResizableColumn class="widthAction text-center">Action
+          </th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-announce>
+        <tr>
+          <td class="widthSno">{{announce.sNo}}</td>
+          <td>
+            <a class="linkColor" (click)="viewAnnounement(announce)">{{announce.header}}</a>
+          </td>
+          <td>{{announce.type}}</td>
+          
+          <td class="widthDate">{{announce.created}}</td>
+          <td class="widthAction" align="center">
+            <span (click)="addOrEditAnnouncement(announce)" class="badge badge-primary cursor" data-toggle="tooltip" title="Edit">
+              <i class=" fa fa-edit"></i>
+            </span>&nbsp;
+            <span (click)="deleteAnnounceId = announce._id" data-toggle="modal" data-target="#deleteAnnounce" class="badge badge-danger cursor">
+              <i class=" fa fa-trash-o" data-toggle="tooltip" title="Delete"></i>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <!-- All announcement data grid Ends -->
+  </div>
+</div>
+
+<!-- Add or Edit modal-box content start -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="announcementModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><span *ngIf="!announceData._id">Add Announcement</span>
+          <span *ngIf="announceData._id">Edit Announcement</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row text-right">
+          <label for="email-h-f" class="col-sm-2 form-control-label m-t-5">Title</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="amount" [ngClass]="{active:submitted && !announceData.header}" [(ngModel)]="announceData.header">
+          </div>
+        </div>
+        <div class="form-group row text-right">
+          <label for="email-h-f" class="col-sm-2 form-control-label m-t-5">Type</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="amount" [ngClass]="{active:submitted && !announceData.header}" [(ngModel)]="announceData.type">
+          </div>
+        </div>
+        <div class="form-group row ">
+          <label for="email-h-f" class="col-sm-2 form-control-label m-t-5 text-right">Description</label>
+          <div class="col-sm-9" id="description">
+            <div class="summernote"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 text-right">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">
+              Cancel
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" (click)="createUpdateAnnouncement()">
+              <span *ngIf="!announceData._id">Create</span> 
+              <span *ngIf="announceData._id">Update</span> 
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Add or Edit modal-box content Ends -->
+
+
+<!-- Delete modal-box content start -->
+
+<!-- The Modal -->
+<div class="modal fade" id="deleteAnnounce" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteAnnouncement()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete modal-box content end -->
+
+
+<!-- View modal-box content Starts -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="viewAnnouncementModal">
+  <div class="modal-dialog  modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">View Announcement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class=" row ">
+          <div class="col-sm-4 text-right">Title :</div>
+          <div class="col-sm-6" id="description">
+            {{announceData.header}}
+          </div>
+        </div>
+        <div class=" row mt-2">
+          <div class="col-sm-4 text-right">Type :</div>
+          <div class="col-sm-6" id="description">
+            {{announceData.type}}
+          </div>
+        </div>
+        <div class=" row mt-2">
+          <div class="col-sm-4  text-right">Description :</div>
+          <div class="col-sm-6" id="description">
+            <div [innerHTML]="announceData.text"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 text-right">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View modal-box content Ends -->

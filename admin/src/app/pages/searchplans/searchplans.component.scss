@@ -1,0 +1,38 @@
+td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+textarea {
+  width: 100%;
+  height: 80px;
+}
+.linkView{
+    color: dodgerblue!important;
+    cursor: pointer;
+}
+.widthSno{
+    width:50px;
+}
+.widthPlan{
+    width:150px;
+}
+.widthPrice{
+    width:100px;
+}
+.widthDuration{
+    width:100px;
+}
+.widthDesc{
+    width:200px;
+}
+.widthCreated{
+  width:120px;
+}
+.widthCreatedBy{
+  width:120px;
+}
+.adjust{
+    width: 80px;
+}

@@ -1,0 +1,29 @@
+.loader{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('/assets/images/loader.gif') 50% 50% no-repeat;
+}
+.danger{
+    color:red;
+}
+.page-main{
+    min-height:calc(100vh - 200px);
+}
+ /* to apply color to navbar  */
+.navcontainer{
+    background: #232f3e;
+    top: 0;
+    z-index: 0;
+    width: 100% !important;
+}
+
+@media screen and (max-width: 992px){
+  .mobileZindex{
+     position: relative;
+     z-index: -1;
+  }
+}

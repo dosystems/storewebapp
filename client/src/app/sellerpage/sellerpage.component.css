@@ -1,0 +1,9 @@
+.banner.style-6 .banner-btn:hover > span,.banner.style-6 .text-1 {
+    color: #cf0000 !important;
+}
+.banner.style-6 .banner-btn > span{
+    background-color: #cf0000 !important;
+}
+.banner.style-6 .banner-caption {
+    bottom: 30%;
+}

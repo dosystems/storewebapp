@@ -1,0 +1,247 @@
+<div class="container">
+  <!-- Menu Toggle -->
+  <div class="menu-toggle">
+    <a href="#" class="mobilemenu-toggle">
+      <i class="icon icon-menu"></i>
+    </a>
+  </div>
+  <!-- /Menu Toggle -->
+  <!-- <div class="mt-1 text-right">
+          <div id="google_translate_element"></div>
+        </div> -->
+  <!-- Header Middle Row -->
+  <div class="header-middle-row">
+    <div class="header-middle-left">
+      <!-- Logo -->
+      <div class="header-logo web">
+        <a routerLink="/">
+          <img src="{{appConfig.logo}}" alt />
+        </a>
+      </div>
+      <div class="header-logo moboile">
+        <a routerLink="/">
+          <img src="{{appConfig.mobilelogo}}" alt />
+        </a>
+      </div>
+      <!-- /Logo -->
+    </div>
+    <div class="header-middle-center">
+      <a class="col-12 ui-fluid">
+        <p-autoComplete [(ngModel)]="tree" [ngModelOptions]="{standalone: true}" name="tree" (completeMethod)="SearchProducts($event.query)"
+          [suggestions]="products" field="tree" [size]="25" placeholder="What are you looking for?" [minLength]="2">
+        </p-autoComplete>
+      </a>
+    </div>
+    <div class="header-middle-right">
+      <!-- Header Cart -->
+      <div class="header-link dropdown-link header-cart variant-1">
+        <a routerLink="/cart">
+          <i class="icon icon-cart"></i>
+          <span class="badge">{{cartOrdersCount}}</span>
+        </a>
+        <!-- minicart wrapper -->
+        <!-- <div class="dropdown-container right"> -->
+        <!-- minicart content -->
+        <!-- <ross-orders (notify)="onNotify($event)"></ross-orders> -->
+        <!-- /minicart content -->
+        <!-- </div> -->
+        <!-- /minicart wrapper -->
+      </div>
+      <!-- /Header Cart -->
+      <!-- Header Links -->
+      <div class="header-links">
+        <!-- Header Language -->
+        <!-- <div class="header-link header-select dropdown-link header-language">
+          <a>
+            <img src="assets/images/flags/{{selectedFlag}}" alt />
+          </a>
+          <ul class="dropdown-container">
+            <li *ngFor="let lang of languages">
+              <a class="anchor" (click)="onLangaugeSelect(lang)">
+                <img src="assets/images/flags/{{lang.flag}}" alt />{{lang.name}}</a>
+            </li>
+          </ul>
+        </div> -->
+
+        <!-- /Header Language -->
+        <!-- Header Currency -->
+        <div class="header-link header-select dropdown-link header-currency">
+          <a>{{appService?.selectedCurrency?.name}}</a>
+          <ul class="dropdown-container">
+            <li class="pointer" *ngFor="let currency of currencies">
+              <a (click)="currencySelect(currency)">
+                <span class="symbol">{{currency.symbol}}</span>{{currency.name}}</a>
+            </li>
+            <!-- <li ><a href="#"><span class="symbol">$</span>USD</a></li>
+              <li><a href="#"><span class="symbol">£</span>GBP</a></li> -->
+          </ul>
+        </div>
+        <!-- /Header Currency -->
+        <!-- Header Account -->
+        <div class="header-link dropdown-link header-account" *ngIf="!userloggedIn">
+          <a>
+            <i class="icon icon-user"></i> &nbsp; LOGIN</a>
+          <div class="dropdown-container right">
+            <ross-login></ross-login>
+          </div>
+        </div>
+
+
+        <div class="header-link header-select dropdown-link header-currency user-header" *ngIf="userloggedIn">
+          <a class="text-capitalize userName">
+            <b>{{userDetails?.firstName}}</b>
+          </a>
+          <ul class="dropdown-container mobilecss">
+            <li>
+              <a class="anchor" routerLink="/placedOrders">Placed Orders</a>
+            </li>
+            <li>
+              <a class="anchor" routerLink="/myAccount">My Account</a>
+            </li>
+
+            <li>
+              <a class="anchor" routerLink="/myWishList">My Wishlist</a>
+            </li>
+            <li>
+              <a class="anchor pointer" routerLink="/changePassword">Change Password</a>
+            </li>
+            <li>
+              <a class="anchor pointer" (click)="showlogoutModal('logoutModal')">Log Out</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /Header Account -->
+      </div>
+      <!-- /Header Links -->
+    </div>
+  </div>
+  <!-- /Header Middle Row -->
+  <!-- Header Search -->
+  <div class="header-link header-search" style="display: none">
+    <div class="exp-search exp-search-open">
+      <form>
+        <input class="exp-search-input " placeholder="Search here ..." type="text" (input)="SearchProducts($event.target.value)">
+        <input class="exp-search-submit" type="submit" value="">
+        <span class="exp-icon-search">
+          <i class="icon icon-magnify"></i>
+        </span>
+        <span class="exp-search-close">
+          <i class="icon icon-close"></i>
+        </span>
+      </form>
+    </div>
+  </div>
+  <!-- /Header Search -->
+</div>
+<div class="menu-wrapper">
+  <div class="container">
+
+    <!-- Mega Menu -->
+    <div class="megamenu">
+      <ul class="nav">
+          <!-- <ng-template #recursiveList2 let-menu2> -->
+          <li class="simple-dropdown paddingLeft" *ngIf="newMenu&&newMenu.length>0">
+              <a class="anchor text-uppercase " routerLink="/products"><span class="textColorBlue">All Categories</span></a>
+              <div class="sub-menu">
+                <div class="container" *ngIf="newMenu&&newMenu.length">
+                  <div class="col-12 row" >
+                    <!-- {{item |json}} -->
+                    <div class="col-md-3 borderRight">
+                      <div *ngFor="let item of newMenu">
+                        <p>
+                            <a  class="pointer" *ngIf="item&&item.title&&item.tree=='Products'"   (mouseenter)="selectcategory(item)"   (click)="SearchProducts(item,'navCategory')">{{item?.title}}</a>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-md-5 subcatgy" *ngIf="selectedCategory">
+                        <div class="row col-12 mb-0">
+                            <span class="col-md-6 mb-0">
+                                <h4>{{selectedCategory?.title}}</h4>
+                            </span>
+                            <span class="col-md-6 mb-0">
+                                <a class="small pointer" (click)="SearchProducts(selectedCategory,'navCategory')" > <u>View All {{selectedCategory?.title}}</u>&nbsp;<i class="icon icon-angle-right"></i></a>
+                            </span>
+                             
+                          </div>
+                          <hr>
+                        <!-- <h4>{{selectedCategory?.title}}</h4>
+                        <hr> -->
+                      <h5> Most Popular</h5>
+                      <p  *ngFor="let catsub of selectedCategory.subpath">
+                        <a  class="pointer"   (click)="SearchProducts(catsub,'navCategory')" *ngIf="catsub&&catsub.count">{{catsub?.title}}</a>
+                      </p>
+                    </div>
+    
+                  </div>
+                </div>
+              </div>
+            </li>
+          <!-- </ng-template>
+         <ng-container *ngTemplateOutlet="recursiveList2; context:{ $implicit: menu2 }"></ng-container> -->
+
+        <ng-template #recursiveList let-topNewMenu>
+          <li *ngFor="let item of topNewMenu" class="mr-1 mega-dropdown">
+            <a  (click)="SearchProducts(item,'navCategory')" class="anchor text-uppercase changeanchorcolor" title="{{item?.title}}" *ngIf="item&&item.title">{{item?.title}}</a>
+           
+            <div class="sub-menu" *ngIf="item&&item.title&&item.subpath&&item.subpath.length> 0">
+              <div class="container">
+                <div class="megamenu-categories column-6">
+                  <!-- megamenu column -->
+                  <div class="col" *ngFor="let a of (item.subpath | Count) ">
+                    <a class="category-title pointer" (click)="SearchProducts(a,'navCategory')">
+                      <span>{{a.title}}</span>
+                    </a>
+                  </div>
+                  <!-- /megamenu column -->
+                </div>
+              </div>
+            </div>
+          </li>
+        </ng-template>
+        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: topNewMenu }"></ng-container>
+
+        <li class="simple-dropdown" *ngIf="menu&&menu.length>0">
+          <a class="anchor text-uppercase " (click)="SearchProducts('deals')" title="Deals"><span class="textColorRed">Deals</span></a>
+        </li>
+        <li class="simple-dropdown" *ngIf="menu&&menu.length>0">
+          <a class="anchor text-uppercase" style="color:#ccc" routerLink="/merchant" title="Sell">Sell</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal quick-view zoom" id="quickView">
+  <div class="modal-dialog">
+    <div class="modalLoader-wrapper">
+      <div class="modalLoader bg-striped"></div>
+    </div>
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">&#10006;</button>
+    </div>
+    <div class="modal-content">
+      <iframe></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Logout modal box -->
+<div id="logoutModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure want to logout ?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-alt mt-4" type="button" data-dismiss="modal">&nbsp;No&nbsp;</button>
+        <button class="btn btn-danger mb-1" (click)="logout()" type="submit">Yes</button>
+      </div>
+    </div>
+
+  </div>
+</div>

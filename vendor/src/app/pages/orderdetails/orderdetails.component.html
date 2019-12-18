@@ -1,0 +1,241 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Order Details & History</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" title="Back" onclick="window.history.back()">
+        <span class="fa fa-arrow-left"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <div class="card-body widget-body">
+
+    <div class="col bottom-30 typography">
+
+      <div class="row">
+        <div *ngIf="orderDetails?.invoiceNo" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Invoice No :</dt>
+          <dd class="col-sm-7 textfloat" title="{{orderDetails?.invoiceNo}}">{{orderDetails?.invoiceNo}} </dd>
+        </div>
+        <div *ngIf="orderDetails?.entityName" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Product :</dt>
+          <dd class="col-sm-7 textfloat" title="{{orderDetails?.entityName}}">{{orderDetails?.entityName}} </dd>
+        </div>
+
+        <div *ngIf="orderDetails?.category" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Category :</dt>
+          <dd class="col-sm-7 ">{{orderDetails?.category}} </dd>
+        </div>
+
+        <div *ngIf="orderDetails?.deliveryDate" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Delivery Date :</dt>
+          <dd class="col-sm-7 ">{{appService.getDisplayDateFormat(orderDetails?.deliveryDate,'MM/DD/YYYY hh:mm:ss a')}} </dd>
+        </div>
+
+        <div *ngIf="orderDetails?.deliveryDays" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Delivery Days :</dt>
+          <dd class="col-sm-7 "><span class="badge badge-pill badge-info"> {{orderDetails?.deliveryDays}}</span> </dd>
+        </div>
+
+        <div *ngIf="orderDetails?.shippingCharges" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Shipping Charges :</dt>
+          <dd class="col-sm-7 "> {{orderDetails?.shippingCharges}} </dd>
+        </div>
+
+        <div *ngIf="orderDetails?.totalPrice" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Total Price :</dt>
+          <dd class="col-sm-7 "> {{orderDetails?.totalPrice}} </dd>
+        </div>
+
+        <div *ngIf="orderDetails?.status" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Status :</dt>
+          <dd class="col-sm-7 textfloat">
+            <span *ngIf="orderDetails?.status" class="badge badge-{{appService.getStatusColor(orderDetails?.status) }}">
+                 {{ orderDetails?.status }}  </span>
+          </dd>
+        </div>
+
+
+        <div *ngIf="orderDetails?.quantity" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Quantity :</dt>
+          <dd class="col-sm-7 ">{{orderDetails?.quantity}} </dd>
+        </div>
+        <div *ngIf="orderDetails?.inventory?.Price" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Price :</dt>
+          <dd class="col-sm-7 ">{{orderDetails?.inventory?.Price}}</dd>
+        </div>
+
+
+
+        <div *ngIf="orderDetails?.inventory?.Size" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Size :</dt>
+          <dd class="col-sm-7 ">{{orderDetails?.inventory?.Size}} </dd>
+        </div>
+        <div *ngIf="orderDetails?.inventory?.Color" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Color :</dt>
+          <dd class="col-sm-7 ">{{orderDetails?.inventory?.Color}}</dd>
+        </div>
+
+        <div *ngIf="orderDetails?.created" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Created :</dt>
+          <dd class="col-sm-7 ">{{appService.getDisplayDateFormat(orderDetails?.created)}} </dd>
+        </div>
+
+        <div *ngIf="orderDetails?.userName" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Created By :</dt>
+          <dd class="col-sm-7 ">{{orderDetails?.userName}}</dd>
+        </div>
+
+        <div *ngIf="orderDetails?.ownerName" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Sold By :</dt>
+          <dd class="col-sm-7 ">{{orderDetails?.ownerName}}</dd>
+        </div>
+      </div>
+
+      <div *ngIf="orderDetails?.inventory" class="row">
+        <div class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Inventory :</dt>
+          <dd class="col-sm-7 ">
+            <table>
+              <tr>
+                <th class="textfloat" title="{{key}}" *ngFor="let key of objectKeys(orderDetails?.inventory)">{{key}}</th>
+              </tr>
+              <tr>
+                <td class="textfloat" title="{{orderDetails?.inventory[key]}}" *ngFor="let key of objectKeys(orderDetails?.inventory)"> {{orderDetails?.inventory[key]}} </td>
+              </tr>
+            </table>
+          </dd>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+
+        <div *ngIf="orderDetails?.shipmentAddress" class="col-lg-4 col-md-6 col-sm-12 bottom-30 ">
+          <div class="card h-100">
+            <div class="card-header">
+              <b>  Ship To </b>
+            </div>
+            <div class="card-body">
+              <div>
+                <label>
+              <b>Name:&nbsp; {{orderDetails?.shipmentAddress.name}}</b>
+            </label>
+              </div>
+              <div>
+                <label>Street:&nbsp; {{orderDetails?.shipmentAddress.street}} </label>
+              </div>
+              <div>
+                <label>Adress:&nbsp; {{orderDetails?.shipmentAddress.city}},{{orderDetails?.shipmentAddress.state}},{{orderDetails?.shipmentAddress.zip}}</label>
+              </div>
+              <div>
+                <label>Country:&nbsp; {{orderDetails?.shipmentAddress.country}} {{orderDetails?.shipmentAddress.countryCode}} </label>
+              </div>
+              <div>
+                <label>Phone:&nbsp; {{orderDetails?.shipmentAddress.phone}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="orderDetails?.shippingFrom" class="col-lg-4 col-md-6 col-sm-12 bottom-30 ">
+          <div class="card h-100">
+            <div class="card-header">
+              <b>  Ship From </b>
+            </div>
+            <div class="card-body">
+              <div>
+                <label>
+              <b>Name:&nbsp; {{orderDetails?.shippingFrom.name}}</b>
+            </label>
+              </div>
+              <div>
+                <label>Street:&nbsp; {{orderDetails?.shippingFrom.street}} </label>
+              </div>
+              <div>
+                <label>Address:&nbsp; {{orderDetails?.shippingFrom.city}},{{orderDetails?.shippingFrom.state}},{{orderDetails?.shippingFrom.zip}}</label>
+              </div>
+              <div>
+                <label>Country:&nbsp;{{orderDetails?.shippingFrom.country}} {{orderDetails?.shippingFrom.countryCode}} </label>
+              </div>
+              <div>
+                <label>Phone: &nbsp;{{orderDetails?.shippingFrom.phone}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="orderDetails?.shippingRateDetails" class="col-lg-4 col-md-6 col-sm-12 bottom-30 ">
+          <div class="card h-100">
+            <div class="card-header">
+              <b>  Shipping Rates </b>
+            </div>
+            <div class="card-body">
+              <div>
+                <label>
+              <b> Delivered on:&nbsp; {{appService.getDisplayDateFormat(orderDetails?.shippingRateDetails.estimatedDeliveryOn)}}</b>
+            </label>
+              </div>
+              <div>
+                <label>Amount:&nbsp; {{orderDetails?.shippingRateDetails.shippingAmount}} </label>
+              </div>
+              <div>
+                <label>Courier Name:&nbsp; {{orderDetails?.shippingRateDetails.carrierName}}</label>
+              </div>
+              <div>
+                <label>Service Type:&nbsp; {{orderDetails?.shippingRateDetails.serviceType}}  </label>
+              </div>
+              <div>
+                <label>Delivered  in:&nbsp; {{orderDetails?.shippingRateDetails.expectedDeliviryDays}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+    <!--For Showing Details Of Order-->
+
+    <!--Ptable For Showing History Of order-->
+
+    <p-table [value]="orderHistory" [lazy]="true" (onLazyLoad)="getOrderHistory($event)" [paginator]="true" [rows]="appService.rowNum"
+      [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [responsive]="true" [resizableColumns]="true"
+      columnResizeMode="expand" *ngIf="showOrderHistoryTable">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSno">S.No</th>
+          <th>Context</th>
+          <th>ContextType</th>
+          <th>Desc</th>
+          <th>Created</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td>{{order.srNo}} </td>
+          <td>{{order.context}}</td>
+          <td>{{order.contextType}}</td>
+          <td>{{order.desc}}</td>
+          <td>{{order.created}}</td>
+        </tr>
+      </ng-template>
+      </p-table>
+
+      <!--Ptable For Showing History Of order-->
+
+  </div>
+
+</div>

@@ -1,0 +1,307 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header">
+    <span class="card-heading text-uppercase">products</span>
+
+    <div class="widget-controls">
+      <!-- <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="onClickAction('add')">
+        Add New product
+      </button> -->
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/addnewproduct">
+        Add Product
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllProducts()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Form header content end -->
+
+  <!-- Global filter content start-->
+  <div class="card-body widget-body">
+    <div class="row">
+
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Name/Category" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table body content start -->
+    <p-table #dt [value]="products" (onLazyLoad)="getAllProducts($event)" [columns]="columns" exportFilename="Products" class="overflowvisible"
+      [responsive]="true" [resizableColumns]="true" [lazy]="true" [paginator]="true" [rows]="appService.rowNum" [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="appService.rowValue">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:50px">S.No</th>
+
+          <th pResizableColumn style="width:120px">Name
+            <span [pSortableColumn]="'name'">
+              <p-sortIcon [field]="'name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'name','startsWith')" placeholder="Search">
+          </th>
+
+          <th pResizableColumn style="width:120px">Short Desc
+            <span [pSortableColumn]="'shortDesc'">
+              <p-sortIcon [field]="'shortDesc'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'shortDesc','startsWith')" placeholder="Search">
+          </th>
+
+          <th pResizableColumn style="width:120px">Categories
+            <span [pSortableColumn]="'multipleCategories'">
+              <p-sortIcon [field]="'multipleCategories'"></p-sortIcon>
+            </span>
+          </th>
+
+          <th pResizableColumn style="width:100px">Available
+            <span [pSortableColumn]="'totalAvailable'">
+              <p-sortIcon [field]="totalAvailable"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'totalAvailable','equals')" placeholder=" Search">
+          </th>
+
+          <th pResizableColumn style="width:110px">Created On
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'created','equals')" placeholder="MM/DD/YYYY">
+          </th>
+
+          <th pResizableColumn style="width:120px">Visible Date
+            <span [pSortableColumn]="'visibleDate'">
+              <p-sortIcon [field]="'visibleDate'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'visibleDate','equals')" placeholder="MM/DD/YYYY">
+          </th>
+
+          <th pResizableColumn style="width:120px">Expiry Date
+            <span [pSortableColumn]="'expiryDate'">
+              <p-sortIcon [field]="'expiryDate'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'expiryDate','equals')" placeholder="MM/DD/YYYY">
+          </th>
+
+          <th pResizableColumn style="width:100px">Reviews
+            <span [pSortableColumn]="'reviewsCount'">
+              <p-sortIcon></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'reviewsCount','startsWith')" placeholder=" Search">
+          </th>
+
+
+          <th pResizableColumn style="width:100px">Merchant
+            <span [pSortableColumn]="'createdBy'">
+              <p-sortIcon></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'ownerName','startsWith')" placeholder=" Search">
+          </th>
+          <th pResizableColumn style="width:90px">Status
+              <span [pSortableColumn]="'status'">
+                <p-sortIcon [field]="'status'"></p-sortIcon>
+              </span>
+              <p-dropdown appendTo="body" [options]="productStatus" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'status', 'equals')"></p-dropdown>
+            </th>
+          <th pResizableColumn style="width:100px">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{product?.srNo}}</td>
+          <!--<td class='linkColor' (click)="onClickAction('view' , product)">{{product?.name}}</td>-->
+          <td><a routerLink="/productdetails" [queryParams]="{id:product?._id}">{{product?.name}}</a> </td>
+          <td>{{product?.shortDesc}}</td>
+          <td class="text-left" title="{{product?.multipleCategories}}" >
+            {{product?.multipleCategories}}
+          </td>
+          <td>
+            <span class="badge badge-pill badge-secondary">{{product?.totalAvailable}}</span>
+          </td>
+
+          <td>{{appService.getDisplayDateFormat(product?.created)}}</td>
+          <td>{{appService.getDisplayDateFormat(product?.visibleDate)}}</td>
+          <td>{{appService.getDisplayDateFormat(product?.expiryDate)}}</td>
+          <td>
+            <span class="badge badge-pill badge-info" [ngClass]="{'pointer':product?.reviewsCount}" [routerLink]="product?.reviewsCount ? '/reports/reviews' : null"
+              [queryParams]="product?.reviewsCount ? {id:product?._id,type: 'entity'} : null">{{product?.reviewsCount}}</span>
+          </td>
+
+          <td>
+            <a routerLink="/details/Merchant" [queryParams]="{id:product?.ownerId}" >{{product?.ownerName}}</a>
+          </td>
+
+
+          <td>
+              <span *ngIf="product?.status" class="badge badge-{{ appService.getStatusColor(product?.status) }}"> {{product?.status }} </span>
+            </td>
+          <td class="text-right">
+              <span *ngIf="product.status&&(product.status=='Pending'||product.status=='Blocked')"class="mr-1 badge badge-success pointer cursor" title="Approve" (click)="onClickAction('Approve',product)">
+                  <i class="fa fa-check"></i>
+                </span>
+                <span *ngIf="product.status&&(product.status=='Active')"class="mr-1 badge badge-danger pointer cursor" title="Block" (click)="onClickAction('Block',product)">
+                    <i class="fa fa-ban"></i>
+                  </span>
+            <span class="badge badge-primary cursor mr-1" routerLink="/copyproduct/{{product._id}}" data-toggle="tooltip" title="Copy Product">
+              <i class=" fa fa-copy"></i>
+            </span>
+
+            <span routerLink="/editproduct/{{product._id}}" class="badge badge-primary cursor mr-1" data-toggle="tooltip" title="Edit">
+              <i class=" fa fa-edit"></i>
+            </span>
+            <span (click)="onClickAction( 'delete' , product)" class="badge badge-danger cursor" data-toggle="tooltip" title="Delete">
+              <i class=" fa fa-trash-o"></i>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>       
+    </p-table>
+  </div>
+</div>
+<!-- Table body content end -->
+
+
+
+
+
+<!-- Delete modal-box content start -->
+<!-- The Modal -->
+<div class="modal fade" id="deleteProduct">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteProduct()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete modal-box content end -->
+
+
+<!--Activate Block reject Modal  -->
+<div class="modal fade" id="BlockOrActivateProduct">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title text_center">Are you sure to {{type}} the Product?</div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer text_center border_top">
+          <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="blockOrActivateProduct(accessStatus)">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Activate Block reject Modal End-->
+
+<!-- View modal box content start -->
+<!-- The Modal -->
+<div class="modal" id="viewProduct" role="dialog">
+  <div class="modal-dialog modal-lg  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title text-color">
+          <span class="text">Product Details</span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body" slim-scroll [slimScrollOptions]="{height: 450}" *ngIf="productData">
+        <div class="col bottom-30">
+
+          <div *ngIf="productData.name" class="row">
+            <dt class="col-sm-3  text-right">Name&nbsp;:</dt>
+            <dd class="col-sm-9">{{productData.name}}</dd>
+          </div>
+          <div *ngIf="productData.shortDesc" class="row">
+            <dt class="col-sm-3  text-right">Short Description&nbsp;:</dt>
+            <dd class="col-sm-9">{{productData?.shortDesc}}</dd>
+          </div>
+
+          <div *ngIf="productData.longDesc" class="row">
+            <dt class="col-sm-3  text-right">Description&nbsp;:</dt>
+            <dd class="col-sm-9">
+              <p [innerHTML]="productData?.longDesc"></p>
+            </dd>
+          </div>
+          <div *ngIf="productData.visibleDate" class="row">
+            <dt class="col-sm-3  text-right">Visible Date&nbsp;:</dt>
+            <dd class="col-sm-9">{{appService.getDisplayDateFormat(productData?.visibleDate)}}</dd>
+          </div>
+          <div *ngIf="productData.expiryDate" class="row">
+            <dt class="col-sm-3  text-right">Expiry Date&nbsp;:</dt>
+            <dd class="col-sm-9">{{appService.getDisplayDateFormat(productData?.expiryDate)}}</dd>
+          </div>
+          <div *ngIf="productData.multipleCategories" class="row">
+            <dt class="col-sm-3  text-right">Categories&nbsp;:</dt>
+            <dd class="col-sm-9">
+              <li *ngFor="let category of productData?.multipleCategories" class="list"> {{ category }} </li>
+            </dd>
+          </div>
+          <div class="row">
+            <dt class="col-sm-3  text-right">Images &nbsp;:</dt>
+          </div>
+           <div *ngFor="let image of productData.images;let i=index" class="row"> 
+            <div class="col-sm-3  text-right">{{ image.Color }} &nbsp;:</div>
+            <div class="col-sm-9 row">
+              <div *ngFor="let img of image.images" class="col-sm-3">
+                <img class="img-fluid logo-height mt-2" style="height: 120px;width: 150px" src={{imagesPath}}{{img}}>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="productData&&productData.inventories">
+            <dt class="col-sm-3  text-right">Inventories&nbsp;:</dt>
+            <dd class="col-sm-9">
+              <table>
+                <tr>
+                  <th *ngFor="let key of objectKeys(productData.inventories[0])">{{key}}</th>
+                </tr>
+                <tr *ngFor="let inventory of productData.inventories;let i=index">
+                  <td *ngFor="let key of objectKeys(inventory);let j=index"> {{inventory[key]}} </td>
+                </tr>
+              </table>
+            </dd>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View modal box content end -->

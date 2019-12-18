@@ -1,0 +1,112 @@
+<table width="640" cellspacing="0" style="font:12px/16px Arial,sans-serif;color:#333;background-color:#fff;margin:0 auto"
+  cellpadding="0">
+  <tbody>
+    <tr>
+      <td valign="top" style="padding:14px 0px 10px 20px;width:100px;border-collapse:collapse">
+        <a href="<%=templateInfo.clientUrl%>">
+          <img width="150" id="_x0000_i1025" src="<%=templateInfo.clientLogo%>"></img>
+        </a>
+      </td>
+      <td style="text-align:right;padding:0px 20px">
+        <table cellspacing="0" style="font:12px/16px Arial,sans-serif;color:#333;margin:0 auto;border-collapse:collapse" cellpadding="0">
+          <tbody>
+            <tr>
+              <td style="border-bottom:1px solid rgb(204,204,204);width:490px;padding:0px 0px 5px 0px" class="m_6314164500247846866topHeaderLinks">
+                <table align="right" style="border-collapse:collapse" cellspacing="0">
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:right;padding:7px 0px 0px 20px;width:490px">
+                <span style="font:20px Arial,san-serif">Order Confirmation</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:right;padding:0px 0px 5px 20px;width:490px">
+                <span style="font-size:12px"> Order #<%=templateInfo.invoiceNo%>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width:640px">
+        <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello <%=templateInfo.name%>,</p>
+        <p style="margin:4px 20px 18px 20px;width:640px"> Your Product has been order by <%=templateInfo.userName%> and shipmemt details are given below. If you would like
+          to view about order or make any changes to it, please visit
+          <a href="https://vendor.buxsuperstore.com">BuxSuperStore </a> on renkomarket.com. </p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width:640px">
+        <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Shipping Details</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:0 20px;width:640px">
+        <table cellspacing="0" style="border-top:3px solid #2d3741;width:640px" cellpadding="0">
+          <tbody>
+
+            <tr>
+
+              <td valign="top" style="font:14px Arial,san-serif;padding:11px 18px 14px 18px;width:280px;background-color:#efefef">
+                <span style="color:#666">Your package was sent to:</span>
+                <br>
+                <p style="margin:2px 0">
+                  <strong> <%=templateInfo.shipping.name%>
+                    <br> <%=templateInfo.shipping.phone%>
+                    <br> <%=templateInfo.shipping.street%>
+                    <br><%=templateInfo.shipping.city%>
+                    <br> <%=templateInfo.shipping.state%>, <%=templateInfo.shipping.zip%>
+
+                    <br> <%=templateInfo.shipping.country%> </strong>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="width:640px;">
+        <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0">
+          Order Details </p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:16px 40px;width:640px" id="m_6314164500247846866shipmentDetails">
+        <table width="565" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td align="center" valign="top" style="width:150px;height:115px">
+                <img src="<%=templateInfo.image%>" style="margin:0 0 14px 0" class="CToWUd">
+              </td>
+              <td valign="top" style="color:#666;padding:10px 10px 0 10px;width:330px;height:115px">
+                <%=templateInfo.orderName%>
+              </td>
+              <td align="right" valign="top" style="font:14px Arial,san-serif;padding:10px 0 0 0;width:85px;height:115px">
+                <strong>qty:<%=templateInfo.quantity%></strong>
+              </td>
+              <td align="right" valign="top" style="font:14px Arial,san-serif;padding:10px 0 0 0;width:85px;height:115px">
+                <strong>Rs.<%=templateInfo.amount%></strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:0 20px;line-height:22px;width:640px">
+        <p style="text-align:center;border-top:1px solid #ccc;padding:20px 0 0 0">
+          © 2018 <%=templateInfo.websiteName%>, LLC. All rights reserved.
+          <a href="<%=templateInfo.clientUrl%>" style="color:#006699;text-decoration:none" target="_blank">Customer Service</a>. </p>
+      </td>
+    </tr>
+
+  </tbody>
+</table>

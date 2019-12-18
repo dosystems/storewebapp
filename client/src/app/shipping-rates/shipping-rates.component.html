@@ -1,0 +1,71 @@
+
+<div class="row mt-3 mb-3" *ngIf="orders&&orders.length>0">
+  <div class="col-12">
+    <h3>Choose your delivery options</h3>
+    <div class="card card-body mb-3" *ngFor="let order of orders;let j=index">
+      <div class="row" *ngIf="order&&order.deliveryOptions">
+        <div class="col-12 col-md-6">
+          <h3> Shipment {{j+1}} of {{orders.length}}</h3>
+          <span *ngIf="order&&order.shipmentAddress">
+            Delivery To: {{order?.shipmentAddress?.name}},{{order?.shipmentAddress?.street}},{{order?.shipmentAddress?.city}}, {{order?.shipmentAddress?.state}},
+            {{order?.shipmentAddress?.zip}},{{order?.shipmentAddress?.country}}
+          </span>
+          <br>
+          <p>
+            <b> {{order?.entityName}} </b>
+          </p>
+
+          <p *ngIf="order&&order.currencies&&order.currencies.length>0">
+            <span *ngFor="let c of order.currencies | currencyConvertor : appService?.selectedCurrency?.name">
+              {{appService?.selectedCurrency?.symbol}}{{ appService.decimalValues(c[appService.selectedCurrency.name])}}
+            </span>
+          </p>
+          <p>
+            <span *ngFor="let c of order.currencies | currencyConvertor : appService?.buxCurrency" title="{{c[appService.buxCurrency]}}">
+                <img class="bitcoinSmall" src="assets/images/bitcoinblack.png" /> {{ appService.decimalValues(c[appService.buxCurrency])}}
+            </span>
+          </p>
+          <p *ngIf="order&&(order.currencies&&order.currencies.length==0)">
+            {{appService?.defaultCurrency?.symbol}}{{order?.inventory?.Price}}
+          </p>
+
+          <p> Quantity:{{order?.quantity}}</p>
+          <span *ngIf="order.ownerName">Sold by: {{order?.ownerName}}</span>
+        </div>
+        <div class="col-12 col-md-6">
+          <h3>Choose a delivery speed</h3>
+          <p  id="{{j}}" *ngFor="let deliverOption of order?.deliveryOptions;let i=index">
+            <label class="radio" *ngIf="i<5">
+              <input id="radioDelivery_{{j}}" [checked]="i==0" (change)="selectDeliveryOption(deliverOption,j)" type="radio" name="radioDelivery_{{j}}"
+                value="none">
+              <span class="outer">
+                <span class="inner"></span>
+              </span>
+              <p  class="mb-0 text-success">
+                <span *ngIf="deliverOption.expectedDeliviryDays">{{deliverOption?.expectedDeliviryDays}} business days,</span>
+                <span *ngIf="deliverOption.estimatedDelivery"> Estimated delivery on : {{deliverOption?.estimatedDelivery}}</span>
+               
+              </p>
+              <p class="ml-5 shippingtext">
+                  ${{deliverOption?.shippingAmount}} -
+                  <span>{{deliverOption?.serviceType}}</span>
+                &nbsp;Shipping
+              </p>
+            </label>
+          </p>
+        </div>
+        <hr>
+      </div>
+      <div class="col-12" *ngIf="!order.deliveryOptions">
+        <h4> Loading ...</h4>
+        <p class="text-danger">{{order?.message}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-alt pull-right" (click)="continueToPayment()">
+      <span>Continue</span>
+    </button>
+  </div>
+
+</div>

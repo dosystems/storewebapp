@@ -1,0 +1,12 @@
+.textOverflow{
+    display:inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.buttonPadding {
+    padding: 0px 14px 0px 15px;
+}
+
+ 

@@ -1,0 +1,125 @@
+<div class="block">
+  <div class="container mt-3">
+    <h2>Where should we deliver your order?</h2>
+    <!-- Address list start -->
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <label *ngIf="previousAddresses && previousAddresses.length > 0">Addresses you used before ,If so, click the corresponding "Deliver to this address" button. Or you can enter a new
+          shipping address.
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-5" *ngFor="let address of previousAddresses;let i = index">
+
+        <div class="card card-body">
+          <div>
+            <label>
+              <b>{{address.name}}</b>
+            </label>
+          </div>
+          <div>
+            <label>{{address.street}} </label>
+          </div>
+          <div>
+            <label>{{address.city}} {{address.state}} {{address.zip}}</label>
+          </div>
+          <div>
+            <label>{{address.country}} </label>
+          </div>
+          <div>
+            <label>Phone: {{address.phone}}</label>
+          </div>
+          <div>
+            <button class="btn btn-sm mt-2" (click)="changeDeliverAddress(address)">Deliver to this address</button>
+          </div>
+          <div class="mt-4">
+            <button class="btn btn-alt btn-sm mr-3" (click)="onSelectOptions(address,'Edit')">
+              <span class="buttonPadding">Edit</span>
+            </button>
+            <button class="btn btn-alt btn-sm" (click)="onSelectOptions(address,'Delete')">
+              <span class="buttonPadding">Delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- address list end -->
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <!-- <h2>Billing Details</h2> -->
+        <h2>Add a new address</h2>
+        <form class="white" action="#">
+          <label>Full Name
+            <span class="required">*</span>
+          </label>
+          <input [maxlength]="100" [formControl]="form.controls['name']" [(ngModel)]='addressDetails.name' type="text" class="form-control">
+          <span class="help-block text-danger" *ngIf="submitted && form.get('name') && form.get('name').invalid">Name is required</span>
+
+          <label>Address
+            <span class="required">*</span>
+          </label>
+          <input [maxlength]="100" [formControl]="form.controls['street']" [(ngModel)]='addressDetails.street' type="text" class="form-control"
+            placeholder="Street address, P.O. box, company name, c/o ">
+          <span class="help-block text-danger" *ngIf="submitted && form.get('street') && form.get('street').invalid">Street is required</span>
+
+          <!-- <label>Address 2</label>
+          <input type="text" [maxlength]="100" [formControl]="form.controls['address2']" [(ngModel)]='address2' class="form-control"
+            placeholder="Apartment, suite, unit, building, floor, etc. ">
+          <span class="help-block text-danger" *ngIf="form.get('address1').touched && form.get('address1').hasError('required')">This field is required</span> -->
+
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <label>City
+                <span class="required">*</span>
+              </label>
+              <input [maxlength]="100" [formControl]="form.controls['city']" [(ngModel)]='addressDetails.city' type="text" class="form-control">
+              <span class="help-block text-danger" *ngIf="submitted && form.get('city') && form.get('city').invalid">City is required</span>
+
+            </div>
+            <div class="col-12 col-sm-6">
+              <label>State/Province
+                <span class="required">*</span>
+              </label>
+              <input [maxlength]="100" [formControl]="form.controls['state']" [(ngModel)]='addressDetails.state' type="text" class="form-control">
+              <span class="help-block text-danger" *ngIf="submitted && form.get('state') && form.get('state').invalid">State is required</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <label>Country
+                <span class="required">*</span>
+              </label>
+              <p-autoComplete [(ngModel)]="addressDetails.country"  [ngModelOptions]="{standalone: true}" name="name" (completeMethod)="getAllCountries($event)"
+            [suggestions]="countries" field="name" [size]="15" placeholder="Search country" class="pautocomplete"
+            [minLength]="2"  autocomplete="off">
+        </p-autoComplete>
+              <!-- <input [maxlength]="100" [formControl]="form.controls['country']" [(ngModel)]='addressDetails.country' type="text" class="form-control"> -->
+              <span class="help-block text-danger" *ngIf="submitted&&(!this.addressDetails.country)">Country is required</span>
+              <span class="help-block text-danger" *ngIf="countryValidation">Please Select Valid Country</span>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label>Postcode / Zip
+                <span class="required">*</span>
+              </label>
+              <input [maxlength]="20"  minlength="5" [formControl]="form.controls['zip']" [(ngModel)]='addressDetails.zip' type="text" class="form-control">
+              <span class="help-block text-danger" *ngIf="submitted && form.get('zip') && form.get('zip').invalid">Postcode / Zip is required</span>
+              <span class="help-block text-danger" *ngIf="form.get('zip') && form.get('zip'). hasError('minlength')">Minimum 5 characters is required</span>
+             
+            </div>
+          </div>
+          <label>Phone Number
+            <span class="required">*</span>
+          </label>
+          <input [maxlength]="15" minlength="10" [formControl]="form.controls['phone']" [(ngModel)]='addressDetails.phone' type="text"
+            class="form-control" (keypress)="appService.Validate($event,'int')">
+          <span class="help-block text-danger" *ngIf="submitted && form.get('phone') && form.get('phone').invalid">Phone Number is required</span>
+          <div>
+            <button class="btn btn-alt" (click)="addOrUpdateShipmentAddress(form)">Deliver to this address</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>

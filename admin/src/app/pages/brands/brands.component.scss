@@ -1,0 +1,34 @@
+
+.setting{
+    height:50px;
+    width:60px;
+}
+.sizeWidth{
+    width:100px;
+}
+.img-upload-btn{
+    position: absolute;
+    padding: 0;
+    width: calc(100% - 30px);
+    height: 38px;
+    opacity: 0;
+    background-color: dodgerblue;
+}
+
+.image-wrapper{
+    position: relative;
+    .delete-img{
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        border: 2px solid #fff;
+        color: #fff;
+        padding: 3px 5px;
+        border-radius: 50%;
+        visibility: hidden;
+        cursor: pointer;
+    }
+    &:hover .delete-img{
+        visibility: visible;
+    }
+}

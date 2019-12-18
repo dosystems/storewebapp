@@ -1,0 +1,214 @@
+@import "../theme/styles/variables";
+@import "../theme/styles/mixins";
+
+body::before{
+    content: '';
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    //@include theme-bg($body-bg-gradient-color-1, $body-bg-gradient-color-2);
+    background: $body-bg-color; // #5b6e8a;      
+    z-index: -1;
+}
+
+.main-wrapper{ 
+    margin-left: $sidebar-width;
+    padding: 15px 15px 60px;
+    margin-top: $navbar-height;
+    position: relative;
+    flex: 1;
+    // min-height: calc(100vh - 70px);
+    overflow: hidden;
+    &.menu-collapsed{ 
+        margin-left: 50px;
+    }
+}
+
+.main{
+    height: 100%;
+   // min-height: 500px;
+    min-height: calc(100vh - 160px);   
+}
+
+
+.footer{
+    padding-top: 20px;
+    padding-bottom: 10px;
+    .footer-main{
+        display: inline-block;
+        .copyright{
+            color: $text-color;
+            font-size: 14px;
+            a{
+                color: $main-color;
+            }
+        }
+        .share{
+            padding-left: 5px;
+            margin: 0;
+            li{
+                list-style: none;
+                float: left;
+                margin-left: 10px;
+                i{
+                    cursor: pointer;
+                    transition: all 0.1s ease;
+                    color: white;
+                    padding: 9px 9px 6px 9px;
+                    font-size: 12px;
+                    border-radius: 50%;
+                    background-color: $main-color;
+                    &.socicon-facebook{
+                        background-color: $facebook-color;
+                    }
+                    &.socicon-twitter{
+                        background-color: $twitter-color;
+                    }
+                    &.socicon-instagram{
+                        background-color: $instagram-color;
+                    }
+                    &.socicon-pinterest{
+                        background-color: $pinterest-color;
+                    }
+                    &:hover{                         
+                        opacity: 0.9;     
+                    }
+                }
+            }
+        }
+    }
+    .created{
+        color: $text-color;
+        font-size: 14px;
+        i{
+            color: red; 
+        }
+    }   
+}
+
+.az-overlay{
+    position: fixed;
+    top:0;left:0;bottom: 0; right: 0;
+    z-index: 8;
+    background: rgba($main-color, 0.2);
+    width: 100%;
+    height: 100%; 
+    display: none;   
+}
+
+
+@media (max-width: 544px) { 
+    .main-wrapper, .main-wrapper.menu-collapsed{
+        margin-left: 0;
+        padding: 30px 20px 70px;
+    } 
+    .main{
+        min-height: calc(100vh - 240px);   
+    }
+    .az-overlay{
+        display: block;
+    }
+    .footer .footer-main, .footer .created{
+        float: none;
+    }
+}
+
+@media (min-width: 544px) and (max-width: 768px) { 
+    .main-wrapper, .main-wrapper.menu-collapsed{
+       margin-left: 50px;
+    } 
+    .az-overlay{
+        display: block;
+    }
+} 
+
+
+
+.ui-table-resizable .ui-table-thead>tr>th{
+    font-weight: 400 !important;
+}
+
+.ui-table .ui-table-tbody > tr > td {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.overflowvisible{
+    background-color: #fff;
+    overflow: visible;
+    
+}
+
+.widthSNo{
+    width:50px;
+    text-align: center;
+}
+.ui-autocomplete-input-token {
+    display: flex;
+    padding: 7px !important;
+}
+.ui-table.ui-widget input {
+    width:100%;
+    padding-left: 5px;
+    border-radius: 5px;
+    border: none;
+}
+.linkColor{
+    color:dodgerblue!important;
+    cursor: pointer;
+}
+
+.width_50px{
+    width:50px;
+}
+.width_90px{
+    width:90px;
+}
+.width_80px {
+    width:80px;
+}
+.width_70px{
+    width:70px;
+}
+
+.width_100px{
+    width: 100px;
+}
+
+.width_140px{
+    width: 140px;
+}
+.width_160px{
+    width: 160px;
+}
+.width_110px{
+    width: 110px;
+}
+.width_120px {
+    width:120px;
+}
+
+
+.statusWidth{
+    width:80px;
+    text-align: center;
+}
+
+.inputPad{
+    padding-left: 3px;
+    border-radius: 5px;
+    border: none;
+}
+
+.sno_size{
+    width:50px;
+    text-align: center;
+}
+
+.pointer {
+    cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
+}

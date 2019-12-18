@@ -1,0 +1,194 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span  class="card-heading text-uppercase">Customers</span>
+    <!--Widget Controls-->
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getBuyersList()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+    <!-- Global Filter-->
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+
+    <!-- P-Table -->
+    <p-table #dt class="overflowvisible" [value]="totalBuyersList" [columns]="exportCsv" exportFilename='Customers' [lazy]="true" (onLazyLoad)="getBuyersList($event)" [paginator]="true"
+      [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [responsive]="true"
+      [resizableColumns]="true" >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSno">S.No</th>
+          <th pResizableColumn>FirstName
+            <span [pSortableColumn]="'firstName'">
+              <p-sortIcon [field]="'firstName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'firstName',startsWith)" placeholder="Search">
+          </th>
+          <th pResizableColumn>LastName
+            <span [pSortableColumn]="'lastName'">
+              <p-sortIcon [field]="'lastName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'lastName',startsWith)" placeholder="Search">
+          </th>
+          <th pResizableColumn>Email
+            <span [pSortableColumn]="'email'">
+              <p-sortIcon [field]="'email'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'email',startsWith)" placeholder="Search">
+          </th>
+          <th pResizableColumn class="phoneNumWidth" >Phone
+            <span [pSortableColumn]="'phone'">
+              <p-sortIcon [field]="'phone'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'phone',startsWith)" placeholder="Search">
+          </th>
+
+        <!--<th pResizableColumn class="adjust text-center">Actions</th>-->
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{user.srNo}}</td>
+          <td > <a  routerLink="/details/Customer" [queryParams]="{id:user?._id}">{{user.firstName}}</a></td>
+          <td>{{user.lastName}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.phoneNumber}}</td>
+
+          <!--<td class="text-center">
+            <span class="badge badge-primary pointer cursor" title="Edit" (click)="onClickActions('edit',user)">
+              <i class="fa fa-edit"></i>
+            </span>&nbsp;
+            <span class="badge badge-danger pointer cursor" title="Delete" (click)="onClickActions('delete',user)">
+              <i class="fa fa-trash"></i>
+            </span>
+          </td>-->
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+            <td colspan="6">
+                No records found
+            </td>
+        </tr>
+    </ng-template>
+      </p-table>
+      <!--End Of Ptable-->
+
+
+  </div>
+
+</div>
+
+
+<!--Delete Modal for Deleting -->
+<div class="modal fade" id="deleteBuyer">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteBuyer()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal End-->
+
+<!--Edit MOdal For Editing Buyer-->
+
+<div class="modal fade" id="editBuyer" role="dialog">
+  <div class="modal-dialog modal-md modal-dialog-centered margi_top_90">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+        <div class="col-sm-12 ">
+          <!-- <ng-template> -->
+            <h5>Edit Customer</h5>
+          <!-- </ng-template> -->
+        </div>
+      </div>
+      <div class="modal-body padding">
+        <form [formGroup]="buyerForm" novalidate>
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right">FirstName</label>
+            <div class="col-sm-9">
+              <input [ngClass]="{active:submitted && buyerForm.controls['firstName'].invalid }" [maxlength]="20" [formControl]="buyerForm.controls['firstName']"
+                class="form-control" type="text" name="Name" [(ngModel)]="buyerData.firstName">
+                <span class="help-block text-danger" *ngIf="buyerForm.get('firstName').touched && buyerForm.get('firstName').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right"> LastName</label>
+            <div class="col-sm-9">
+              <input [maxlength]="20" [ngClass]="{active:submitted && buyerForm.controls['lastName'].invalid }" [formControl]="buyerForm.controls['lastName']"
+                class="form-control" type="text" name="Name" [(ngModel)]="buyerData.lastName">
+                <span class="help-block text-danger" *ngIf="buyerForm.get('lastName').touched && buyerForm.get('lastName').invalid"> Maximum of 20 characters</span>
+            </div>
+          </div>
+
+           <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5  text-right" for="email">Email</label>
+            <div class="col-sm-9">
+              <input type="text" [ngClass]="{active:submitted && buyerForm.controls['email'].invalid}" [formControl]="buyerForm.controls['email']"
+                class="form-control" [(ngModel)]="buyerData.email">
+              <span class="help-block text-danger" *ngIf="buyerForm.get('email').touched && buyerForm.get('email').invalid">Enter valid email</span>
+            </div>
+          </div>         
+
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right"> Phone</label>
+            <div class="col-sm-9">
+              <input [maxlength]="15" [minlength]="10" [ngClass]="{active:submitted && buyerForm.controls['phoneNumber'].invalid}" [formControl]="buyerForm.controls['phoneNumber']"
+                [(ngModel)]="buyerData.phoneNumber" type="text" class="form-control" (keypress)="appService.Validate($event,'int')">
+                <span class="help-block text-danger" *ngIf="buyerForm.get('phoneNumber').touched && buyerForm.get('phoneNumber').invalid">Minimum of 10 Numbers</span>
+            </div>
+          </div>
+
+        </form>
+        <div class="form-group row text-right">
+          <div class="col-sm-12" role="group" aria-label="Second group">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="UpdateBuyer(buyerData)">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit MOdal For Editing Buyer-->

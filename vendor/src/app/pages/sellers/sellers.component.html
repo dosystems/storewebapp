@@ -1,0 +1,241 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Merchants</span>
+  <!--Widget Controls-->
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getSellersList()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+   <!-- Global Filter-->
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+ 
+    <!-- P-Table -->
+    <p-table #dt class="overflowvisible" [value]="sellersList"  [lazy]="true" (onLazyLoad)="getSellersList($event)"
+      [paginator]="true" [rows]="appService.rowNum"  [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+      [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSno" >S.No</th>
+          <th pResizableColumn   >Name
+            <span  [pSortableColumn]="'userName'">
+              <p-sortIcon [field]="'userName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'userName',startsWith)" placeholder="Search">
+          </th>          
+           <th pResizableColumn   >Email
+            <span  [pSortableColumn]="'userName'">
+              <p-sortIcon [field]="'userName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'userName',startsWith)" placeholder="Search">
+          </th>          
+          <th pResizableColumn   >City
+            <span [pSortableColumn]="'email'">
+              <p-sortIcon [field]="'email'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'email',startsWith)" placeholder="Search">
+          </th> 
+          <th pResizableColumn   >Country
+            <span [pSortableColumn]="'phone'">
+              <p-sortIcon [field]="'phone'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'phone',startsWith)" placeholder="Search">
+          </th>           
+            <th pResizableColumn   >State
+            <span [pSortableColumn]="'provider'">
+              <p-sortIcon [field]="'provider'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'provider',startsWith)" placeholder="Search">
+          </th>           
+            <th pResizableColumn   >Phone
+            <span [pSortableColumn]="'birthCountry'">
+              <p-sortIcon [field]="'birthCountry'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'birthCountry',startsWith)" placeholder="Search">
+          </th>
+          <th pResizableColumn class="text-center"> Type
+                <!--<p-dropdown appendTo="body"  [options]="Type" [style]="{'width':'100%'}" 
+                (onChange)="dt.filter($event.value, isBuyer , 'equals')"></p-dropdown>   -->         
+          </th> 
+         <th pResizableColumn class="widthBux" >Created
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span> 
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created',startsWith)" placeholder="Search">                   
+          </th>
+    
+          <th pResizableColumn class="adjust text-center">Actions</th>         
+      
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-seller>
+        <tr>
+          <td>{{seller.srNo}}</td>
+          <td class="linkView" (click)="onClickActions('details',seller)" >{{seller.address[0]?.name}}</td>
+           <td>{{seller.address[0]?.email}}</td>
+          <td>{{seller.address[0]?.city}}</td>
+          <td>{{seller.address[0]?.country}}</td>
+          <td>{{seller.address[0]?.state}}</td>
+          <td>{{seller.address[0]?.phone}}</td>
+          <td class="text-center"> 
+           <!--<span *ngIf ="buyer.isSeller" class= "badge badge-info">Seller </span>&nbsp;-->
+           <span *ngIf ="seller.isSeller" class= "badge badge-primary">Merchant </span>
+           </td>
+          <td>{{ seller.created }}</td>
+          <td class="text-center">
+            <span class="badge badge-primary pointer cursor" title="Edit" (click)="onClickActions('edit',seller)">
+              <i class="fa fa-edit"></i>
+            </span>&nbsp; 
+            <span class="badge badge-danger pointer cursor" title="Delete" (click)="onClickActions('delete',seller)">
+              <i class="fa fa-trash"></i>
+            </span>                     
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <!--End Of Ptable-->
+
+
+  </div>
+
+</div>
+
+
+<!--Delete Modal for Deleting -->
+<div class="modal fade" id="deleteSeller">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteSeller()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal End-->
+
+  <!--Edit MOdal For Editing Buyer-->
+  
+<div class="modal fade" id="editSeller" role="dialog">
+  <div class="modal-dialog modal-md modal-dialog-centered margi_top_90">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+        <div class="col-sm-12 ">
+          <ng-template >
+            <h5>Edit Merchant</h5>
+          </ng-template>
+
+        </div>
+      </div>
+      <div class="modal-body padding">
+        <form [formGroup]="sellerForm" >
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right"> Name</label>
+            <div class="col-sm-9">
+              <input  [ngClass]="{active:submitted && sellerForm.controls['name'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['name']"
+                class="form-control" type="text" name="Name" [(ngModel)]="selleraddress.name">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('name').touched && sellerForm.get('name').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right" > City</label>
+            <div class="col-sm-9">
+              <input  [ngClass]="{active:submitted && sellerForm.controls['city'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['city']"
+                class="form-control" type="text" name="Name" [(ngModel)]="selleraddress.city">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('city').touched && sellerForm.get('city').invalid">Enter City</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right" > Country</label>
+            <div class="col-sm-9">
+              <input  [ngClass]="{active:submitted && sellerForm.controls['country'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['country']"
+                class="form-control" type="text" name="Name" [(ngModel)]="selleraddress.country">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('country').touched && sellerForm.get('country').invalid">Enter Country</span>
+            </div>
+          </div>
+                
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right" for="firstName"> Phone</label>
+            <div class="col-sm-9">
+              <input  [ngClass]="{active:submitted && sellerForm.controls['phone'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['phone']"
+                class="form-control" type="text" name="Name" [(ngModel)]="selleraddress.phone">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('phone').touched && sellerForm.get('phone').invalid">Enter Valid Number</span>
+            </div>
+          </div> 
+
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right" for="firstName"> State</label>
+            <div class="col-sm-9">
+              <input  [ngClass]="{active:submitted && sellerForm.controls['state'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['state']"
+                class="form-control" type="text" name="Name" [(ngModel)]="selleraddress.state">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('state').touched && sellerForm.get('state').invalid">Enter State</span>
+            </div>
+          </div> 
+
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right" for="firstName"> Zip</label>
+            <div class="col-sm-9">
+              <input  [ngClass]="{active:submitted && sellerForm.controls['zip'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['zip']"
+                class="form-control" type="text" name="Name" [(ngModel)]="selleraddress.zip">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('zip').touched && sellerForm.get('zip').invalid">Enter Zip Code</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right" for="firstName"> Street</label>
+            <div class="col-sm-9">
+              <input  [ngClass]="{active:submitted && sellerForm.controls['street'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['street']"
+                class="form-control" type="text" name="Name" [(ngModel)]="selleraddress.street">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('street').touched && sellerForm.get('street').invalid">Enter Street </span>
+            </div>
+          </div>          
+
+        </form>
+        <div class="form-group row text-right">
+          <div class="col-sm-12" role="group" aria-label="Second group">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="UpdateSeller(selleraddress)">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!--Edit MOdal For Editing Buyer-->

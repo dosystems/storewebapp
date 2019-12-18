@@ -1,0 +1,114 @@
+<div class="block mt-1">
+  <div class="container">
+    <ul class="breadcrumbs mt-1">
+      <li>
+        <span>My details</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="block">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <div class="white-sideblock">
+          <ul class="category-list">
+            <li class="active">
+              <a routerLink="/myAccount">Account Details</a>
+            </li>
+            <li>
+              <a routerLink="/myaddresses">My Addresses</a>
+            </li>
+            <li>
+              <a routerLink="/myWishList">My Wishlist</a>
+            </li>
+            <li>
+              <a routerLink="/myorders">My Order History</a>
+            </li>
+          </ul>
+        </div>
+        <div class="divider divider-lg"></div>
+      </div>
+      <div class="col-12 col-md-9" *ngIf="showAccount">
+        <h2>Account Details</h2>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="white-card" *ngIf="userDetails">
+              <h2>Personal Details</h2>
+              <p *ngIf="userDetails.firstName">
+                <b>Name:</b> {{userDetails?.firstName}} {{userDetails?.lastName}}</p>
+              <p *ngIf="userDetails.email">
+                <b>E-mail:</b> {{userDetails?.email}}</p>
+              <p *ngIf="userDetails.phoneNumber">
+                <b>Phone:</b> {{userDetails?.phoneNumber}}</p>
+              <p>
+                <a (click)="showEdit=true" class="pointer textColorBlue" title="Edit">Edit</a>
+                <!-- <a href="#">Delete</a> -->
+              </p>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="white-card " *ngIf="userDetails&&userDetails.wallet">
+              <h2>Wallet Details</h2>
+              <p *ngIf="userDetails.wallet">
+                <b>EURO&nbsp;:</b>&nbsp; <span *ngIf="userDetails&&userDetails.wallet&&userDetails.wallet.EUR;else showZeroEuro">{{userDetails?.wallet?.EUR}}</span>
+                <ng-template #showZeroEuro>
+                    <span>0</span>
+                  </ng-template></p>
+              <p *ngIf="userDetails.wallet">
+                <b>BUX&nbsp;:</b>&nbsp; <span *ngIf="userDetails&&userDetails.wallet&&userDetails.wallet.BUX;else showZeroBux">{{userDetails?.wallet?.BUX}}</span>
+                <ng-template #showZeroBux>
+                    <span>0</span>
+                  </ng-template></p>
+              <p>
+                <!-- <a (click)="showEdit=true" class="pointer textColorBlue" title="Edit">Edit</a> -->
+                <!-- <a href="#">Delete</a> -->
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="form-card" *ngIf="showEdit">
+          <h4>Edit Details</h4>
+          <label>First Name</label>
+          <input [maxlength]="100" [formControl]="form.controls['firstName']" [(ngModel)]='userDetails.firstName' type="text" class="form-control">
+          <span class="help-block text-danger" *ngIf="submitted && form.get('firstName') && form.get('firstName').invalid">First Name is required</span>
+          <label>Last Name</label>
+          <input [maxlength]="100" [formControl]="form.controls['lastName']" [(ngModel)]='userDetails.lastName' type="text" class="form-control">
+          <span class="help-block text-danger" *ngIf="submitted && form.get('lastName') && form.get('lastName').invalid">Last Name is required</span>
+          <label>Email</label>
+          <input [maxlength]="100" [formControl]="form.controls['email']" [(ngModel)]='userDetails.email' type="text" class="form-control"
+            readonly="true">
+          <label>Phone</label>
+          <input [maxlength]="15" minlength="10" [formControl]="form.controls['phoneNumber']" [(ngModel)]='userDetails.phoneNumber'
+            type="text" class="form-control" (keypress)="appService.Validate($event,'int')">
+          <span class="help-block text-danger" *ngIf="submitted && form.get('phoneNumber') && form.get('phoneNumber').invalid">Phone Number is required</span>
+          <span class="help-block text-danger" *ngIf="submitted && form.get('phoneNumber') && form.get('phoneNumber').hasError('minlength')">Minimum 10 numbers required</span>
+
+          <label>Select Language</label>
+
+          <select class="form-control" [formControl]="form.controls['language']" [(ngModel)]='userDetails.language'>
+              <option *ngFor="let lang of appConfig.languages" [value]="lang.value">{{lang.name}}</option>
+          </select>
+          <span class="help-block text-danger" *ngIf="submitted && form.get('language') && form.get('language').invalid">Please select language</span>
+          <div>
+            <div class="checkbox-group">
+              <input type="checkbox" name="createAccount" id="checkbox-createAccount" [(ngModel)]="userDetails.isSubscribed">
+              <label for="checkbox-createAccount">
+                <span class="check"></span>
+                <span class="box"></span>Subscribe to our NewsLetters</label>
+            </div>
+          </div>
+          <p>
+            <input type="submit" class="btn pointer" (click)="updateDetails(form)" value="Update Details">
+          </p>
+        </div>
+      </div>
+
+      <!-- <div class="col-12 col-md-9" *ngIf="!showAccount">
+            <ross-mywishlist *ngIf="wishlist"></ross-mywishlist>
+            <ross-myaddressess *ngIf="address"></ross-myaddressess>
+            <ross-myorderhistory *ngIf="orders"></ross-myorderhistory>
+          </div> -->
+    </div>
+  </div>
+</div>

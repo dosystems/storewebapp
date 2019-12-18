@@ -1,0 +1,79 @@
+
+.chat-container{
+    img.media-object{
+        width: 40px;
+        height:40px;
+    }
+    .media-list{
+        -webkit-padding-start: 0;
+    }
+    li.media{
+        margin-bottom: 10px;
+        .media-left{
+            padding-right: 10px;
+        }
+        .media-right{
+            padding-left: 10px;
+        }
+        .media-body{
+            padding: 0 6px;
+            position: relative;
+            overflow: visible;
+            .media-heading{
+                padding-top: 5px;
+                overflow: hidden;
+                h6{
+                    font-weight: 400;
+                }
+                span{
+                    font-size: 11px;
+                    margin-top: 3px; 
+                    color: #888;           
+                    i{
+                        font-size: 10px;
+                        margin-right: 3px;  
+                    }
+                }
+            } 
+            p{
+                margin-top: 4px;
+                line-height: 1.2;
+                font-size: 13px;
+                letter-spacing: 0.03em;
+                color: #555;
+            }
+            &.left{
+                 background: #f1f1f1;
+                 margin-right: 200px;
+                &:before{
+                    content: "";
+                    border: 7px solid transparent;
+                    border-right-color: #f1f1f1;
+                    position: absolute;
+                    top: 18px;
+                    left: -14px;
+                    
+                }  
+            }           
+            &.right{
+                background: #f7f7f7;
+                margin-left: 200px;
+                 &:before{
+                    content: "";
+                    border: 7px solid transparent;
+                    border-left-color: #f7f7f7;
+                    position: absolute;
+                    top: 18px;
+                    right: -14px;
+                
+                 }
+            }           
+        }
+    }
+    i.send{
+        font-size: 20px;
+    }
+}
+// ui-dropdown-label{
+//     text-align: left;
+// }

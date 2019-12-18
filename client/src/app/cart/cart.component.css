@@ -1,0 +1,44 @@
+.floatRight{
+    float:right;
+}
+.textOverflow{
+    display:inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.orderErrorMessage{
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.total-price{
+    font-size:13px !important;
+}
+.total{
+    font-size:15px !important;
+}
+.bitcoinWidth2 {
+    width:12px !important;
+    height:14px !important;
+ }
+/*For OverFlowing Of Select Box in Filter HEader*/
+select.form-control:not([size]):not([multiple]) {
+    height: 30px;
+}
+
+b, strong {
+    color: #333745 !important;
+}
+.checkoutjustify{
+    display: flex;
+    justify-content: space-between;
+}
+.orderClass{
+    border-top: none !important;
+}
+.orderClassTop{
+    border-top: 1px #d9d9d9 solid !important;
+ }

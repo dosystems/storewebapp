@@ -1,0 +1,93 @@
+<div class="block mt-1">
+  <div class="container">
+    <ul class="breadcrumbs mt-1">
+      <li>
+        <span>My order history</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="block">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <div class="white-sideblock">
+          <ul class="category-list">
+            <li>
+              <a routerLink="/myAccount">Account Details</a>
+            </li>
+            <li>
+              <a routerLink="/myaddresses">My Addresses</a>
+            </li>
+            <li>
+              <a routerLink="/myWishList">My Wishlist</a>
+            </li>
+            <li class="active">
+              <a routerLink="/myorders">My Order History</a>
+            </li>
+          </ul>
+        </div>
+        <div class="divider divider-lg"></div>
+      </div>
+      <div class="col-12 col-md-9 mb-3">
+        <h2>Order History</h2>
+        <div class="table-responsive" *ngIf="orders&&orders.length>0">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th scope="col"># </th>
+                <th scope="col">Order Number</th>
+                <th scope="col">Order Date </th>
+                <th scope="col">Status</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">QTY</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of orders; let i=index">
+                <td>{{i+1}}</td>
+
+                <!-- <a routerLink="/details/{{order.entityId}}">
+                      <img  class="imgclass" src="{{appConfig.imageUrl}}entity/{{order?.images[0]}}" onerror="this.src='assets/images/default/product-small.jpg'">
+                    </a> -->
+                <td>
+                  <b> {{order?.invoiceNo}}</b>
+                  <!-- <a routerLink="/details/{{order.entityId}}" class="pull-right">View Details</a></td> -->
+                  <td>{{order?.created}}</td>
+                  <td>{{order?.status}}</td>
+                  <td>
+                    <!-- <span class="color">{{appService?.selectedCurrency?.symbol}} -->
+
+                        <span class="color"*ngFor="let c of order.currencies | currencyConvertor : appService?.selectedCurrency?.name">
+                            <b> {{appService?.selectedCurrency?.symbol}}{{ appService.decimalValues(c[appService.selectedCurrency.name])}}</b>
+                        </span>
+                      <!-- {{(order?.inventory?.Price*order?.quantity) }} -->
+                    <!-- </span> -->
+                  </td>
+                  
+                  <td>
+                  {{order?.quantity}}
+                </td>
+                  <td>
+                    <a routerLink="/details/{{order.entityId}}" class="btn btn-sm">View Details</a>
+                  </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <!-- to show text when no orders -->
+        <div class="block empty-cart" *ngIf="noOrders">
+          <div class="container">
+            <div class="image-empty-cart">
+              <h2 class="mt-100 text-center danger"> No results found</h2>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

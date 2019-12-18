@@ -1,0 +1,91 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Products Ordered</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getProductsOrdered()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Form header content end -->
+
+  <!-- Global filter content start-->
+  <div class="card-body widget-body">
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Product" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    Global Filter End
+-->
+
+    <!-- Table body content start -->
+    <p-table #dt [value]="productsOrdered" [columns]="exportCsv" [lazy]="true" exportFilename="Products-ordered" (onLazyLoad)="getProductsOrdered($event)" [paginator]="true"
+      [rows]="appService.rowNum" [rows]="20" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [responsive]="true"
+      [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="sno_size">S.No</th>
+          <th pResizableColumn>Product Name
+            <span [pSortableColumn]="'_id.entityName'">
+              <p-sortIcon [field]="'_id.entityName'"></p-sortIcon>
+            </span>    
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'entityName','startsWith')" placeholder="Search">                    
+          </th>
+          <th pResizableColumn>Quantity
+            <span [pSortableColumn]="'quantity'">
+              <p-sortIcon [field]="'quantity'"></p-sortIcon>
+            </span>    
+          </th>
+          <th pResizableColumn>Total Amount (USD)
+            <span [pSortableColumn]="'totalAmount'">
+              <p-sortIcon [field]="'totalAmount'"></p-sortIcon>
+            </span>    
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-ordered>
+        <tr>
+          <td>{{ordered?.srNo}}</td>
+          <td>
+            <a  routerLink="/details/Product" [queryParams]="{id:ordered?._id.entityId}">{{ordered?._id.entityName}}</a>
+          </td>
+          <td> {{ordered?.quantity}} </td>
+          <td> {{appService.decimalValues(ordered?.totalAmount)}} </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>       
+    </p-table>
+    <!--P Table End-->
+  </div>
+</div>

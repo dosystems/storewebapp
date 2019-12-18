@@ -1,0 +1,659 @@
+<div class="row dashboard-card">
+
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box bg-darkblue">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.totalActiveOrdersCount ;else zeroOrders">{{dashBoardDetails.totalActiveOrdersCount}}</h3>
+        <p>
+          <ng-template #zeroOrders>
+            <h3>0</h3>
+          </ng-template>
+          <strong>Orders </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="orders"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-shopping-cart"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/orders" [queryParams]="{Status: 'Orders' }">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box bg-red">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.activeBuyersCount ;else zeroBuyers">{{dashBoardDetails.activeBuyersCount}}</h3>
+        <ng-template #zeroBuyers>
+          <h3>0</h3>
+        </ng-template>
+        <p>
+          <strong>Customers </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="Customers"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-users"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/buyers">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box bg-warn">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.activeSellersCount ;else zeroSellers">{{dashBoardDetails.activeSellersCount}}</h3>
+        <ng-template #zeroSellers>
+          <h3>0</h3>
+        </ng-template>
+        <p>
+          <strong>Merchants </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="Merchants"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-institution"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/sellers">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-6 col-lg-3 pull-left">
+    <div class="small-box bg-green">
+      <div class="inner">
+        <h3 *ngIf="dashBoardDetails && dashBoardDetails.totalActiveProductsCount ;else zeroProduct">{{dashBoardDetails.totalActiveProductsCount}}</h3>
+        <ng-template #zeroProduct>
+          <h3>0</h3>
+        </ng-template>
+
+        <p>
+          <strong>Products </strong>
+          <span aria-hidden="true" class="fa fa-question-circle help-css-new" data-toggle="tooltip" data-animation="false" data-placement="bottom"
+            title="Producta"></span>
+        </p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-shopping-cart"></i>
+      </div>
+      <a href="javascript:void(0)" class="small-box-footer" routerLink="/products">
+        more info
+        <i class="fa fa-arrow-circle-right"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 col-lg-6 bottom-15">
+    <div widget class="card">
+      <div class="card-header">
+        <span>
+          <strong>Monthly Merchants & Customers</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <canvas *ngIf="sellerBuyerData && sellerBuyerData.length > 0;else showNoData" baseChart [datasets]="sellerBuyerData" [labels]="sellerBuyerLabels"
+          [options]="commanChartOptions" [colors]="commonChartColor" [chartType]="'bar'">
+        </canvas>
+        <ng-template #showNoData>
+          <div style="min-height: 240px;"></div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-6 bottom-15">
+    <div widget class="card">
+      <div class="card-header">
+        <span>
+          <strong>Monthly Orders</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <canvas *ngIf="ordersLineChartData && ordersLineChartData.length" baseChart [datasets]="ordersLineChartData" [labels]="sellerBuyerLabels" [options]="commanChartOptions" [colors]="commonChartColor"
+          [chartType]="'line'">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest orders</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/orders">
+            View All Orders
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getOrderDetails()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="latestOrders" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Product</th>
+              <th pResizableColumn class="widthPrice">Customer</th>
+              <th class="widthSize" pResizableColumn>Merchant</th>
+              <th class="widthSize" pResizableColumn>Date</th>
+              <th class="status" pResizableColumn>Status</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-order>
+            <tr>
+              <td>{{order.sno}}</td>
+              <td>
+                <a   routerLink="/details/Product" [queryParams]="{id:order.entityId}">{{order.entityName}}</a>
+              </td>
+              <td>
+                <a routerLink="/details/Customer" [queryParams]="{id:order.userId}">{{order?.userName}}</a>
+              </td>
+              <td>
+                <a routerLink="/details/Merchant" [queryParams]="{id:order.ownerId}">{{order.ownerName}}</a>
+              </td>
+              <td>{{order.created}}</td>
+              <td>
+                  <span class="badge badge-{{appService.getStatusColor(order?.status)}}">{{order?.status }}</span>
+              </td>
+
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Best sellers by amount</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="topSellers" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Name</th>
+              <th pResizableColumn class="widthPrice">Quantity</th>
+              <th class="widthSize" pResizableColumn>Total amount</th>
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-topSellers>
+            <tr>
+              <td>{{topSellers.sno}}</td>
+              <td>
+                <a  routerLink="/details/Merchant" [queryParams]="{id:topSellers?._id?.ownerId}">
+                  {{topSellers?._id?.ownerName}}
+                </a>
+              </td>
+              <td>{{topSellers.count}}</td>
+              <td>{{topSellers.totalAmount}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="row">
+  <!--For Latest Reviews-->
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Reviews</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/reviews">
+            View All Reviews
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getLatestReviews()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="latestReviews" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="snoWidth">S.No</th>
+              <th pResizableColumn style="width:60px">Review</th>
+              <th pResizableColumn style="width:100px">Rating</th>
+              <th pResizableColumn>Product</th>
+              <th pResizableColumn class="userWidth">User</th>
+              <th pResizableColumn>Created</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-review>
+            <tr>
+              <td>{{review.sno}}</td>
+              <td title="{{review.comment}}" class="linkColor" (click)="viewModal(review)" >{{review.comment}}</td>
+              <td>
+                <p-rating [ngModel]="review?.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+              </td>
+
+              <td title="{{review.entityName}}">
+                <a routerLink="/details/Product"  [queryParams]="{id:review?.entityId}">{{review?.entityName}}</a>
+              </td>
+              <td>
+                <a routerLink="/details/Customer"  [queryParams]="{id:review?.userId}">{{review?.createdBy.name}}</a>
+              </td>
+
+              <td>{{review.created}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+  <!--End Of Latest Reviews-->
+
+  <!--For Cancelled Orders-->
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Cancelled Orders</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" [routerLink]="['/orders']" [queryParams]="{status: 'Cancelled'}">
+            View All Orders
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="CancelOrders" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="widthSNo">S.No</th>
+              <th pResizableColumn class="widthPro">Product</th>
+              <th pResizableColumn class="widthPrice">Customer</th>
+              <th class="widthSize" pResizableColumn>Merchant</th>
+              <th class="widthSize" pResizableColumn>Date</th>
+              <th class="status" pResizableColumn>Status</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-order>
+            <tr>
+              <td>{{order.sno}}</td>
+              <td>
+                <a  routerLink="/details/Product" [queryParams]="{id:order.entityId}" >{{order.entityName}}</a>
+              </td>
+              <td>
+                <a  routerLink="/details/Customer" [queryParams]="{id:order.userId}">{{order?.userName}}</a>
+              </td>
+              <td>
+                <a  routerLink="/details/Merchant" [queryParams]="{id:order.ownerId}">{{order.ownerName}}</a>
+              </td>
+              <td>{{order.created}}</td>
+              <td>
+                  <span class="badge badge-{{appService.getStatusColor(order?.status)}}">{{order?.status }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+  <!--End Cancelled Orders-->
+
+</div>
+
+<div class="row">
+  <!--Latest Buyers-->
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Customers</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/buyers">
+            View All Customers
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getLatestBuyers()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="latestBuyers" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="snoWidth">S.No</th>
+              <th pResizableColumn class="NameWidth">Name</th>
+              <th pResizableColumn>Email</th>
+              <th pResizableColumn class="buyWidth">Buy</th>
+              <th pResizableColumn>Created</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-buyer>
+            <tr>
+              <td>{{buyer.sno}}</td>
+              <td title="{{buyer.displayName}}">
+                <a routerLink="/details/Customer" [queryParams]="{id:buyer?._id}">
+                  {{buyer.displayName}}</a>
+              </td>
+              <td title="{{buyer.email}}">{{buyer.email}}</td>
+              <td class="text-center" title="{{buyer.noOfProductsBuy}}">{{buyer.noOfProductsBuy}}</td>
+              <td>{{buyer.created}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+  <!--Latest Buyers-->
+  <!--Latest Sellers-->
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Merchants</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/sellers">
+            View All Merchants
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getLatestSellers()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="latestSellers" #dt class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="snoWidth">S.No</th>
+              <th pResizableColumn style="width:90px">Company</th>
+              <th pResizableColumn>Email</th>
+              <th pResizableColumn class="buyWidth">Sold</th>
+              <th pResizableColumn>Created</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-seller>
+            <tr>
+              <td>{{seller.sno}}</td>
+              <td title="{{seller.companyName}}">
+                <a  routerLink="/details/Merchant"  [queryParams]="{id:seller?._id}">{{seller.companyName}}</a>
+              </td>
+              <td title="{{seller.email}}">{{seller.email}}</td>
+              <td class="text-center" title="{{seller.noOfProductsBuy}}">{{seller.noOfProducts}}</td>
+              <td>{{seller.created}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+  <!--Latest Sellers-->
+</div>
+
+<div class="row">
+  <!--Latest Pending Status-->
+  <div class="col-md-12 col-lg-6 bottom-15">
+    <div widget class="card listCardMinHeight">
+      <div class="card-header">
+        <span>
+          <strong>Latest Pending Orders</strong>
+        </span>
+        <div class="widget-controls">
+
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" [routerLink]="['/orders']" [queryParams]="{PendingStatus: 'Pending Orders'}">
+            View All Orders
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getPendingOrders()">
+            <span class="fa fa-refresh"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+            <span class="fa fa-chevron-down"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+            <span class="fa fa-chevron-up"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+            <span class="fa fa-expand"></span>
+          </button>
+          <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+            <span class="fa fa-compress"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body widget-body">
+        <p-table #dt [value]="pendingOrders" class="overflowvisible" [responsive]="true" [resizableColumns]="true" [rows]="5">
+          <ng-template pTemplate="header">
+            <tr>
+              <th pResizableColumn class="snoWidth">S.No</th>
+              <th pResizableColumn>Product</th>
+              <th pResizableColumn>Customer</th>
+              <th pResizableColumn>Merchant</th>
+              <th pResizableColumn>Date</th>
+              <th pResizableColumn>Status</th>
+            </tr>
+
+          </ng-template>
+          <ng-template pTemplate="body" let-order>
+            <tr>
+              <td>{{order?.sno}}</td>
+              <td>
+                <a routerLink="/details/Product"  [queryParams]="{id:order?.entityId}" >{{order?.entityName}}</a>
+              </td>
+              <td>
+                <a routerLink="/details/Customer" [queryParams]="{id:order?.userId}">{{order?.userName}}</a>
+              </td>
+              <td>
+                <a routerLink="/details/Merchant" [queryParams]="{id:order?.ownerId}" >{{order?.ownerName}}</a>
+              </td>
+              <td>{{order?.created}}</td>
+              <td>
+                  <span class="badge badge-{{appService.getStatusColor(order?.status)}}">{{order?.status }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+  <!--Latest Pending Status-->
+</div>
+
+<!-- Modal for displaying review details -->
+<div class="modal" id="openReviewDetailsModal" role="dialog">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title text-color">
+          <b>Review Details</b>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="col bottom-30">
+          <div *ngIf="reviewData?.title" class="row">
+            <dt class="col-sm-4 text-right">Title :</dt>
+            <dd class="col-sm-8">{{reviewData?.title}}</dd>
+          </div>
+
+          <div *ngIf="reviewData?.comment" class="row">
+            <dt class="col-sm-4 text-right">Description :</dt>
+            <dd class="col-sm-8">{{reviewData?.comment}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Rating :</dt>
+            <dd class="col-sm-8">
+              <p-rating [ngModel]="reviewData?.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+            </dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Product :</dt>
+            <dd class="col-sm-8">{{reviewData?.entityName}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Customer :</dt>
+            <dd class="col-sm-8">{{reviewData?.createdBy?.name}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Created :</dt>
+            <dd class="col-sm-8">{{appService.getDisplayDateFormat(reviewData?.created)}}</dd>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal for displaying review details -->

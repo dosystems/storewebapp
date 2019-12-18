@@ -1,0 +1,12 @@
+.textfloat{
+       overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.widthSno{
+    width:50px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}

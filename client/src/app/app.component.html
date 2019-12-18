@@ -1,0 +1,31 @@
+
+<div id="wrapper">
+  	<!-- Page -->
+    <div class="page-wrapper">
+      <!-- Header -->
+			<header class="page-header fullboxed variant-4 sticky  always  stickylight">
+          <div class="navbar">
+              <div class="navcontainer">
+        <ross-navbar></ross-navbar>
+        <ross-sidemenu></ross-sidemenu>
+      </div>
+    </div>
+      </header>
+      <!-- Page Content -->
+       
+        <main class="page-main mobileZindex">
+          <!-- <ross-breadcrumb></ross-breadcrumb> -->
+          <router-outlet></router-outlet>
+        </main>
+      
+      <!-- /Page Content -->
+			<!-- Footer -->
+        <ross-footer></ross-footer>
+      <!-- /Footer --> 
+       
+    </div>
+</div>
+<!-- Back To Top -->
+<ross-back-top></ross-back-top>
+<!-- /Back To Top -->
+<div class="loader" style="display:none" id='loader'></div>

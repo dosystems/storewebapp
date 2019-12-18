@@ -1,0 +1,170 @@
+<!-- Footer -->
+<!-- <hr> -->
+<div class="block my-2" style="background:white">
+  <div class="container">
+    <div class="row  mt-5 col-12" *ngFor="let item of menu">
+      <ng-template [ngIf]="item.title=='Products'">
+        <div class="col-md-2 col-12" *ngFor="let a of (item.subpath | Count);let i=index;">
+          <ng-template [ngIf]="i<6">
+            <h3>
+              {{a.title}}
+            </h3>
+            <ng-template [ngIf]="a.subpath.length>0">
+              <div class="col-12 pl-1" *ngFor="let cat of (a.subpath | Count);let j=index;">
+                <a *ngIf="j<9" class="pointer  categorytext" routerLink="/products/{{cat.title}}">
+                  <span>{{cat.title}}</span>
+                </a>
+              </div>
+            </ng-template>
+          </ng-template>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<footer class="page-footer variant4 fullboxed">
+  <div class="footer-top bg">
+    <div class="block">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 backgroundAmazon">
+            <ross-products-by-categories [category]="'Deals'"></ross-products-by-categories>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-middle">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-12 col-lg-3">
+          <div class="footer-block collapsed-mobile">
+            <div class="title">
+              <h4>{{ 'INFORMATION' | translate }}</h4>
+              <div class="toggle-arrow" data-toggle="collapse" data-target="#collapse1" href="#collapse1"></div>
+            </div>
+            <div id="collapse1" class="collapsed-content">
+              <ul class="marker-list">
+                <li>
+                  <a routerLink="/about-us">{{ 'ABOUT_US' | translate }}</a>
+                </li>
+                <li>
+                  <a routerLink="/terms-conditions">Terms & Conditions</a>
+                </li>
+                <li>
+                  <a routerLink="/policy">{{ 'PRIVACY_POLICY' | translate }}</a>
+                </li>
+                <li>
+
+                  <a routerLink="/return-policy">Return Policy</a>
+
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-12 col-lg-3">
+          <div class="footer-block collapsed-mobile">
+            <div class="title">
+              <h4>{{ 'MY_ACCOUNT' | translate }}</h4>
+              <div class="toggle-arrow" data-toggle="collapse" data-target="#collapse2" href="#collapse2"></div>
+            </div>
+            <div id="collapse2" class="collapsed-content">
+              <ul class="marker-list">
+                <li>
+                  <a routerLink="/myAccount">{{ 'MY_ACCOUNT2' | translate }}</a>
+                </li>
+                <li>
+                  <a routerLink="/cart">{{ 'MY_CART' | translate }}</a>
+                </li>
+                <li>
+                  <a routerLink="/myWishList">{{ 'MY_WISHLIST' | translate }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-12 col-lg-3">
+          <div class="footer-block collapsed-mobile">
+            <div class="title">
+              <h4>{{ 'CUSTOMER_CARE' | translate }}</h4>
+              <div class="toggle-arrow" data-toggle="collapse" data-target="#collapse3" href="#collapse3"></div>
+            </div>
+            <div id="collapse3" class="collapsed-content">
+              <ul class="marker-list">
+                <li>
+                  <a routerLink="/merchant" title="Sell">{{ 'SELL_ON' | translate }} Bux Super Store</a>
+                </li>
+
+                <li>
+
+                  <a routerLink="/faqs">FAQS</a>
+
+                </li>
+                <li>
+                  <a routerLink="/support">{{ 'SUPPORT' | translate }}</a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+             
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-12 col-lg-3">
+          <div class="footer-block collapsed-mobile">
+            <div class="title">
+              <h4>{{ 'CONTACT_US' | translate }}</h4>
+              <div class="toggle-arrow" data-toggle="collapse" data-target="#collapse4" href="#collapse4"></div>
+            </div>
+            <div id="collapse4" class="collapsed-content">
+              <ul class="simple-list">
+                <!-- <li>
+                  <i class="icon icon-phone"></i>+01 234 567 89</li> -->
+                <li>
+                  <i class="icon icon-close-envelope"></i>
+                  <a href="mailto:support@buxsuperstore.com">{{ 'SUPPORT' | translate }}@buxsuperstore.com</a>
+                </li>
+              </ul>
+              <div class="footer-social">
+                <a href="{{appConfig.facebookLink}}" target="_blank" title="Facebook">
+                  <i class="icon icon-facebook-logo icon-circled"></i>
+                </a>
+                <a href="{{appConfig.twitterLink}}" target="_blank" title="Twitter">
+                  <i class="icon icon-twitter-logo icon-circled"></i>
+                </a>
+                <a href="{{appConfig.instagramLink}}" target="_blank" title="Instagram">
+                  <i class="icon icon-instagram icon-circled"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 row p-0">
+          <div class="col-md-12 col-12 col-lg-12 text-right">
+              <img  class="buxcoinwidth mr-1 mb-1" src="/assets/images/buxcoinfull.jpeg">
+              <img class="mb-1"src="/assets/images/new-cc-logos-300x34.png">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bot">
+    <div class="container">
+      <div class="row">
+
+        <!-- <div class="col-12 col-md-6 col-lg-8">
+            <div class="image-banner text-center">
+              <a href="#">
+                <img src="assets/images/banners/footer-banner.jpg" alt="Footer Banner" class="img-responsive"> </a>
+            </div>
+          </div> -->
+        <div class="col-12 ">
+          <div class="footer-copyright text-center">{{appConfig.copyRight}} </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /Footer -->

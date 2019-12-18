@@ -1,0 +1,147 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Users</span>
+  <!--Widget Controls-->
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllUsersDetails()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+   <!-- Global Filter-->
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Product/Owner/Status" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+ 
+    <!-- P-Table -->
+    <p-table #dt class="overflowvisible" [value]="totalUsers" [columns]="columns" [lazy]="true" (onLazyLoad)="getAllUsersDetails($event)"
+      [paginator]="true" [rows]="appService.rowNum" [rows]="20" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+      [responsive]="true" [resizableColumns]="true" columnResizeMode="expand">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSno" >S.No</th>
+          <th pResizableColumn   >Name
+            <span  [pSortableColumn]="'userName'">
+              <p-sortIcon [field]="'userName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'userName',startsWith)" placeholder="Search">
+          </th>          
+          <th pResizableColumn   >City
+            <span [pSortableColumn]="'email'">
+              <p-sortIcon [field]="'email'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'email',startsWith)" placeholder="Search">
+          </th> 
+          <th pResizableColumn   >Country
+            <span [pSortableColumn]="'phone'">
+              <p-sortIcon [field]="'phone'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'phone',startsWith)" placeholder="Search">
+          </th>           
+            <th pResizableColumn   >State
+            <span [pSortableColumn]="'provider'">
+              <p-sortIcon [field]="'provider'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'provider',startsWith)" placeholder="Search">
+          </th> 
+            <th pResizableColumn   >Street
+            <span [pSortableColumn]="'birthDay'">
+              <p-sortIcon [field]="'birthDay'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'birthDay',startsWith)" placeholder="Search">
+          </th>           
+            <th pResizableColumn   >Pincode
+            <span [pSortableColumn]="'birthCountry'">
+              <p-sortIcon [field]="'birthCountry'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'birthCountry',startsWith)" placeholder="Search">
+          </th>
+          <th pResizableColumn > Type
+                <p-dropdown appendTo="body"  [options]="Type" [style]="{'width':'100%'}" 
+                (onChange)="dt.filter($event.value, isBuyer , 'equals')"></p-dropdown>            
+          </th> 
+         <th pResizableColumn class="widthBux" >Created
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span> 
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created',startsWith)" placeholder="Search">                   
+          </th>
+    
+          <th pResizableColumn class="adjust text-center">Actions</th>         
+      
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{user.srNo}}</td>
+          <td class="linkView" (click)="onClickActions('details',user)" >{{user.address[0]?.name}}</td>
+          <td>{{user.address[0]?.city}}</td>
+          <td>{{user.address[0]?.country}}</td>
+          <td>{{user.address[0]?.state}}</td>
+          <td>{{user.address[0]?.street}}</td>
+          <td>{{user.address[0]?.zip}}</td>
+          <td class="text-center"> 
+           <span *ngIf ="user.isSeller" class= "badge badge-info">Merchant </span>&nbsp;
+           <span *ngIf ="user.isBuyer" class= "badge badge-primary">Customer </span>
+           </td>
+          <td>{{ user.created }}</td>
+          <td class="text-center">
+            <span class="badge badge-danger pointer cursor" title="Delete" (click)="onClickActions('delete',user)">
+              <i class="fa fa-trash"></i>
+            </span> &nbsp;                     
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <!--End Of Ptable-->
+
+
+  </div>
+
+</div>
+
+
+<!--Delete Modal for Deleting Order-->
+
+<div class="modal fade" id="deleteUser">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteUser()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal End-->

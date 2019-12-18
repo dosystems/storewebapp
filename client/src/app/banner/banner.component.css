@@ -1,0 +1,14 @@
+.vert {
+    display: table-cell;
+    vertical-align: bottom !important;
+}
+
+
+.textcolor{
+    color: #454955 !important;
+}
+
+.vert1 {
+    display: table-cell;
+    vertical-align: text-top !important;
+}

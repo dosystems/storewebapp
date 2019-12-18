@@ -1,0 +1,183 @@
+ /*For OverFlowing Of Select Box in Filter HEader*/
+select.form-control:not([size]):not([multiple]) {
+    height: 30px;
+}
+
+
+.sidebar-block.collapsed.open>.toggle-arrow:before {
+    content: "\e94c" !important;
+}
+.sidebar-block.collapsed.open .toggle-arrow:before {
+    content: "\e94a" !important;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.danger{
+    color:red;
+}
+.card-header.collapsed:before {
+    font-family: 'icomoon-reg' !important;
+    content: "\e94a" !important;
+    cursor: pointer;
+}
+.card-header:after {
+    opacity: 1;
+    content: '';
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 0px;
+    height: 0px;
+    /* border-style: solid;
+    border-width: 10px 10px 0 0;
+    border-color: #d4151c transparent transparent transparent; */
+}
+ul.category-list li a:before {
+    top: 3px;
+}
+
+
+h6{
+    font-size: 20px;
+    line-height: 1.3em;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 0px;
+    color: #191919;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+    padding: 6px 6px !important;
+}
+.nopadding{
+    padding:0px !important;
+}
+.card-body {
+    padding: 10px;
+}
+.card-header:before {
+    font-family: 'icomoon-reg' !important;
+    content: "\e94c" !important;
+    cursor: pointer;
+    position: absolute;
+    z-index: 100;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    right: 0;
+    padding: 6px 26px !important;
+}
+.card-header h6{
+    font-size: 13px;
+    line-height: 1.3em;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 0px;
+    color: #191919;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+    background-color:#f3f3f3 !important;
+
+}
+.card-header{
+    /* background-color: transparent !important; */
+    /* border: 1px solid rgba(0, 0, 0, 0.125) !important; */
+    padding: 12px 19px !important;
+}
+.nopadding{
+    padding: 0px !important
+}
+#accordion >.card {
+   margin-top: 15px !important;
+   border: none !important;
+}
+.noicon:before{
+    content:  none!important;
+}
+.collapse .card-body{
+    background-color: #ffffff !important;
+    /* border: 1px solid #ffff !important; */
+}
+
+ul.category-list li.active a {
+    color: #191919 !important;
+    margin-left: 0 !important;
+    margin-right: 0px !important;
+    font-size: 13px !important;
+    line-height: 1.3em !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    padding: 6px 6px !important;
+}
+.collapse ul.category-list li.active a {
+    color: #191919 !important;
+    padding-left:30px !important;
+    margin-left: 0 !important;
+    margin-right: -10px !important;
+    position: relative;
+    display: block;
+    margin-left: -10px !important;
+    font-size: 13px !important;;
+    line-height: 1.25em !important;
+    text-decoration: none;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    text-transform: capitalize ;
+}
+.collapse ul.category-list li.active a:hover{
+    color: #cf0000 !important;
+    margin-left: 0 !important;
+    margin-right: -10px !important;
+}
+ul.category-list li.active a:before {
+    opacity: 0;
+}
+.collapse ul.category-list li a:not(.clear):hover:before {
+    opacity: 1;
+}
+.listItemClass{
+    padding: 5px 0 5px 10px !important;
+    margin-left: -10px;
+    font-size: 12px !important;
+    line-height: 0.9em !important;
+}
+
+
+.collapse .card-header.noicon:after{
+    opacity: 0;
+}
+.mt-100{
+    margin-top:100px !important;
+
+}
+#accordion .collapse .card{
+    margin-top: 7px !important;
+}
+
+
+
+.productFilter .card-header{
+    background-color:#f3f3f3 !important;
+    border:none !important;
+    border-bottom:none !important;
+}
+
+.productFilter .card-body{
+    background-color:#f3f3f3 !important;
+}
+.productFilter .card{
+    background-color:#f3f3f3 !important;
+    border:none !important;
+}
+
+ul.category-list li {
+    border-bottom: 0 !important;
+}

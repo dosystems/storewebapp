@@ -1,0 +1,65 @@
+<div class="block mt-1">
+  <div class="container">
+    <ul class="breadcrumbs mt-1">
+      <li>
+        <!-- <span>My details</span> -->
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="block">
+  <div class="container">
+    <div class="row">
+      <!-- <div class="col-12 col-md-3">
+        <div class="white-sideblock">
+          <ul class="category-list">
+              <li class="active">
+                <a routerLink="/myAccount">Account Details</a>
+              </li>
+              <li>
+                <a routerLink="/myaddresses">My Addresses</a>
+              </li>
+              <li>
+                <a routerLink="/myWishList">My Wishlist</a>
+              </li>
+              <li>
+                <a routerLink="/myorders">My Order History</a>
+              </li>
+            </ul>
+        </div>
+        <div class="divider divider-lg"></div>
+      </div> -->
+      <div class="col-12 col-md-10">
+        <h2>Account Details</h2>
+        <div class="white-card" *ngIf="merchantDetails">
+          <p>
+            <img class="imgclass2 productdetailsthumbimage" src="{{appConfig.imageUrl}}seller/{{merchantDetails.logo}}" onerror="this.src='/assets/images/default/product-small.jpg'"
+            />
+          </p>
+          <p *ngIf="merchantDetails.displayName">
+            <b>Name:</b> {{merchantDetails?.displayName}}</p>
+          <p *ngIf="merchantDetails.email">
+            <b>E-mail:</b> {{merchantDetails?.email}}</p>
+          <p *ngIf="merchantDetails.phoneNumber">
+            <b>Phone:</b> {{merchantDetails?.phoneNumber}}</p>
+          <p *ngIf="merchantDetails.companyName">
+            <b>CompanyName:</b> {{merchantDetails?.companyName}}</p>
+
+          <p *ngIf="merchantDetails.location">
+            <b>Location:</b> {{merchantDetails?.location}}</p>
+
+          <p *ngIf="merchantDetails.website">
+            <b>Website:</b> {{merchantDetails?.website}}</p>
+          <p *ngIf="merchantDetails.shopTitle">
+            <b>Shop Title:</b> {{merchantDetails?.shopTitle}}</p>
+          <p *ngIf="merchantDetails.storePolicy">
+            <b>Store Policy:</b>
+            <a [innerHTML]="merchantDetails.storePolicy"></a>
+          </p>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

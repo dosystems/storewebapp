@@ -1,0 +1,227 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Subscription Plans</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="onClickActions('add','')">
+        Add Subscription
+      </button>      
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllSearchPlans()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Form header content end -->
+
+  <!-- Global filter content start-->
+  <div class="card-body widget-body">
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Name/Description" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Global Filter End  -->
+
+    <!-- Table body content start -->
+    <p-table #dt [value]="totalSearchPlans" [columns]="exportCsv" exportFilename="Subscription Plans" [lazy]="true" (onLazyLoad)="getAllSearchPlans($event)"  [paginator]="true" 
+    [rows]="appService.rowNum" [rows]="20" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [responsive]="true"
+    [resizableColumns]="true" >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSno" >S.No</th>
+          <th pResizableColumn class="widthPlan" >Subscription
+            <span [pSortableColumn]="'name'">
+              <p-sortIcon [field]="'name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'name','startsWith')" placeholder="Search">
+          </th>
+          <th   pResizableColumn class="widthPrice">Price
+            <span [pSortableColumn]="'price'">
+              <p-sortIcon [field]="'price'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'price','startsWith')" placeholder="Search">
+          </th>
+
+          <th class="widthDuration"  pResizableColumn >Duration (Months)
+            <span [pSortableColumn]="'duration'">
+              <p-sortIcon [field]="'duration'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'duration','equals')" placeholder="Search">
+          </th>
+          <th class="widthDesc"  pResizableColumn >Description
+            <span [pSortableColumn]="'description'">
+              <p-sortIcon [field]="'description'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'description','startsWith')" placeholder="Search">
+          </th>          
+          
+          <th pResizableColumn class="widthCreated">Created On
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created','startsWith')" placeholder="MM/DD/YYYY">
+          </th>  
+          <th pResizableColumn class="widthCreatedBy">Created By
+            <span [pSortableColumn]="'createdBy.name'">
+              <p-sortIcon [field]="'createdBy.name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'createdBy.name','startsWith')" placeholder="Search">
+          </th>          
+          <th class="adjust text-center">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-plan >
+        <tr>
+          <td>{{plan.srNo}}</td>
+          <td>
+            <a class="linkView" (click)="onClickActions('product',order)">
+              {{plan.name}}
+            </a> 
+          </td>
+          <td class="text-right" >
+            <span *ngIf="plan.price">{{appService.decimalValues(plan.price)}}</span>
+            <ng-template #zeroPrice>
+                0
+              </ng-template>
+          </td>          
+          <td class="text-center" >{{plan.duration}}</td>
+          <td>{{plan.description}}</td>
+          <td>{{plan.created}}</td>
+          <td  class="linkView">{{plan?.createdBy.name}}</td>
+          <td  class=" text-center">
+            <span class="badge badge-primary pointer cursor" title="Edit" (click)="onClickActions('edit',plan)">
+            <i class="fa fa-edit"></i>
+          </span>&nbsp;
+            <span class="badge badge-danger pointer cursor" title="delete" (click)="onClickActions('delete',plan)">
+            <i class="fa fa-trash"></i>
+          </span>        
+          </td>         
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>       
+      </p-table>
+      <!--P Table End-->
+  </div>
+</div>
+
+
+<!--Add or Edit Modal For Create & Update-->
+<div class="modal fade" id="AddOrEdit" role="dialog">
+  <div class="modal-dialog modal-md modal-dialog-centered margi_top_90">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+        <div class="col-sm-12 ">
+          <ng-template [ngIf]="planData._id" [ngIfElse]="addEdit">
+            <h5>Edit Plan</h5>
+          </ng-template>
+          <ng-template #addEdit>
+            <h5>Add Plan</h5>
+          </ng-template>
+        </div>
+      </div>
+      <div class="modal-body padding" >
+        <form [formGroup]="plansForm" novalidate>
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5 text-right" for="Name">Name</label>
+            <div class="col-sm-9">
+              <input [ngClass]="{active:submitted && plansForm.controls['name'].invalid }" [maxlength]="20" [formControl]="plansForm.controls['name']"
+                class="form-control" type="text" name="Name" [(ngModel)]="planData.name">
+              <span class="help-block text-danger" *ngIf="plansForm.get('name').touched && plansForm.get('name').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>       
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5  text-right" for="Duration">Duration<br> (Months)</label>
+            
+            <div class="col-sm-9">
+              <input [ngClass]="{active:submitted && plansForm.controls['duration'].invalid}" [maxlength]="20" [formControl]="plansForm.controls['duration']"
+                class="form-control" type="number" name="Duration" [(ngModel)]="planData.duration">
+              <span class="help-block text-danger" *ngIf="plansForm.get('duration').touched && plansForm.get('duration').invalid">Select Duration Months</span> 
+            </div>
+          </div> 
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5  text-right" for="Price">Price</label>
+            <div class="col-sm-9">
+              <input [ngClass]="{active:submitted && plansForm.controls['price'].invalid}" [maxlength]="20" [formControl]="plansForm.controls['price']"
+                class="form-control" type="number" name="Price" [(ngModel)]="planData.price">
+              <span class="help-block text-danger" *ngIf="plansForm.get('price').touched && plansForm.get('price').invalid">Maximum of 40 characters</span>
+            </div>
+          </div> 
+          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5  text-right" >Description</label>
+            <div class="col-sm-9">
+              <textarea class="form-control" id="input-5"   
+                [formControl]="plansForm.controls['description']" [(ngModel)]="planData.description"  placeholder="" >
+              </textarea> 
+            </div>
+          </div>                                    
+<!--          <div class="form-group row">
+            <label class="col-sm-3 form-control-label m-t-5  text-right">Duration</label>
+              <div class="col-sm-9" id="desc">
+                <div class="summernote"></div>
+              </div>
+        </div> -->      
+        </form>
+        <div class="form-group row text-right">
+          <div class="col-sm-12" role="group" aria-label="Second group">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="createOrUpdatePlan(plansForm)" >
+              <ng-template [ngIf]="planData._id" [ngIfElse]="createUpdate">
+                <span>Update</span>
+              </ng-template>
+              <ng-template #createUpdate>
+                <span>Create</span>
+              </ng-template>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Add or Edit Modal For Create & Update-->
+
+<!--Delete Modal for Deleting Plan-->
+<div class="modal fade" id="delete">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deletePlan()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal End-->

@@ -1,0 +1,223 @@
+/*** Slim-scroll ***/
+.slimScrollBar, .slimScrollRail {
+  border-radius: 0px !important;
+  width: 4px !important;
+}
+
+
+/*** Pace ***/
+.pace {
+  .pace-progress{
+    background: $sidebar-item-active-bg-color;
+    position: absolute;
+    height: 3px;
+    z-index: 0;
+  }
+  .pace-activity{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-width: 0px;
+    right: auto;
+    width: 18px;
+    height: 18px;
+    border-top-color: $main-color;
+    border-left-color: $main-color;
+  }
+} 
+
+
+
+/*** Full Calendar ***/
+.fc{
+    color: $text-color;
+}
+.fc-toolbar {  
+    button{
+        border-radius: 0 !important;
+        background: transparent;
+        border: 1px solid $gray;
+        color: $text-color;
+        text-shadow: none !important;
+        box-shadow: none !important;
+        &:hover, &:focus, &.fc-state-active{
+            background: $main-color;
+            color: $default-color;
+        }
+        &:first-letter{
+            text-transform: capitalize
+        }
+        &.fc-state-disabled{
+            background: $gray-light;
+            &:hover{
+                cursor: not-allowed;
+            }
+        }
+    }
+    .fc-center h2{
+        font-size: 22px;
+        margin-top: 3px;
+    }
+}
+.fc-event{
+    border: none;
+}
+.fc-day-grid-event{
+    padding: 2px 4px;
+}
+.fc-unthemed .fc-divider, 
+.fc-unthemed .fc-popover .fc-header, 
+.fc-unthemed .fc-list-heading td{
+    background: $gray-light; 
+}
+.fc-list-item:hover td {
+	background-color: $gray-light; 
+}
+
+@media (max-width: 543px) {
+  .fc .fc-toolbar>*>*{
+       float: none;
+   }
+   .fc-toolbar .fc-left{
+       float: none;
+   }
+   .fc-toolbar .fc-right{
+       float: none;
+   }
+   .fc .fc-toolbar>*>:first-child{
+       vertical-align: top;
+   }
+  
+}
+
+.draggable{
+    cursor: move;
+}
+
+/*** Dropzone ***/
+.dropzone{
+    border: 2px dashed #ccc;
+    background: rgb(241, 241, 241);
+    min-height: 220px;
+    .dz-preview{
+        .dz-remove { 
+            font-size: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            color: #fff;
+        }
+        &.dz-image-preview{
+            background: transparent;
+        }
+        .dz-error-mark, .dz-success-mark{
+            margin-top:-38px;
+        }
+    }
+}
+
+/*** Froala editor ***/
+.fr-wrapper{
+    min-height: 300px;
+}
+
+
+/* perfect-scrollbar */
+.ps {
+    -ms-touch-action: auto;
+    touch-action: auto;
+    overflow: hidden !important;
+    -ms-overflow-style: none; 
+    position: relative;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .ps {
+        overflow: auto !important; 
+    } 
+}
+.ps__rail-x {
+    display: none;
+    opacity: 0;
+    transition: background-color .2s linear, opacity .2s linear;
+    -webkit-transition: background-color .2s linear, opacity .2s linear;
+    height: 7px;
+    bottom: 0px;
+    position: absolute;
+}
+
+.ps__rail-y {
+    display: none;
+    opacity: 0;
+    transition: background-color .2s linear, opacity .2s linear;
+    -webkit-transition: background-color .2s linear, opacity .2s linear;
+    width: 7px;
+    right: 0;
+    position: absolute;
+}
+
+.ps--active-x > .ps__rail-x,
+.ps--active-y > .ps__rail-y {
+    display: block;
+    background-color: transparent;
+}
+
+.ps:hover > .ps__rail-x,
+.ps:hover > .ps__rail-y,
+.ps--focus > .ps__rail-x,
+.ps--focus > .ps__rail-y,
+.ps--scrolling-x > .ps__rail-x,
+.ps--scrolling-y > .ps__rail-y {
+    opacity: 0.6;
+}
+
+.ps__rail-x:hover,
+.ps__rail-y:hover,
+.ps__rail-x:focus,
+.ps__rail-y:focus {
+    background-color: #eee;
+    opacity: 0.9;
+}
+
+.ps__thumb-x {
+    background-color: #aaa;
+    border-radius: 6px;
+    transition: background-color .2s linear, height .2s ease-in-out;
+    -webkit-transition: background-color .2s linear, height .2s ease-in-out;
+    height: 4px;
+    bottom: 1px;
+    position: absolute;
+}
+
+.ps__thumb-y {
+    background-color: #aaa;
+    border-radius: 6px;
+    transition: background-color .2s linear, width .2s ease-in-out;
+    -webkit-transition: background-color .2s linear, width .2s ease-in-out;
+    width: 4px;
+    right: 1px;
+    position: absolute;
+}
+
+.ps__rail-x:hover > .ps__thumb-x,
+.ps__rail-x:focus > .ps__thumb-x {
+    background-color: #999;
+    height: 7px;
+}
+
+.ps__rail-y:hover > .ps__thumb-y,
+.ps__rail-y:focus > .ps__thumb-y {
+    background-color: #999;
+    width: 7px;
+}
+
+@supports (-ms-overflow-style: none) {
+    .ps {
+        overflow: auto !important;
+    }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .ps {
+        overflow: auto !important;
+    }
+}
+  

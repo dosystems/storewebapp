@@ -1,0 +1,166 @@
+<div class="card overflowvisible" widget="">
+    <!-- Form header content start -->
+    <div class="card-header">
+      <span class="card-heading text-uppercase">Attributes</span>
+  
+      <div class="widget-controls">
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+          <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+        </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="onClickAction('add')">
+          Add New attribute
+        </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllAttributes()">
+          <span class="fa fa-refresh"></span>
+        </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+          <span class="fa fa-chevron-down"></span>
+        </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+          <span class="fa fa-chevron-up"></span>
+        </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+          <span class="fa fa-expand"></span>
+        </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+          <span class="fa fa-compress"></span>
+        </button>
+      </div>
+    </div>
+    <!-- Form header content end -->
+  
+    <!-- Global filter content start-->
+    <div class="card-body widget-body">
+      <div class="row">
+        <div class="col-sm-4 ml-auto">
+          <div class="input-group input-group-sm bottom-15">
+            <input type="text" class="form-control" placeholder="Search Name" (input)="dt.filterGlobal($event.target.value, 'contains')">
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-search"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Table body content start -->
+      <p-table #dt [value]="attributes" (onLazyLoad)="getAllAttributes($event)" [columns]="columns" class="overflowvisible" [responsive]="true"
+        [resizableColumns]="true" [lazy]="true" [paginator]="true" [rows]="appService.rowNum" [totalRecords]="totalRecords" [rowsPerPageOptions]="appService.rowValue">
+        <ng-template pTemplate="header" >
+          <tr>
+            <th pResizableColumn class="widthSNo">S.No</th>
+            <th pResizableColumn>Name
+              <span [pSortableColumn]="'name'">
+                <p-sortIcon [field]="'name'"></p-sortIcon>
+              </span>
+              <input pInputText type="text" (input)="dt.filter($event.target.value,'name','startsWith')" placeholder="Search">
+            </th>
+            <th pResizableColumn >Created By
+              <span [pSortableColumn]="'createdBy'">
+                <p-sortIcon></p-sortIcon>
+              </span>
+              <input pInputText type="text" (input)="dt.filter($event.target.value,'createdBy','equals')" placeholder=" Search">
+            </th>
+            <th pResizableColumn >Created On
+              <span [pSortableColumn]="'created'">
+                <p-sortIcon></p-sortIcon>
+              </span>
+              <input pInputText type="text" (input)="dt.filter($event.target.value,'created','equals')" placeholder=" MM/DD/YYYY">
+            </th>
+            
+            <th pResizableColumn class="text-center" >Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-attribute >
+          <tr>
+            <td>{{attribute.srNo}}</td>
+            <td >{{attribute?.name}}</td>
+           
+            <td >{{attribute?.createdBy?.employee?.displayName}}</td> 
+            <td >{{attribute?.created}}</td>      
+          
+            <td class="text-center">
+              <span (click)="onClickAction( 'edit' , attribute)" class="badge badge-primary cursor" data-toggle="tooltip" title="Edit">
+                <i class=" fa fa-edit"></i>
+              </span>&nbsp;
+              <span (click)="onClickAction( 'delete' , attribute)" class="badge badge-danger cursor" data-toggle="tooltip" title="Delete">
+                <i class=" fa fa-trash-o"></i>
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+        </p-table>
+    </div>
+  </div>
+  <!-- Table body content end -->
+  
+  
+  
+  
+  
+  <!-- Delete modal-box content start -->
+  <!-- The Modal -->
+  <div class="modal fade" id="deleteAttribute">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title text_center">Are you sure to delete the record?</div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer text_center border_top">
+          <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteAttribute()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete modal-box content end -->
+
+
+
+  <!-- addOrEdit Category -->
+<div class="modal fade" id="addOrEditAttribute" role="dialog">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header noborder">
+          <ng-template [ngIf]="attributeId" [ngIfElse]="ShowEdit">
+            <h5>Edit Attribute</h5>
+          </ng-template>
+          <ng-template #ShowEdit>
+            <h5>Add Attribute</h5>
+          </ng-template>
+  
+  
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body padding">
+          <form  [formGroup]="form" novalidate>
+              <div class="form-group row">
+                  <label class="col-sm-3 form-control-label m-t-5 text-right" for="name">Name</label>
+                  <div class="col-sm-9">
+                    <input [ngClass]="{active:submitted && form.controls['name'].invalid }" [maxlength]="20" [formControl]="form.controls['name']"
+                      class="form-control" type="text" name="name" [(ngModel)]="attribute.name">
+                    <span class="help-block text-danger" *ngIf="form.get('name').touched && form.get('name').invalid">Maximum of 20 characters</span>
+                  </div>
+                </div>
+          </form>
+  
+          <div class="modal-footer">
+            <button class="btn btn-outline-info btn-rounded btn-sm mr-2" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="CreateOrUpdateAttribute(form)" type="submit">
+  
+              <span *ngIf="attributeId;else create">
+                Update</span>
+              <ng-template #create>
+                <span>Create</span>
+              </ng-template>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

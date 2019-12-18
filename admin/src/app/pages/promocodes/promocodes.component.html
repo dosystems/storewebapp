@@ -1,0 +1,371 @@
+<!-- Display Promocodes Details Table Content Here -->
+<div class="card" widget>
+  <div class="card-header">
+    <span class="heading text-uppercase">COUPON CODES</span>
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="addNewPromocode()" data-toggle="modal" data-backdrop="static"
+        data-keyboard="false" data-target="#addPromocodeModal">Add New Coupon code</button>
+
+      <!--<button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>-->
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllPromocodes($event)">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <i class="fa fa-expand"></i>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <i class="fa fa-compress"></i>
+      </button>
+    </div>
+  </div>
+  <div class="card-body widget-body buttons">
+    <div class="row">
+      <div class="col-sm-3 offset-sm-9">
+        <div class="input-group input-group-sm mb-3">
+          <input #gb type="text" pInputText class="form-control" placeholder="Promo Code">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-table #dt [value]="promocodes"  [columns]="exportCsv"  exportFilename="Coupon Codes" [lazy]="true" (onLazyLoad)="getAllPromocodes($event)"
+      [paginator]="true" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+      [responsive]="true" [resizableColumns]="true">
+       <ng-template pTemplate="header">
+         <tr>
+           <th pResizableColumn style="width:50px">S.No</th>
+
+           <th pResizableColumn style="width:120px">Coupon Code
+            <span [pSortableColumn]="'promoCode'">
+              <p-sortIcon [field]="'promoCode'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'promoCode','startsWith')" placeholder="Search">
+           </th>
+
+           <th pResizableColumn style="width:120px">Coupon Type
+            <span [pSortableColumn]="'promoType'">
+              <p-sortIcon [field]="'promoType'"></p-sortIcon>
+            </span>
+              <p-dropdown appendTo="body" [options]="promoCodeTypes" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'promoType', 'equals')"></p-dropdown>
+          </th> 
+          <th pResizableColumn style="width:100px">Discount % </th>
+            <th pResizableColumn  style="width:110px">Used Count</th>
+
+           <th pResizableColumn style="width:100px">Start Date
+            <span [pSortableColumn]="'promoCodeStartDate'">
+              <p-sortIcon [field]="'promoCodeStartDate'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'promoCodeStartDate','startsWith')" placeholder="MM/DD/YYYY">
+          </th>
+          <th pResizableColumn style="width:140px">Expiration Date
+            <span [pSortableColumn]="'promoCodeEndDate'">
+              <p-sortIcon [field]="'promoCodeEndDate'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'promoCodeEndDate','startsWith')" placeholder="MM/DD/YYYY">
+          </th>
+           <!--<th pResizableColumn style="width:110px">Created
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'created','startsWith')" placeholder="MM/DD/YYYY">
+          </th> -->
+          <th pResizableColumn style="width:100px">Status
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+              <p-dropdown appendTo="body" [options]="promoStatus" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'status', 'equals')"></p-dropdown>                      
+          </th>
+          <th pResizableColumn style="width:80px">Action</th>                        
+         </tr>
+       </ng-template>
+       <ng-template pTemplate="body" let-promo>
+         <tr>
+           <td>{{promo?.serialNo}}</td>
+           <td class="linkColor" (click)="getPromocodeDetails(promo)">
+             {{promo?.promoCode}}
+           </td>
+           <td>{{promo?.promoType}}</td>
+           <td>
+             <span *ngIf="promo?.discountPercentage;else zero" style="cursor:pointer"  class="badge badge-pill badge-info">
+               {{promo?.discountPercentage}}
+             </span>
+             <ng-template  #zero>
+               <span class="badge badge-pill badge-info">0</span>
+             </ng-template>
+            </td>
+           <td>
+              <span (click)="getAllPromoCodesUsedByUsers(promo)" style="cursor:pointer" class="badge badge-pill badge-info">{{ promo.maxNoOfUsersUsedTillNow }}</span>
+           </td>
+           <td>{{appService.getDisplayDateFormat(promo?.promoCodeStartDate)}}</td>
+           <td>{{appService.getDisplayDateFormat(promo?.promoCodeEndDate)}}</td>
+           <!--<td>{{appService.getDisplayDateFormat(promo?.created)}}</td>-->
+           <td>
+             <span *ngIf="promo?.status" class="badge badge-{{ appService.getStatusColor(promo?.status) }}"> {{promo?.status }} </span>
+           </td>
+           <td>
+              <span *ngIf="promo?.status && promo?.status =='Enabled'; else elseStatus" class="mr-1 badge badge-warning pointer cursor" title="Disable" (click)="selectMoreOptions('Disable',promo)">
+                  <i class="fa fa-ban"></i>
+              </span>          
+              <ng-template #elseStatus>
+                <span class="mr-1 badge badge-success pointer cursor" title="Enable" (click)="selectMoreOptions('Enable',promo)"><i class="fa fa-check"></i></span>
+              </ng-template>    
+               <span class="mr-1 badge badge-primary pointer cursor" title="Edit" (click)="selectMoreOptions('Edit',promo)">
+                  <i class="fa fa-edit"></i>
+                </span>  
+            <span class="badge badge-danger pointer cursor" title="Delete" (click)="selectMoreOptions('Delete',promo)">
+              <i class="fa fa-trash"></i>
+            </span>                      
+           </td>
+         </tr>
+       </ng-template>
+    </p-table>
+    
+  </div>
+</div>
+
+<!-- Modal for showing promocode details -->
+<div class="modal fade" id="promocodeDetailsModal" *ngIf="promocodeDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="col-sm-12 text-center">
+          <h5 class="modal-title" id="myModalLabel">COUPON CODE DETAILS</h5>
+        </div>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!--<div *ngIf="promocodeDetails" class="row">-->
+          <div class="col-sm-8 offset-sm-2" *ngIf="promocodeDetails">
+            <div *ngIf="promocodeDetails?.promoCode" class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="promoCode-h-f">Coupon Code</label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{ promocodeDetails?.promoCode }}</b>
+              </div>
+            </div>
+            <div *ngIf="promocodeDetails?.promoType"  class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="promoType-h-f">Coupon Type</label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{ promocodeDetails?.promoType }}</b>
+              </div>
+            </div>
+            <div *ngIf="promocodeDetails?.discountPercentage"  class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="promoType-h-f">Discount</label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{ promocodeDetails?.discountPercentage }}&nbsp;%</b>
+              </div>
+            </div>
+            <div *ngIf="promocodeDetails?.maxDiscountAmount"  class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="promoType-h-f">Discount Amount</label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{ promocodeDetails?.maxDiscountAmount }}</b>
+              </div>
+            </div>
+            <div *ngIf="promocodeDetails?.minPurchaseValue"  class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="promoType-h-f">Min Purchase </label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{ promocodeDetails?.minPurchaseValue }}</b>
+              </div>
+            </div>                                    
+            <div *ngIf="promocodeDetails?.maxUsersLimitToUse" class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="maxUsersLimitToUse-h-f">max Users Limit </label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{ promocodeDetails?.maxUsersLimitToUse }}</b>
+              </div>
+            </div>
+            <div *ngIf="promocodeDetails?.promoCodeStartDate" class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="maxUsersLimitToUse-h-f">Start Date </label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{appService.getDisplayDateFormat(promocodeDetails?.promoCodeStartDate)}}</b>
+              </div>
+            </div>
+            <div *ngIf="promocodeDetails?.promoCodeEndDate" class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="maxUsersLimitToUse-h-f">Expiration Date </label>
+              <div class="col-sm-7">
+                <b class="data-form-control">{{appService.getDisplayDateFormat(promocodeDetails?.promoCodeEndDate)}}</b>
+              </div>
+            </div>
+            <div *ngIf="promocodeDetails?.status" class="row">
+              <label class="col-sm-5 form-control-label m-t-5 text-right" for="maxUsersLimitToUse-h-f">Status </label>
+              <div class="col-sm-7">
+                <span *ngIf="promocodeDetails?.status" class="badge badge-{{ appService.getStatusColor(promocodeDetails?.status) }}"> {{promocodeDetails?.status }} </span>
+              </div>
+            </div>                                  
+          </div>
+        <!--</div>-->
+        <div class="form-group row text-right">
+          <div class="col-sm-12" role="group" aria-label="Second group">
+            <button class="btn btn-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-info btn-rounded btn-sm" (click)="selectMoreOptions('Edit', promocodeDetails)" type="submit" data-dismiss="modal">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- create promocode -->
+<div class="modal fade" id="addPromocodeModal" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+        <div class="col-sm-12 text-center">
+          <h5 class="modal-title">{{formType}} Coupon code</h5>
+        </div>
+      </div>
+      <div class="modal-body padding scrollBody">
+        <form [formGroup]="form" novalidate>
+          <div class="form-group row text-right">
+            <label class="col-sm-5 form-control-label m-t-5" for="promoCode">Coupon Code</label>
+            <div class="col-sm-7">
+              <input [ngClass]="{active:submitted && !form.controls['promoCode'].valid}" [(ngModel)]="addPromocode.promoCode" [maxlength]="20"
+                [formControl]="form.controls['promoCode']" class="form-control" type="text" name="promoCode">
+              <span class="help-block text-danger" *ngIf="form.get('promoCode').touched && form.get('promoCode').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>
+          <div class="form-group row text-right">
+            <label class="col-sm-5 form-control-label m-t-5" for="promoType">Coupon Type</label>
+            <div class="col-sm-7">
+              <select [ngClass]="{active:submitted && !form.controls['promoType'].valid}" [(ngModel)]="addPromocode.promoType" [formControl]="form.controls['promoType']"
+                class="form-control" name="promoType" id="promoType" (change)="onChangepromtype(addPromocode.promoType)" >
+                <option value="null" disabled [selected]='true'>Select Coupon Type</option>
+                <option *ngFor="let promos of promoTypes" [value]="promos">{{promos}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row text-right" *ngIf="addPromocode.promoType && (addPromocode.promoType === 'Discount' || addPromocode.promoType === 'Cashback')">
+            <label class="col-sm-5 form-control-label m-t-5" for="Max Discount">Max {{promeName}} Amount</label>
+            <div class="col-sm-7">
+             <input (keypress)="appService.Validate($event)" [ngClass]="{active:submitted && !form.controls['maxDiscountAmount'].valid}"
+                [(ngModel)]="addPromocode.maxDiscountAmount" [maxlength]="10" [minlength]="1" [formControl]="form.controls['maxDiscountAmount']"
+                class="form-control checking-field" type="text" name="maxDiscountAmount">
+            </div>
+          </div>
+
+          <div class="form-group row text-right" *ngIf="addPromocode.promoType && (addPromocode.promoType === 'Discount' || addPromocode.promoType === 'Cashback')">
+            <label class="col-sm-5 form-control-label m-t-5" for="min Purchase">Min Purchase Amount</label>
+            <div class="col-sm-7">
+             <input (keypress)="appService.Validate($event)" [ngClass]="{active:submitted && !form.controls['minPurchaseValue'].valid}"
+                [(ngModel)]="addPromocode.minPurchaseValue" [maxlength]="10" [minlength]="1" [formControl]="form.controls['minPurchaseValue']"
+                class="form-control checking-field" type="text" name="minPurchaseValue">
+            </div>
+          </div>
+
+          <div class="form-group row text-right" *ngIf="addPromocode.promoType && (addPromocode.promoType === 'Discount' || addPromocode.promoType === 'Cashback')">
+            <label class="col-sm-5 form-control-label m-t-5" for="discountPercentage">{{promeName}} Percentage (%)</label>
+            <div class="col-sm-7">
+              <input (keypress)="appService.Validate($event)" [ngClass]="{active:submitted && !form.controls['discountPercentage'].valid}"
+                [(ngModel)]="addPromocode.discountPercentage" [maxlength]="5" [minlength]="1" [formControl]="form.controls['discountPercentage']"
+                class="form-control checking-field" type="text" name="discountPercentage">
+            </div>
+          </div>
+          <div class="form-group row text-right">
+            <label class="col-sm-5 form-control-label m-t-5" for="maxUsersLimitToUse">Max Limit Of Users to Use</label>
+            <div class="col-sm-7">
+              <input (keypress)="appService.Validate($event)" [ngClass]="{active:submitted && !form.controls['maxUsersLimitToUse'].valid}"
+                [(ngModel)]="addPromocode.maxUsersLimitToUse" [maxlength]="10" [minlength]="1" [formControl]="form.controls['maxUsersLimitToUse']"
+                class="form-control checking-field" type="text" name="maxUsersLimitToUse">
+              <span class="help-block text-danger" *ngIf="form.get('maxUsersLimitToUse').touched && form.get('maxUsersLimitToUse').invalid">Maximum of 10 Digits</span>
+            </div>
+          </div>
+          <!--<div class="form-group row text-right" *ngIf="addPromocode.promoType && addPromocode.promoType === 'free'">
+            <label class="col-sm-5 form-control-label m-t-5" for="noOfDays">No of Days</label>
+            <div class="col-sm-7">
+              <input (keypress)="appService.Validate($event)" [minlength]="1" [ngClass]="{active:submitted && !form.controls['noOfDays'].valid}"
+                [(ngModel)]="addPromocode.noOfDays" [maxlength]="3" [formControl]="form.controls['noOfDays']" class="form-control checking-field"
+                type="text" name="noOfDays">
+            </div>
+          </div>-->
+          <div class="form-group row text-right">
+            <label class="col-sm-5 form-control-label m-t-5" for="promoCodeStartDate">Start Date</label>
+            <div class="col-sm-7">
+              <my-date-picker [selDate]="selDate" name="promoCodeStartDate" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
+                [(ngModel)]="addPromocode.promoCodeStartDate" [formControl]="form.controls['promoCodeStartDate']" required></my-date-picker>
+            </div>
+          </div>
+          <div class="form-group row text-right">
+            <label class="col-sm-5 form-control-label m-t-5" for="promoCodeEndDate">Expiration Date</label>
+            <div class="col-sm-7">
+              <my-date-picker [selDate]="selDate" name="promoCodeEndDate" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions"
+                [(ngModel)]="addPromocode.promoCodeEndDate" [formControl]="form.controls['promoCodeEndDate']" required></my-date-picker>
+            </div>
+          </div>
+          <div class="form-group row text-right">
+            <label class="col-sm-5 form-control-label m-t-5" for="toNewOrOldUsers">User Type</label>
+            <div class="col-sm-7 ui-fluid">
+              <p-multiSelect [ngClass]="{active:submitted && !form.controls['toNewOrOldUsers'].valid}" [(ngModel)]="addPromocode.toNewOrOldUsers"
+                [formControl]="form.controls['toNewOrOldUsers']" class="form-control" name="toNewOrOldUsers" id="toNewOrOldUsers"
+                [options]="toNewOrOldUsersArray"></p-multiSelect>
+            </div>
+          </div>
+          <!--<div class="form-group row text-right" *ngIf="addPromocode.promoType && addPromocode.promoType === 'free'">
+            <label class="col-sm-5 form-control-label m-t-5" for="requiredCreditCardOrNotForFreeCoupon">Credit Card Type</label>
+            <div class="col-sm-7">
+              <select [ngClass]="{active:submitted && !form.controls['requiredCreditCardOrNotForFreeCoupon'].valid}" [(ngModel)]="addPromocode.requiredCreditCardOrNotForFreeCoupon"
+                [formControl]="form.controls['requiredCreditCardOrNotForFreeCoupon']" class="form-control" name="requiredCreditCardOrNotForFreeCoupon"
+                id="requiredCreditCardOrNotForFreeCoupon">
+                <option value=null>Select</option>
+                <option value=true>Require Credit/Debit Card</option>
+                <option value=false>Not Require Credit/Debit Card</option>
+              </select>
+            </div>
+          </div>-->
+        </form>
+        <div class="row text-right">
+          <div class="col-sm-12" role="group" aria-label="Second group">
+            <button class="btn btn-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-info btn-rounded btn-sm" *ngIf="showUpdateButton" (click)="updatePromocode(form)" type="submit">Update</button>
+            <button class="btn btn-info btn-rounded btn-sm" *ngIf="showCreateButton" (click)="createPromocode(form)" type="submit">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- promocode delete confirmation modal -->
+<div class="modal" id="promocodeDeleteConfirmationPopUp" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 text-center">
+            <p>Are you sure want to Delete ?</p>
+            <div class="col-sm-12">
+              <button class="btn btn-info btn-rounded btn-sm" type="button" data-dismiss="modal">&nbsp;No&nbsp;</button>
+              <button class="btn btn-info btn-rounded btn-sm" (click)="deletePromocode()" type="submit">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- promocode status change confirmation modal -->
+<div class="modal" id="promocodeStatusUpdateConfirmationPopUp" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 text-center">
+            <p>Are you sure want to {{ needtoupdatepromocodestatusto }} Coupon code ?</p>
+            <div class="col-sm-12">
+              <button class="btn btn-info btn-rounded btn-sm" type="button" data-dismiss="modal">&nbsp;No&nbsp;</button>
+              <button class="btn btn-info btn-rounded btn-sm" (click)="updatePromocodeStatus(needtoupdatepromocodestatusto)" type="submit">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

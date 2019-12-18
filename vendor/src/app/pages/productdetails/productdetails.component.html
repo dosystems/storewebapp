@@ -1,0 +1,115 @@
+<!--For Showing Details Of the Product-->
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Product Details </span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" title="Back" onclick="window.history.back()">
+        <span class="fa fa-arrow-left"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <div class="card-body widget-body">
+    <!--For Showing Details Of the Product-->
+    <div class="col bottom-30 typography">
+
+      <div class="row">
+        <div *ngIf="productData?.name" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Name :</dt>
+          <dd class="col-sm-9 " title="{{productData?.name}}">{{productData?.name}} </dd>
+        </div>
+
+        <div *ngIf="productData?.shortDesc" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Short Description :</dt>
+          <dd class="col-sm-9 textfloat" title="{{productData?.shortDesc}}">{{productData?.shortDesc}}</dd>
+        </div>
+        <div *ngIf="productData?.brandName" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Brand :</dt>
+          <dd class="col-sm-9">{{productData?.brandName}}</dd>
+        </div>
+        <div *ngIf="productData?.ownerName" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Company :</dt>
+          <dd class="col-sm-9">{{productData?.ownerName}}</dd>
+        </div>
+        <div *ngIf="productData?.reviewsCount" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Reviews :</dt>
+          <dd class="col-sm-9">{{productData?.reviewsCount}}</dd>
+        </div>
+        <div *ngIf="productData?.rating" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Rating :</dt>
+          <dd class="col-sm-9"><p-rating [ngModel]="productData?.rating.rating" readonly="true" stars="5" [cancel]="false"></p-rating></dd>
+        </div>
+        <div *ngIf="productData?.visibleDate" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Visible Date :</dt>
+          <dd class="col-sm-9">{{appService.getDisplayDateFormat(productData?.visibleDate)}}</dd>
+        </div>
+        <div *ngIf="productData?.expiryDate" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Expiry Date :</dt>
+          <dd class="col-sm-9">{{appService.getDisplayDateFormat(productData?.expiryDate)}}</dd>
+        </div>
+        <div *ngIf="productData?.buxPercentage" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">BUX (%) :</dt>
+          <dd class="col-sm-9">{{productData?.buxPercentage}}</dd>
+        </div>
+        <div *ngIf="productData?.euroPercentage" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">EURO (%) :</dt>
+          <dd class="col-sm-9">{{productData?.euroPercentage}}</dd>
+        </div>
+          <div *ngIf="productData?.multipleCategories" class="col-md-12 row">
+            <dt class="col-sm-3  text-right">Categories&nbsp;:</dt>
+            <dd class="col-sm-9">
+              <li *ngFor="let category of productData?.multipleCategories" class="list"> {{ category }} </li>
+            </dd>
+          </div>        
+          <div class="col-md-12 row" *ngIf="productData&&productData.inventories">
+            <dt class="col-sm-3  text-right">Inventories&nbsp;:</dt>
+            <dd class="col-sm-9">
+              <table>
+                <tr>
+                  <th *ngFor="let key of objectKeys(productData.inventories[0])">{{key}}</th>
+                </tr>
+                <tr *ngFor="let inventory of productData.inventories;let i=index">
+                  <td *ngFor="let key of objectKeys(inventory);let j=index"> {{inventory[key]}} </td>
+                </tr>
+              </table>
+            </dd>
+          </div>
+        <div *ngIf="productData?.images" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Images &nbsp;:</dt>
+        </div>
+        <div *ngFor="let image of productData.images;let i=index" class="col-md-12 row">
+          <div class="col-sm-3  text-right">{{ image.Color }} &nbsp;:</div>
+          <div class="col-sm-9 row">
+            <div *ngFor="let img of image.images" class="col-sm-3">
+              <img class="img-fluid logo-height mt-2" style="height: 120px;width: 150px" src={{imagesPath}}{{img}}>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div *ngIf="productData?.longDesc" class="col-md-12 row">
+          <dt class="col-sm-3 text-right">Description :</dt>
+          <dd class="col-sm-9 text-left">
+            <span [innerHTML]="productData.longDesc"></span>
+          </dd>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+<!--For Showing Details Of the Product-->

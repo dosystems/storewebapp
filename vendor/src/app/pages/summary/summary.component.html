@@ -1,0 +1,101 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Payment Summary</span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getVendorStatments('')">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <!-- Form header content end -->
+
+  <!-- Global filter content start-->
+  <div class="card-body widget-body">
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  Global Filter End  -->
+
+    <!-- Table body content start -->
+    <p-table #dt    class="overflowvisible" [value]="Vendorstatements" [columns]="exportCsv" exportFilename='Payment Sumary' [lazy]="true" (onLazyLoad)="getVendorStatments($event)"
+      [paginator]="true" [rows]="appService.rowNum" [rows]="20" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+      [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:50px" >S.No</th>
+          <th pResizableColumn  >Amount
+            <span [pSortableColumn]="'amount'">
+              <p-sortIcon [field]="'amount'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'amount',startsWith)" placeholder="Search">
+          </th>       
+        
+          <th pResizableColumn >Type
+            <span [pSortableColumn]="'type'">
+              <p-sortIcon [field]="'type'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'type','equals')" placeholder="Search">
+          </th>
+
+          <th  pResizableColumn  >Created On
+            <span [pSortableColumn]="created">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created',startsWith)" placeholder="MM/DD/YYYY">
+          </th>
+          
+          <th  pResizableColumn class="widthCby" >User Name
+            <span [pSortableColumn]="userName">
+              <p-sortIcon [field]="'userName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'userName',startsWith)" placeholder="Search">
+          </th>
+ 
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-payment >
+        <tr>
+          <td>{{payment.serialNo}}</td>
+          <td>{{appService.decimalValues(payment.amount)}}</td>
+          <td>{{payment.type}}</td>
+          <td>{{appService.getDisplayDateFormat(payment.created)}}</td>
+          <td>{{payment.userName}}</td>
+        </tr>
+      </ng-template>
+      </p-table>
+      <!--P Table End-->
+  </div>
+</div>
+
+
+
+
+
+
+

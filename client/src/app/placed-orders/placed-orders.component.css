@@ -1,0 +1,45 @@
+.danger{
+    color:red;
+}
+.name2 a:hover { 
+    color:  #004daa!important;
+}
+.textColor{
+    color: #004daa !important;
+}
+.mt-100 {
+    margin-top: 100px !important;
+}
+
+.cart-table.name2 {
+    width: 44% !important;
+}
+.nameWidth{
+    width: 100% !important;
+}
+.progress {
+    display: flex;
+    height: 20px !important;
+    overflow: hidden;
+    font-size: 10px !important;;
+    background-color: #e9ecef;
+    border-radius: 1.25rem !important;
+    background: #e9ecef ;
+}
+
+.progress-bar{
+    background-color: rgb(247, 247, 250);
+    color: rgb(126, 133, 155);
+}
+
+
+.progresscolor{
+    background: rgb(112, 212, 4) !important;
+    color: #ffffff !important;
+}
+
+.radius-right{
+    border-top-right-radius: 1.25rem;
+    border-bottom-right-radius: 1.25rem;
+}
+

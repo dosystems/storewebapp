@@ -1,0 +1,701 @@
+ <!--For Best Sellers -->
+  <div *ngIf="reportType === 'bestsellers'" class="card overflowvisible" widget="">
+
+    <div class="card-header">
+      <span class="card-heading text-uppercase">Best Sellers </span>
+      <!--Widget Controls-->
+      <div class="widget-controls">
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+              <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getBestSellers()">
+        <span class="fa fa-refresh"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+      </div>
+      <!--WidgetControls-->
+    </div>
+    <div class="card-body widget-body">
+      <div class="row">
+        <div class="col-sm-4 ml-auto">
+          <div class="input-group input-group-sm bottom-15">
+            <input type="text" class="form-control" placeholder="Search Merchant" (input)="dt.filterGlobal($event.target.value, 'contains')">
+            <div class="input-group-append">
+              <span class="input-group-text">
+                 <i class="fa fa-search"></i>
+             </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End Of Global Filter-->
+
+      <!-- P-Table -->
+      <p-table #dt [value]="BestSellers" [columns]="sellersCsv" exportFilename="BestSellers" [lazy]="true" (onLazyLoad)="getBestSellers($event)"
+        [paginator]="true" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+        [responsive]="true"  [resizableColumns]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pResizableColumn style="width:60px">S.No</th>
+            <th pResizableColumn>Total Products</th>
+            <th pResizableColumn>Total Amount (USD)</th>
+            <th pResizableColumn>Merchant</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-bs>
+          <tr>
+            <td>{{bs?.srNo}}</td>
+            <td>
+             <a routerLink="/reports/sellerProducts" [queryParams]="{ID: bs._id.ownerId}">{{bs?.count}}</a>
+            </td>
+            <td class="text-right">{{bs?.totalAmount}}</td>
+            <td>
+              <a routerLink="/details/Merchant" [queryParams]="{id:bs._id.ownerId}">
+              {{bs?._id.ownerName}}
+            </a>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+             <td [attr.colspan]="columns.length">
+                  No Records Found 
+             </td>
+          </tr>
+        </ng-template>          
+        </p-table>
+        <!--End Of Ptable-->
+    </div>
+  </div>
+  <!-- End oF Showing Best Sellers-->
+
+
+  <!--For Showing Products Of BEst Sellers-->
+  <div *ngIf="reportType === 'sellerProducts'" class="card overflowvisible" widget="">
+    <div class="card-header">
+      <span class="card-heading text-uppercase">Best Seller Products </span>
+      <!--Widget Controls-->
+      <div class="widget-controls">
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="ds.exportCSV()">
+          <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" title="Back" onclick="window.history.back()">
+       <span class="fa fa-arrow-left"></span>
+     </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+      </div>
+      <!--WidgetControls-->
+    </div>
+    <div class="card-body widget-body">
+      <!-- Global Filter-->
+      <div class="row">
+        <div class="col-sm-4 ml-auto">
+          <div class="input-group input-group-sm bottom-15">
+            <input type="text" class="form-control" placeholder="Search Name/Category" (input)="ds.filterGlobal($event.target.value, 'contains')">
+            <div class="input-group-append">
+              <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End Of Global Filter-->
+
+      <!-- P-Table -->
+      <!--[columns]="sellersProductsCsv" -->
+      <p-table #ds  [value]="sellersProducts" [columns]="sellersProductsCsv" [lazy]="true" exportFilename="BESTPRODUCTS"
+        (onLazyLoad)="getSellerProducts($event)" [paginator]="true" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue"
+        [totalRecords]="totalRecords" [responsive]="true" [resizableColumns]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pResizableColumn class="sno_size">S.No</th>
+            <th pResizableColumn>Product
+              <span [pSortableColumn]="'entityName'">
+              <p-sortIcon [field]="'entityName'"></p-sortIcon>
+            </span>
+              <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'entityName','startsWith')" placeholder="Search">
+            </th>
+
+            <th pResizableColumn>Units
+              <span [pSortableColumn]="'quantity'">
+              <p-sortIcon [field]="'quantity'"></p-sortIcon>
+            </span>
+              <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'quantity','equals')" placeholder="Search">
+            </th>
+
+            <th pResizableColumn>Price
+              <span [pSortableColumn]="'inventory.Price'">
+              <p-sortIcon [field]="'inventory.Price'"></p-sortIcon>
+            </span>
+              <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'inventory.Price','startsWith')" placeholder="Search">
+            </th>
+
+            <th pResizableColumn>Status
+              <span [pSortableColumn]="'status'">
+              <p-sortIcon [field]="'status'"></p-sortIcon>
+            </span>
+            </th>
+
+            <th pResizableColumn>Created On
+              <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+              <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'created','startsWith')" placeholder="MM/DD/YYYY">
+            </th>
+
+            <th pResizableColumn>Customer
+              <span [pSortableColumn]="'userName'">
+              <p-sortIcon [field]="'userName'"></p-sortIcon>
+            </span>
+              <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'userName','startsWith')" placeholder="Search">
+            </th>
+
+            <th pResizableColumn>Merchant
+              <span [pSortableColumn]="'ownerName'">
+              <p-sortIcon [field]="'ownerName'"></p-sortIcon>
+            </span>
+              <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'ownerName','startsWith')" placeholder="Search">
+            </th>
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order>
+          <tr>
+            <td>{{order?.srNo}}</td>
+            <td>
+              <a routerLink="/details/Product" [queryParams]="{id:order.entityId}">
+              {{order?.entityName}}
+            </a>
+            </td>
+            <td>
+              <span class="badge badge-pill badge-info">{{order?.quantity}}</span>
+            </td>
+
+            <td class="text-right">
+              <span *ngIf="order?.inventory?.Price">{{appService.decimalValues(order?.inventory?.Price)}}</span>
+            </td>
+
+            <td class="text-center">
+              <span class="badge badge-{{appService.getStatusColor(order?.status)}}">{{order?.status }}</span>
+            </td>
+            <td>{{appService.getDisplayDateFormat(order?.created)}}</td>
+
+            <td>
+              <a routerLink="/details/Customer" [queryParams]="{id:order.userId}">
+              {{order?.userName}}
+            </a>
+            </td>
+            <td>
+              <a routerLink="/details/Merchant" [queryParams]="{id:order.ownerId}" >
+              {{order?.ownerName}}
+            </a>
+            </td>
+
+          </tr>
+        </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>         
+        </p-table>
+        <!--End Of Ptable-->
+    </div>
+  </div>
+  <!--For Showing Products Of BEst Sellers-->
+
+
+  <!--For Showing Mostly Viewed-->
+  <div *ngIf="reportType === 'mostviewed'" class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Mostly Viewed </span>
+    <!--Widget Controls-->
+    <div class="widget-controls">
+       <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button> 
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getMostViewPro()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+    <!-- Global Filter-->
+    <div class="row">
+      <div  class="col-sm-4 ml-auto">
+        <div  class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Product" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+
+    <!-- P-Table -->
+    <p-table #dt  [value]="mostViewed" [columns]="exportCsv" exportFilename="Most Viewed" [lazy]="true" (onLazyLoad)="getMostViewPro($event)" [paginator]="true"
+      [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [responsive]="true"
+      [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:60px">S.No</th>             
+          <th pResizableColumn  style="width:100px">Count
+            <span [pSortableColumn]="'count'">
+              <p-sortIcon [field]="'count'"></p-sortIcon>
+            </span>
+          </th>
+          <th pResizableColumn>Product
+            <span [pSortableColumn]="'_id.name'">
+              <p-sortIcon [field]="'_id.name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" (input)="dt.filter($event.target.value,'name','startsWith')" placeholder="Search">             
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-viewed>
+        <tr>
+          <td>{{viewed.srNo}}</td>
+          <td>{{viewed.count}}</td>
+          <td>
+          <a routerLink="/details/Product" [queryParams]="{id:viewed._id.entityId}">{{viewed._id.name}}</a>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>       
+      </p-table>
+      <!--End Of Ptable-->
+    <!-- P-Table -->   
+  </div>
+</div>
+<!--End Showing Mostly Viewed-->
+
+<!--For Showing Reviews-->
+<div *ngIf="reportType === 'reviews'" class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Reviews</span>
+    <!--Widget Controls-->
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="ds.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getTotalReviews()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+    <!-- Global Filter-->
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Title/Product/Reviewer" (input)="ds.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+    <!--Ptable-->
+    <p-table #ds class="overflowvisible" [value]="totalReviews" [columns]="ReviewsCsv" exportFilename="Reviews" [lazy]="true" (onLazyLoad)="getTotalReviews($event)"
+      [paginator]="true" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [globalFilterFields]="['title','entityName','userName']"
+      [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:60px">S.No</th>
+          <th pResizableColumn style="width:120px">Review Title
+            <span [pSortableColumn]="'title'">
+              <p-sortIcon [field]="'title'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'title','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn style="width:120px">Review 
+            <span [pSortableColumn]="'comment'">
+              <p-sortIcon [field]="'comment'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'comment','startsWith')" placeholder="Search">
+          </th>          
+          <th pResizableColumn style="width:100px">Rating
+            <span [pSortableColumn]="'rating'">
+              <p-sortIcon [field]="'rating'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'rating','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn >Product
+            <span [pSortableColumn]="'entityName'">
+              <p-sortIcon [field]="'entityName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'entityName','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn style="width:140px">Reviewed By
+            <span [pSortableColumn]="'createdBy.name'">
+              <p-sortIcon [field]="'createdBy.name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'createdBy.name','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn style="width:110px">Created On
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'created','startsWith')" placeholder="Search">
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-review>
+        <tr>
+          <td> {{review?.srNo}} </td>
+          <td title="{{review?.title}}">
+            <a class="linkColor" (click)="ViewModal(review)">{{ appService.capitalize(review?.title)}}</a>
+          </td>
+          <td title="{{ review?.comment }}">{{ review?.comment }}</td>
+          <td class="noCursor">
+            <p-rating [ngModel]="review?.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+         </td>
+          <td title="{{review.entityName}}">  
+            <a routerLink="/details/Product" [queryParams]="{id:review?.entityId}"> {{review?.entityName}} </a>
+          </td>
+          <td>  
+            <a routerLink="/details/Customer" [queryParams]="{ id:review?.userId }">{{review?.createdBy?.name}}</a> 
+          </td>
+          <td> {{appService.getDisplayDateFormat(review?.created)}} </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>       
+    </p-table>
+  </div>
+</div> <!-- End For Showing Reviews-->
+
+<!-- Modal for displaying review details -->
+<div class="modal" id="openReviewDetailsModal" role="dialog">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title text-color">
+          <b>Review Details</b>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="col bottom-30">
+          <div *ngIf="reviewData?.title" class="row">
+            <dt class="col-sm-4 text-right">Title :</dt>
+            <dd class="col-sm-8">{{reviewData?.title}}</dd>
+          </div>
+
+          <div *ngIf="reviewData?.comment" class="row">
+            <dt class="col-sm-4 text-right">Description :</dt>
+            <dd class="col-sm-8">{{reviewData?.comment}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Rating :</dt>
+            <dd class="col-sm-8">
+              <p-rating [ngModel]="reviewData?.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+            </dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Product :</dt>
+            <dd class="col-sm-8">{{reviewData?.entityName}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Customer :</dt>
+            <dd class="col-sm-8">{{reviewData?.createdBy?.name}}</dd>
+          </div>
+
+          <div class="row">
+            <dt class="col-sm-4 text-right">Created :</dt>
+            <dd class="col-sm-8">{{appService.getDisplayDateFormat(reviewData?.created)}}</dd>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--For Showing Requested Category-->
+<div *ngIf="reportType === 'RequestCategory'" class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Request Category</span>
+    <!--Widget Controls-->
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getRequestedCategories()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+    <!-- Global Filter-->
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Category" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+    <!--Ptable-->
+    <p-table #dt  [value]="RequestCategories" [columns]="RequestCategoriesCsv" exportFilename="RequestCategories" [lazy]="true" (onLazyLoad)="getRequestedCategories($event)"
+      [paginator]="true" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+      [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:60px">S.No</th>
+          <th pResizableColumn > Category
+            <span [pSortableColumn]="'category'">
+              <p-sortIcon [field]="'category'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'category','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn > Requested By
+            <span [pSortableColumn]="'createdBy.name'">
+              <p-sortIcon [field]="'createdBy.name'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'createdBy.name','startsWith')" placeholder="Search">
+          </th> 
+          <th pResizableColumn > Created On
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created','startsWith')" placeholder="MM/DD/YYYY">
+          </th>   
+          <th pResizableColumn >  Status
+            <span [pSortableColumn]="'status'">
+              <p-sortIcon [field]="'status'"></p-sortIcon>
+            </span>
+              <p-dropdown appendTo="body" [options]="Status" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'status','equals')"
+                            styleClass="ui-column-filter"></p-dropdown>
+          </th>
+          <th pResizableColumn > Action</th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-Request>
+        <tr>
+          <td>{{ Request?.srNo }}</td>
+          <td>{{ Request?.category }}</td>
+          <td>{{ Request?.createdBy.name }}</td>
+          <td>{{ appService.getDisplayDateFormat(Request?.created) }}</td>
+          <td class="text-center"> 
+            <span *ngIf="Request.status === 'Requested'" class="badge badge-info"> {{ Request?.status }}</span>
+            <span *ngIf="Request.status === 'Approved'" class="badge badge-success"> {{ Request?.status }}</span>
+            <span *ngIf="Request.status === 'Rejected'" class="badge badge-danger"> {{ Request?.status }}</span>
+          </td>
+          <td class="text-center">
+           <button class="btn btn-danger transition btn-rounded btn-xs" title="Reject" [disabled] ="Request.status === 'Rejected'" (click)="onReject(Request)">
+              <i class="fa fa-close"></i>
+            </button>
+            <button class="btn btn-success transition btn-rounded  btn-xs" title="Approve" [disabled] ="Request.status === 'Approved'"  (click)="onApproved(Request)">
+              <i class="fa fa-check"></i>
+            </button>
+             <!--<button type="button" class="btn btn-outline-danger transition btn-rounded btn-xs" [disabled] ="Request.status === 'Rejected'" (click)="onReject(Request)">Reject</button> -->
+             <!--<button type="button" class="btn btn-outline-success transition btn-rounded  btn-xs" [disabled] ="Request.status === 'Approved'"  (click)="onApproved(Request)">Approve</button>                -->
+          </td>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td colspan="6">
+                 No Records Found
+            </td>
+         </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div> <!-- End For Showing Requested Category-->
+
+
+
+
+<div class="modal" id="Reason" role="dialog">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title text-color">
+          Reason For Reject
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body ">
+        <form [formGroup]="rejectForm">
+
+          <div class="form-group row">
+            <label for="input-5" class="col-sm-3 form-control-label m-t-5 text-center">Reason </label>
+            <div class="col-sm-9">
+              <textarea class="form-control " id="input-5" [ngClass]="{active:submitted && rejectForm.controls['reason'].invalid}" [formControl]="rejectForm.controls['reason']"  placeholder=""></textarea>
+              <span class="help-block text-danger" *ngIf="rejectForm.get('reason').touched && rejectForm.get('reason').invalid">Choose Reason</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-info btn-rounded btn-sm" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-outline-info btn-rounded btn-sm" (click)="RejectRequestCategory(rejectForm)">
+          Reject
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- addOrEdit Category -->
+<div class="modal fade" id="addCategory" role="dialog">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+              Add Category
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body padding">
+        <form novalidate>
+          <div class="form-group row text-right">
+            <label class="col-sm-4 form-control-label m-t-5" for="role">Global Category</label>
+            <div class="col-sm-6">
+
+
+              <select class="form-control" [ngClass]="{active:submitted && categoryForm.controls['globalCategory'].invalid}" [(ngModel)]="categoryData.globalCategory"
+                [formControl]="categoryForm.controls['globalCategory']">
+
+                <option value="null" [selected]="true" disabled>Select Global Category</option>
+                <option *ngFor="let category of globalCategories" [value]="category">{{category}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-4 form-control-label m-t-5 text-right" for="levels">
+              <span class="text-capitalize text-right">Select Tree</span>
+            </label>
+            <div class="col-sm-6 ui-fluid ">
+              <p-autoComplete [(ngModel)]="selectedCategory" [ngModelOptions]="{standalone: true}" name="tree" (completeMethod)="getAllCategoriesInSearch($event)"
+                [suggestions]="categories" field="tree" [size]="25" placeholder="Search subcategory" [minLength]="2" (onSelect)="selectCategory($event)">
+              </p-autoComplete>
+              <div *ngIf="submitted && !categorySelected" class="text-danger">Please select sub category</div>
+            </div>
+          </div>
+
+
+
+          <div class="form-group row text-right " *ngFor="let level of levels;let i=index">
+            <label class="col-sm-4 form-control-label m-t-5" for="levels">
+              <span class="text-capitalize"> Level{{i+1}}</span>
+            </label>
+            <div class="col-sm-6">
+              <input class="form-control" id="input-1" type="text" placeholder=" Enter New Category"
+                [(ngModel)]="levels[i].value" [ngModelOptions]="{standalone: true}" name="value_{{i}}">
+            </div>
+            <button class="btn btn-outline-info btn-rounded btn-sm mb-2" type="button" data-toggle="tooltip" title="Add new Level" (click)="addLevel()"
+              *ngIf="i == levels.length-1 &&levels.length<5">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </form>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline-info btn-rounded btn-sm mr-2" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-outline-info btn-rounded btn-sm" (click)="CreateOrUpdateCategory(categoryForm)" type="submit"> Create
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

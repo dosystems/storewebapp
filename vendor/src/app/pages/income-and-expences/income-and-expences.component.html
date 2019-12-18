@@ -1,0 +1,161 @@
+<div class="card overflowvisible" widget="">
+  <!-- Form header content start -->
+  <div class="card-header">
+    <span class="card-heading text-uppercase">INCOME AND EXPENSES</span>
+
+    <div class="widget-controls">
+
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="onClickAddIncomeExpense()">
+        Add Income or Expence
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getIncomeAndExpencesStatements()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Form header content end -->
+
+  <!-- Global filter content start-->
+  <div class="card-body widget-body">
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Table body content start -->
+    <p-table #dt  [value]="allStatements" #dt class="overflowvisible"  (onLazyLoad)="getIncomeAndExpencesStatements($event)"
+      [lazy]="true" [responsive]="true" [resizableColumns]="true" [lazy]="true" [paginator]="true" [rows]="appService.rowNum"
+      [totalRecords]="totalRecords" [rowsPerPageOptions]="appService.rowValue" [style]="{width:'100vw'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSNo">S.No</th>
+          <th pResizableColumn class="widthUsername">User Name
+            <span [pSortableColumn]="'userName'">
+              <p-sortIcon [field]="'userName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'userName',filterMatchMode)" placeholder="Search">
+          </th>
+          <th pResizableColumn class="widthAmount">Amount
+            <span [pSortableColumn]="'amount'">
+              <p-sortIcon [field]="'amount'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'amount',filterMatchMode)" placeholder="Search">
+          </th>
+
+          <th pResizableColumn class="remarksWidth">Remarks
+            <span [pSortableColumn]="'remarks'">
+              <p-sortIcon [field]="'remarks'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'remarks',filterMatchMode)" placeholder="Search">
+          </th>
+          <th pResizableColumn class="widthCreated">Created On
+              <span [pSortableColumn]="'created'">
+                  <p-sortIcon [field]="'created'"></p-sortIcon>
+                </span>
+                <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created',filterMatchMode)" placeholder="MM/DD/YYYY">
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-incomeExpence>
+        <tr>
+          <td>{{incomeExpence.srNo}}</td>
+          <td>{{incomeExpence.userName}}</td>
+          <td>{{incomeExpence.amount}}</td>
+          <td>{{incomeExpence.remarks}}</td>
+          <td>{{incomeExpence.created}}</td>
+
+        </tr>
+
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="incomeExpense">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Income or Expence</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="incomeExpenceForm" novalidate>
+          <div class="form-group row text-right">
+            <label for="email-h-f" class="col-sm-3 form-control-label m-t-5">Amount</label>
+            <div class="col-sm-9">
+              <input type="number" class="form-control" id="amount" [ngClass]="{active:submitted && incomeExpenceForm.controls['amount'].invalid }"
+                [formControl]="incomeExpenceForm.controls['amount']" [(ngModel)]="incomeExpenceData.amount">
+            </div>
+          </div>
+          <div class="form-group row ">
+            <label for="type" class="col-sm-3 form-control-label m-t-5 text-right">Type</label>
+            <div class="col-sm-9">
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="INCOME" [formControl]="incomeExpenceForm.controls['type']"
+                  [(ngModel)]="incomeExpenceData.type">
+                <label class="form-check-label" for="inlineRadio1">Income</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="EXPENCE" [formControl]="incomeExpenceForm.controls['type']"
+                  [(ngModel)]="incomeExpenceData.type">
+                <label class="form-check-label" for="inlineRadio2">Expence</label>
+              </div>
+              <br>
+              <span class="help-block text-danger" *ngIf="submitted && incomeExpenceForm.controls['amount'].invalid">Please Select Income or Expense</span>
+
+            </div>
+
+
+          </div>
+
+          <div class="form-group row text-right">
+            <label for="email-h-f" class="col-sm-3 form-control-label m-t-5">Remarks</label>
+            <div class="col-sm-9">
+              <textarea type="text" class="form-control" id="remarks" [ngClass]="{active:submitted && incomeExpenceForm.controls['remarks'].invalid }"
+                [formControl]="incomeExpenceForm.controls['remarks']" [(ngModel)]="incomeExpenceData.remarks"></textarea>
+            </div>
+          </div>
+        </form>
+        <div class="row">
+          <div class="col-12 text-right">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">
+              Cancel
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" (click)="createIncomeOrExpence()">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

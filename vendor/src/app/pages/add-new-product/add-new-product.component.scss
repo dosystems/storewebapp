@@ -1,0 +1,232 @@
+//  @import "../../../theme/styles/variables";
+
+.customClass {
+    background-color: #dd3;
+    border-radius: 5px;
+    margin:5px;
+    width: 500px;
+}
+
+.customClass .img-ul-upload {
+    background-color: #000 !important;
+}
+
+.customClass .img-ul-clear {
+    background-color: #B819BB !important;
+}
+
+.customClass .img-ul-drag-box-msg {
+    color: purple !important;
+}
+
+.customClass .img-ul-container {
+    background-color: #FF6CAD !important;
+}
+
+.step{
+    text-align: center;
+    &:before, &:after{
+        content: '';
+        position: absolute;        
+        background-color: #ccc;
+        top: 0;
+        margin-top: 23px;        
+        width: 50%;
+        height: 5px;
+        border-top: 1px solid#555;
+        border-bottom: 1px solid#555;        
+    }
+    &:before{
+        left: 0;
+    }
+    &:after{
+        right: 0;
+    }
+    &:first-child:before {
+        display: none; 
+    }
+    &.last:after{
+        display: none; 
+    }
+    .step-icon{
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        background: #ccc;
+        border: 1px solid#555;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 0 auto;
+        i{
+            margin: 0 auto;
+            font-size: 20px;
+            color:#555;
+        }
+    }
+    &.active{
+        &:before, &:after{
+            background:#bf1725;
+            border:none;
+        }
+        .step-icon{
+            background: #bf1725;
+            border:none;
+            i{
+                color: white; 
+            }
+        }
+    }
+    &.valid{
+        &:before, &:after{
+            background: green;
+            border:none;
+        }
+        .step-icon{
+            background: green;
+            border:none;
+            i{
+                color: white; 
+            }
+        }
+    }
+    .step-name{
+        display: block;
+        margin-top: 14px;
+        color:#555;
+        &.active{
+            color:#bf1725
+        }
+        &.valid{
+            color: green;
+        }
+    }
+}
+
+.form-wizard{  
+    margin-top:25px;
+    margin-bottom: 20px;
+    background: white;
+    padding-top: 15px; 
+    min-height: 400px;   
+    .form-title{
+        margin-bottom: 15px;
+        color:#555;
+        border-bottom: 1px solid #ccc;
+        padding: 0 15px;
+    }
+    .form-control-label{
+        color:#242424 !important;
+    }
+    .help-block{
+        position: absolute;
+        font-size: 11px;
+    }
+}
+
+.arrow{
+    font-size: 12px;
+}
+
+
+@media (max-width: 767px) { 
+    .step{
+        margin-bottom: 10px;
+        text-align: left;
+        .step-icon{
+            float: left;
+            margin-right: 15px;
+        }
+        &:before, &:after{
+            content: none;
+        }
+    }  
+}
+
+.active{
+    color:#bf1725;
+}
+
+
+
+
+.m-img-upload-btn{
+    position: absolute;
+    padding: 0;
+    width: calc(100% - 30px);
+    height: 38px;
+    opacity: 0;
+}
+.images-container{
+    width: 100%;
+    top: 15px;
+    border: 2px dashed #ccc;
+    background: rgb(241, 241, 241);
+    min-height: 293px;
+    padding: 10px;
+    display: block;
+    .m-image-wrapper{
+        position: relative;
+        display: inline-block;
+        margin: 10px;
+        width: 120px;
+        height: 120px;
+        .m-delete-img{
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 3px 5px;
+            border-radius: 50%;
+            visibility: hidden;
+            cursor: pointer;
+        }
+        &:hover .m-delete-img{
+            visibility: visible;
+        }
+        img{
+           width: 120px;
+           height: 120px;          
+        }
+    }   
+}
+
+.card .card-header a {
+    color: #555;
+}
+
+.card .card-body{
+    background-color: #e9ecef;
+}
+.boxshadownull{
+    box-shadow: none;
+}
+.p-autocomplete{
+    width: 100%;
+  }
+.background-white{background: #fff !important;}
+.bottom-0{margin-bottom: 0px;}
+.add-item{color: #007bff !important;
+text-decoration: none;
+background-color: transparent;}
+.add-item:hover, .add-item:focus {
+    text-decoration: none;
+    color: #0056b3 !important;
+}
+.card {
+    overflow: initial;
+}
+
+
+.ngxmdp .selector {
+    z-index: 100000 !important;
+}
+
+.productHeadingFont {
+    font-size: 17px;
+}
+.text_center{
+    margin: 0 auto !important;
+}

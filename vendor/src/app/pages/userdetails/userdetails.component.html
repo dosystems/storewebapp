@@ -1,0 +1,128 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Customer Details & History </span>
+
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" title="Back" onclick="window.history.back()">
+       <span class="fa fa-arrow-left"></span>
+     </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+  </div>
+  <div class="card-body widget-body">
+    <!--For Showing Details Of the Product-->
+    <div class="col bottom-30 typography">
+
+      <div class="row">
+        <div *ngIf="buyerDetails.firstName" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">FirstName :</dt>
+          <dd class="col-sm-7  textfloat " title="{{buyerDetails.displayName}}">{{buyerDetails.firstName}} </dd>
+        </div>
+
+        <div *ngIf="buyerDetails.lastName" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">LastName :</dt>
+          <dd class="col-sm-7  textfloat " title="{{buyerDetails.displayName}}">{{buyerDetails.lastName}} </dd>
+        </div>
+
+        <div *ngIf="buyerDetails.email" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Email :</dt>
+          <dd class="col-sm-7 ">{{buyerDetails.email }} </dd>
+        </div>
+
+        <div *ngIf="buyerDetails.phoneNumber" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Phone :</dt>
+          <dd class="col-sm-7">{{buyerDetails.phoneNumber }}</dd>
+        </div>
+
+        <div *ngIf="buyerDetails.status" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Status :</dt>
+          <dd class="col-sm-7 ">
+            <span *ngIf="buyerDetails.status" class="badge badge-{{appService.getStatusColor(buyerDetails.status) }}">
+                 {{ buyerDetails.status }} 
+             </span>
+          </dd>
+        </div>
+
+        <div *ngIf="buyerDetails.gender" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">Gender :</dt>
+          <dd class="col-sm-7 ">
+            <span class="badge badge-secondary" *ngIf="buyerDetails.gender =='Male' "> <i class="fa fa-male"></i> </span>
+            <span class="badge badge-primary" *ngIf="buyerDetails.gender =='Female' "> <i class="fa fa-female"></i> </span>
+          </dd>
+        </div>
+
+        <div *ngIf="buyerDetails.wallet?.BUX" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">BUX Tradable :</dt>
+          <dd class="col-sm-7">{{buyerDetails.wallet?.BUX }}</dd>
+        </div>
+
+        <div *ngIf="buyerDetails.wallet?.EUR" class="col-md-6 row">
+          <dt class="col-sm-5 text-right">EUROS :</dt>
+          <dd class="col-sm-7">{{buyerDetails.wallet?.EUR }}</dd>
+        </div>
+
+      </div>
+
+
+    </div>
+    <!--For Showing Details Of the Product-->
+
+    <!--Ptable For Showing The Activities Of the Product-->
+    <p-table #dt [value]="userHistory" [lazy]="true" (onLazyLoad)="getUserHistory($event)" [paginator]="true" [rows]="appService.rowNum"
+      [rows]="20" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [responsive]="true" [resizableColumns]="true"
+     *ngIf="showHistoryTable" >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn class="widthSno">S.No</th>
+          <th pResizableColumn>Context
+            <span [pSortableColumn]="'context'">
+              <p-sortIcon [field]="'context'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'context',startsWith)" placeholder="Search">
+          </th>     
+          <th pResizableColumn>Context Type
+            <span [pSortableColumn]="'contextType'">
+              <p-sortIcon [field]="'contextType'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'contextType',startsWith)" placeholder="Search">
+          </th>                
+          <th pResizableColumn>Description 
+            <span [pSortableColumn]="'desc'">
+              <p-sortIcon [field]="'desc'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'desc',startsWith)" placeholder="Search">
+          </th>                
+          <th pResizableColumn>Created 
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="width_100" (input)="dt.filter($event.target.value,'created',startsWith)" placeholder="Search">
+          </th>       
+   
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-history>
+        <tr>
+          <td>{{history.srNo}} </td>
+          <td>{{history.context}}</td>
+          <td>{{history.contextType}}</td>
+          <td class="textfloat">{{history.desc}}</td>
+          <td>{{history.created}}</td>
+        </tr>
+      </ng-template>
+      </p-table>
+      <!--Ptable For Showing The Activities Of the Product-->
+  </div>
+
+</div>

@@ -1,0 +1,85 @@
+@import "../../theme/styles/variables";
+
+.login-container{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    .card{
+        padding: 15px;
+        .btn-link{
+            padding: 0;
+            &.forgot{
+                font-size: 14px;
+            }
+            &:hover{
+                color: $primary-color;
+            }
+        }
+       
+    }
+}
+
+.auth-sep {
+  margin-top: 32px;
+  margin-bottom: 24px;
+  line-height: 20px;
+  font-size: 15px;
+  text-align: center;
+  display: block;
+  position: relative;
+  & > span {
+    display: table-cell;
+    width: 30%;
+    white-space: nowrap;
+    padding: 0 14px;
+    color: $gray;
+    & > span {
+      margin-top: -11px;
+      display: block;
+      font-weight: 300;
+    }
+  }
+  &:before, &:after {
+    border-top: solid 1px $gray-light;
+    content: "";
+    height: 1px;
+    width: 35%;
+    display: table-cell;
+  }
+}
+
+.login-help{
+    margin: 0;
+    padding: 0;
+    li{
+        list-style: none;
+        display: inline-block;
+        margin-left: 10px;
+        &:first-child {
+            margin-left:0;
+        }
+        i{
+            cursor: pointer;
+            transition: all 0.1s ease;
+            color: #fff;
+            padding: 9px 9px 6px 9px;
+            font-size: 12px;
+            background-color: $main-color;
+            &.socicon-facebook{
+                background-color: $facebook-color;
+            }
+            &.socicon-twitter{
+                background-color: $twitter-color;
+            }
+            &.socicon-google{
+                background-color: $google-color;
+            }
+            &:hover{                         
+                opacity: 0.9;     
+            }
+        }
+    }
+}
+

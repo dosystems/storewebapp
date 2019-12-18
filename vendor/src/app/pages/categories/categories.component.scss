@@ -1,0 +1,27 @@
+
+.widthSNo{
+    width: 48px;
+}
+
+.CreatedWidth{
+    width: 120px;
+}
+.childWidth{
+    width: 120px;
+}
+.parentWidth{
+    width:120px
+}
+.adjust{
+    width: 100px;
+}
+.linkColor{
+    color: dodgerblue!important;
+    cursor: pointer;
+}
+td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

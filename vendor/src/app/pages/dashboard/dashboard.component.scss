@@ -1,0 +1,264 @@
+@import "../../theme/styles/variables";
+// @import "../../../../node_modules/bootstrap/scss/_variables";
+// @import "../../../../node_modules/bootstrap/scss/mixins";
+
+.info-box{    
+    color: $default-color;
+    .card-block{
+        padding: 1rem;
+    }
+    .info-box-icon{
+        display: flex;
+        font-size: 50px;
+        opacity: 0.9;
+    }
+    h2, h6, span, p{
+        font-weight: $font-light;
+        letter-spacing: 0.03em;
+    }
+    h6{
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    p{
+        font-size: 14px;
+        line-height: 1;
+    }
+}
+
+.small-info-box{
+    padding: 8px;
+    color: $default-color;
+    background-color: $info-color;
+    div.media{
+        align-items: center;
+    }
+    i{
+        font-size: 28px;
+    }
+    h6, span{
+        font-weight: $font-normal;
+    }
+    h6{
+        font-size: 14px;
+    }
+}
+
+.user-info-box{
+    color: #fff;   
+    .card-body{
+        padding: 3px;
+        img{
+            width: 84px;
+        }
+        h6{
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-weight: 300;
+        }
+        a{
+            font-size: 20px;
+            color: $default-color;
+        }
+    }
+}
+
+
+.live-tile{
+    margin: 0;
+    width: 100%;
+    color: inherit;    
+}
+
+
+.weather{
+    img{
+        width: auto !important;
+    }
+    h2, p{
+        font-weight: 300;
+        color: $default-color;
+    }
+    span{
+        color: $default-color;
+    }
+    .current-temperature{
+        font-size: 70px;
+        color: $default-color;
+        display: inline-block;
+    }
+    .degree{
+        color: $default-color;
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 20px;
+        font-size: 20px;
+    }
+    .card-body{
+        padding: 0;
+        canvas{
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .line{
+        padding: 5px 15px;
+        border-bottom: 1px solid rgba($main-color,0.2);        
+        &:last-child{
+            border:none;
+        }
+    }
+}
+
+.small-box{
+    border-radius: 2px;
+    position: relative;
+    display: block;
+    margin-bottom: 20px;
+    color: #fff !important;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    .inner {
+        padding: 10px 10px 0 10px;
+    }
+    .icon,.secondicon {
+        -webkit-transition: all .2s linear;
+        -o-transition: all .2s linear;
+        transition: all .2s linear;
+        position: absolute;
+        right: 10px;
+        font-size: 60px;
+        color: rgba(0,0,0,0.15);
+    }
+    .icon {
+        top: -5px;
+    }
+    .secondicon {
+        bottom: 35px;
+    }
+    h3 {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 0 0 10px 0;
+        white-space: nowrap;
+        padding: 0;
+    }
+    .small-box-footer {
+        position: relative;
+        text-align: center;
+        padding: 3px 0;
+        color: #fff;
+        color: rgba(255,255,255,0.8);
+        display: block;
+        z-index: 10;
+        background: rgba(0,0,0,0.1);
+        text-decoration: none;
+    }
+    p{
+        font-size: 12px;
+    }
+    
+}
+.small-box:hover .icon, .small-box:hover .secondicon {
+    font-size: 67px;
+}
+
+.bg-vailet {
+    background-color: #860175;
+}
+.bg-indianred{
+    background-color: indianred;
+}
+.bg-lightsalmon{
+    background-color: lightsalmon;
+}
+.bg-pink{
+    background-color: #ff99ff;
+}
+.bg-darkblue{
+    background-color: #2d2dff;
+}
+.bg-goldenrod{
+    background-color: goldenrod
+}
+.bg-olive{
+    background-color: olive;
+}
+.bg-aqua{
+    background-color: #00c0ef;
+}
+.bg-green{
+    background-color: #00a65a;
+}
+.bg-red{
+    background-color: red;
+}
+.bg-warn{
+    background: #f79a17;
+}
+.bg-green{
+    background-color: green;
+
+}
+
+
+
+.dashboard-card {
+    .card-title{
+        margin-bottom: 0;
+        font-weight: bold;
+    }
+    .card-text{
+        font-size: 13px;
+    }
+}
+.user-look{
+    .card-title{
+        font-size: 0.8rem;
+        color: gray;
+        text-transform: uppercase;
+    }
+    .card-text{
+        font-size: 16px;
+    }
+}
+
+.anchor{
+    color:dodgerblue !important;
+}
+
+.list-group-item{
+    border:none;
+}
+li {
+    list-style: none;
+}
+
+.listCardMinHeight {
+    min-height:240px !important;
+}
+.widthQuant{
+    width:70px;
+}
+.widthStatus{
+    width:80px;
+}
+.widthDate{
+    width:90px;
+}
+.piechartCardHeight{
+    height:270px !important;
+
+}
+element.style {
+    display: block;
+    /* width: 377px; */
+    height: 200px !important;
+}
+.paymentSummaryheight{
+    height:127px !important;
+}
+.CancelledCardHeight{
+    min-height:390px;
+}

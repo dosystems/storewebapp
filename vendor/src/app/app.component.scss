@@ -1,0 +1,119 @@
+@import "theme/styles/variables";
+@import "theme/styles/mixins";
+
+// @import "../../node_modules/pace/themes/pace-theme-flash";
+@import "../../node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css";
+@import "../../node_modules/dropzone/dist/min/dropzone.min";
+@import "~@swimlane/ngx-datatable/release/themes/bootstrap.css";
+@import "~@swimlane/ngx-datatable/release/assets/icons.css";
+@import "theme/styles/bootstrap-override";
+@import "theme/styles/libs-override";
+@import "theme/styles/base";
+
+
+.active {
+    border-color:red;
+}
+.modal{
+    padding-top: 0%;
+}
+/* tabs look start */
+.tabs-newlook{
+    .tab-content{
+        border: none;
+        background: none;
+    }
+    .nav-tabs {
+        background-color: #fff;
+        border-radius: 0;
+        border-right: none;
+        border-left: none;
+        border-top: none;
+        .nav-item .nav-link.active {
+            background: none;
+            border-bottom: 2.5px solid #ff6a00;
+        }
+        .nav-item .nav-link{
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            padding: 0.75rem 1rem  0.6rem 1rem;
+        }
+    }
+}
+/* tabs look end */
+
+/* card common css strat */
+.card{
+    .card-header{
+        color: $dark-color;
+        background: $default-color;
+        border-bottom: 1px solid #e9ebee;
+    }
+    .card-heading{
+        font-weight: 600;
+    }
+    .card-body{
+        padding: 15px;
+    }
+    .widget-controls {
+        padding: 7.1px 20px;
+    }
+}
+/* card common css end */
+
+.top-15{
+    margin-top: -15px;
+}
+.btn-xs{
+    line-height: 1.25;
+    font-weight: bold;
+    font-size: 0.7rem;
+}
+
+.buttons{
+    text-align: center;
+    .d-inline-block{
+        margin-bottom: 8px;
+        margin-right: 6px;      
+    }
+    p{
+        margin-top: 4px;
+        margin-bottom: 0;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+}
+
+button {
+    margin-right: 3px;
+}
+.note-popover.popover{
+    display: none;
+}
+*{
+    font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 300;
+}
+
+.form-control {
+    border-radius: 3px;
+}
+.img-ul-file-upload{padding: 0px !important}
+.img-ul-button{font-size:14px !important}
+.img-ul{background-color: transparent !important;border:none !important}
+
+
+.cursor{
+    cursor: pointer !important;
+}
+.link{
+    color: dodgerblue !important;
+}
+.textFloat {
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    width:100px;
+    display:inline-block;
+}

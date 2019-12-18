@@ -1,0 +1,188 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.sidebar{
+    background: $sidebar-bg-color;
+    height: 100%;
+    min-height: 100%;
+    position: fixed;
+    width: $sidebar-width;
+    overflow: hidden;
+    display: block;
+    z-index: 9;
+    margin-top: 60px;
+    &.menu-collapsed{
+        width: 50px;
+        a.sidebar-list-link b{
+            display: none;  
+        }
+        .sidebar-sublist{
+            position: absolute;
+            top: -1px;
+            left: 52px;
+            width: 0;
+            display: block;
+            overflow: hidden; 
+        }
+    }
+    .nav{
+        height: 100%;
+        padding-bottom: 60px;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+}
+
+.sidebar-list-item {
+    display: block;
+    width: 100%;
+    position: relative;
+    float: none;
+    padding: 0;
+    border-bottom: 1px solid rgba($main-color,0.5);
+    box-shadow: 0 1px 0 0 rgba($default-color,0.1);
+}
+
+a.sidebar-list-link {
+    display: block;
+    height: 42px;
+    padding-left: 18px !important;
+    padding-top: 0 !important;
+    text-shadow: none;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color:$default-color;
+    line-height: 42px;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    i {
+        margin-right: 16px;
+        width: 16px;
+        display: inline-block;
+    }
+    b {
+        display: block;
+        opacity: 1;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        text-shadow: none;
+        font-size: 18px;
+        position: absolute;
+        right: 10px;
+        top: 14px;
+        padding: 0;
+        text-align: center;
+        color:$default-color;
+        -webkit-transition: -webkit-transform 0.2s linear;
+        -moz-transition: -moz-transform 0.2s linear;
+        -ms-transition: -ms-transform 0.2s linear;
+        -o-transition: -o-transform 0.2s linear;
+        transition: transform 0.2s linear;
+    }
+    &:hover{
+         background-color: $main-color;
+    }
+}
+
+.sidebar-list-item.sidebar-item-expanded>.sidebar-list-link b,
+.sidebar-sublist-item.sidebar-item-expanded>.sidebar-list-link b{
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.sidebar-sublist{
+    display: none;
+    padding: 0;
+    list-style: none;
+    position: relative;
+    li {
+        display: block;
+        float: none;
+        padding: 0;
+        border-bottom: none;
+        position: relative;
+        border-bottom: 1px solid rgba($main-color,0.7);
+        &:last-child{
+            border-bottom: none;
+        }
+        a {
+            display: block;
+            text-shadow: none;
+            font-size: 13px;
+            text-decoration: none;
+            color: $default-color;
+            padding-left: 50px !important;      
+            height: 42px;
+            line-height: 42px; 
+            &:before{
+                font-family: FontAwesome;
+                content: "\f1db";
+                margin-right: 10px;
+                font-size: 10px;
+            } 
+            &:hover{
+                background-color: $main-color; 
+            }
+        }
+    }
+    .subitem-submenu-list li {
+        border-top: 1px solid rgba($main-color, 0.7);
+        a{
+            padding-left: 65px !important;    
+        }
+    }
+}
+
+.sidebar-item-expanded>ul.sidebar-sublist {
+    background-color: rgba($main-color, 0.5);
+}
+
+.subitem-submenu-link .fa {
+    top: 14px;
+}
+
+.sidebar-hover-elem{
+  width: 4px;
+  background: $sidebar-item-active-bg-color;
+  position: absolute;
+  top: -150px;
+  left: 0;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  transition-property: top, height;
+  height: 36px;
+  display: block;
+}
+// .sidebar.menu-collapsed .sidebar-hover-elem{
+//      left: 46px;
+// }
+
+.active-link{
+    background-color: $sidebar-item-active-bg-color;
+}
+
+
+@media (max-width: 544px) {
+  .sidebar.menu-collapsed {
+    width: 0;
+  }
+  .sidebar-hover-elem, .sidebar-select-elem {
+    display: none;
+  }
+
+}
+

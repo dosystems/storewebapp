@@ -1,0 +1,9 @@
+<div class="block">
+    <div class="container">
+      <ul class="breadcrumbs">
+        <li *ngFor="let breadcrumb of breadcrumbs; let i = index;">
+          <a routerLink="/" ><i class="icon icon-home"></i></a>
+          <a routerLink="[breadcrumb.url]" ><span>&nbsp;/&nbsp;<b>{{breadcrumb.name}}</b></span></a></li>
+      </ul>
+    </div>
+  </div>

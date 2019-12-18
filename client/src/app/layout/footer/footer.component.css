@@ -1,0 +1,18 @@
+@media screen and (min-width: 991px){
+    .newsletter.variant3 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+}
+
+
+.categorytext{
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #4e515d;
+}
+
+.buxcoinwidth{
+    height: 33px;
+    /* width: 53px; */
+}

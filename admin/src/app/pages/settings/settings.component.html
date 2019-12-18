@@ -1,0 +1,211 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Settings</span>
+    <!--Widget Controls-->
+    <div class="widget-controls">
+      <!--<button class="btn btn-outline-info btn-rounded btn-xs" type="button" routerLink="/add" >
+        Add Settings
+      </button>      -->
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="AddSettings('add','')">Add Settings</button>
+      <!--<button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>-->
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllSettings()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+    <!-- Global Filter-->
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search " (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+
+    <!-- P-Table -->
+    <p-table #dt [value]="totalCommisions" [lazy]="true" (onLazyLoad)="getAllSettings($event)" [paginator]="true" [rows]="appService.rowNum"
+      [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:50px">S.No</th>
+          <th pResizableColumn style="width:110px">Name
+            <span [pSortableColumn]="'categories.name'">
+              <p-sortIcon [field]="'name'"></p-sortIcon>
+            </span>
+            <!--<input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'categories.name','startsWith')"
+              placeholder="Search">-->
+          </th>
+      
+           <th pResizableColumn style="width:110px">Charge
+            <span [pSortableColumn]="'adminCharge'">
+              <p-sortIcon [field]="'adminCharge'"></p-sortIcon>
+            </span>
+            <!--<input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'adminCharge','startsWith')"
+              placeholder="Search">-->
+          </th>   
+          <th pResizableColumn style="width:110px">Type
+            <span [pSortableColumn]="'type'">
+              <p-sortIcon [field]="'type'"></p-sortIcon>
+            </span>          
+          </th>          
+         
+          <th pResizableColumn style="width:80px">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-setting>
+        <tr>
+          <td>{{ setting?.srNo }}</td>
+          <td>{{ setting?.name }}</td>
+          <td>{{ setting?.adminCharge }} %</td>
+          <td>{{ setting?.type }}</td>
+          <td class="text-center">
+            <span class="badge badge-primary pointer cursor mr-1" title="Edit" (click)="AddSettings('edit',setting)">
+              <i class="fa fa-edit"></i>
+            </span>
+            <span class="badge badge-danger pointer cursor" title="Delete" (click)="AddSettings('delete',setting)">
+              <i class="fa fa-trash"></i>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td colspan="4">
+            No Records Found
+          </td>
+        </tr>
+      </ng-template>
+
+      </p-table>
+      <!--End Of Ptable-->
+  </div>
+
+</div>
+
+
+<!--Delete Modal for Deleting -->
+<div class="modal fade" id="deleteSettings">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the Setting?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="updatedSettings()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal End-->
+
+<div class="modal" id="addedit" role="dialog">
+  <div class="modal-dialog modal-md  modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header noborder">
+        <div class="col-sm-12 ">
+          <ng-template [ngIf]="settingsType" [ngIfElse]="addEdit">
+            <h5>Edit Setting</h5>
+          </ng-template>
+          <ng-template #addEdit>
+            <h5>Add Setting</h5>
+          </ng-template>
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="settingsForm" novalidate>
+          <div class="form-group row">
+            <label for="input-4" class="col-sm-3 form-control-label m-t-5 text-right">Type </label>
+            <div class="col-sm-9">
+              <p-dropdown  [options]="typeOptions" [style]="{'width':'100%'}" id="input-4" placeholder="Select Type"
+                [(ngModel)]="modelData.type" [formControl]="settingsForm.controls['type']"></p-dropdown>
+                <span *ngIf="!settingsForm.controls['type'].valid && submitted" class="active float-left">Choose Type</span>
+            </div>
+          </div>
+
+          <div *ngIf="modelData.type === 'Category'">
+            <div class="form-group row">
+              <label for="input-4" class="col-sm-3 form-control-label m-t-5 text-right">Category </label>
+              <div class="col-sm-9  ui-fluid">
+              <p-autoComplete [(ngModel)]="category.name" [style]="{'width':'100%'}" [formControl]="settingsForm.controls['name']" name="tree" (completeMethod)="getAllCategories($event)"
+                [suggestions]="allCategories" field="tree" placeholder="Search category" [minLength]="3">
+                </p-autoComplete>
+                <span class="help-block text-danger" *ngIf="submitted && (!category.name || !category.name.tree)">Please Select Category</span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="input-4" class="col-sm-3 form-control-label m-t-5 text-right">Charge </label>
+              <div class="col-sm-9">
+              <input [ngClass]="{active:submitted && settingsForm.controls['adminCharge'].invalid}" [maxlength]="20" [formControl]="settingsForm.controls['adminCharge']"
+                class="form-control" type="number" placeholder="Admin Charge" name="Charge" [(ngModel)]="category.adminCharge">
+              <span class="help-block text-danger" *ngIf="settingsForm.get('adminCharge').touched && settingsForm.get('adminCharge').invalid">Select Charge</span> 
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="modelData.type === 'Vendor'">
+            <div class="form-group row">
+              <label for="input-4" class="col-sm-3 form-control-label m-t-5 text-right">Vendor </label>
+              <div class="col-sm-9  ui-fluid">
+              <p-autoComplete [(ngModel)]="vendor.name" [style]="{'width':'100%'}" [formControl]="settingsForm.controls['name']" name="companyName" (completeMethod)="getTotalSellersList($event)"
+                [suggestions]="sellersList" field="companyName" placeholder="Search Vendor" [minLength]="3">
+                </p-autoComplete>
+                <span class="help-block text-danger" *ngIf="submitted && ( !vendor.name || !vendor.name.companyName )">Please Select Vendor</span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="input-4" class="col-sm-3 form-control-label m-t-5 text-right">Charge </label>
+              <div class="col-sm-9">
+              <input [ngClass]="{active:submitted && settingsForm.controls['adminCharge'].invalid}" [maxlength]="20" [formControl]="settingsForm.controls['adminCharge']"
+                class="form-control" type="number" placeholder="Admin Charge" name="Charge" [(ngModel)]="vendor.adminCharge">
+              <span class="help-block text-danger" *ngIf="settingsForm.get('adminCharge').touched && settingsForm.get('adminCharge').invalid">Select Charge</span> 
+              </div>
+            </div>
+
+          </div>          
+
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-info btn-rounded btn-sm" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-outline-info btn-rounded btn-sm" [disabled]="disabled" (click)="updatedSettings()" type="submit">
+          <ng-template [ngIf]="settingsType" [ngIfElse]="createUpdate">
+            <span>Update</span>
+          </ng-template>
+          <ng-template #createUpdate>
+            <span>Create</span>
+          </ng-template>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

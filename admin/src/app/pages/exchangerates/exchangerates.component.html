@@ -1,0 +1,118 @@
+  <!--Table For Exchange rates-->
+  <div  class="card overflowvisible" widget="">
+
+    <div class="card-header">
+      <span class="card-heading text-uppercase">Exchange Rates </span>
+      <!--Widget Controls-->
+      <div class="widget-controls">
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+              <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getExchangeRates()">
+        <span class="fa fa-refresh"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+        <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+      </div>
+      <!--WidgetControls-->
+    </div>
+    <div class="card-body widget-body">
+      <div class="row">
+        <div class="col-sm-4 ml-auto">
+          <div class="input-group input-group-sm bottom-15">
+            <input type="text" class="form-control" placeholder="Search Pair" (input)="dt.filterGlobal($event.target.value, 'contains')">
+            <div class="input-group-append">
+              <span class="input-group-text">
+                 <i class="fa fa-search"></i>
+             </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End Of Global Filter-->
+
+      <!-- P-Table -->
+      <p-table #dt [value]="exchangeRates" [columns]="exportCsv" exportFilename="EXCHANGE RATES" [lazy]="true" (onLazyLoad)="getExchangeRates($event)"
+        [paginator]="true" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+        [responsive]="true"  [resizableColumns]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pResizableColumn style="width:60px">S.No</th>
+            <th pResizableColumn>Pair
+              <span [pSortableColumn]="'pair'">
+                <p-sortIcon [field]="'pair'"></p-sortIcon>
+              </span>
+              <input pInputText type="text" (input)="dt.filter($event.target.value,'pair','startsWith')" placeholder="Search">
+            </th>
+            <th pResizableColumn>From Currency
+               <span [pSortableColumn]="'fromCurrency'">
+                  <p-sortIcon [field]="'fromCurrency'"></p-sortIcon>
+               </span>
+               <input pInputText type="text" (input)="dt.filter($event.target.value,'fromCurrency','startsWith')" placeholder="Search">           
+            </th>
+            <th pResizableColumn>To Currency
+               <span [pSortableColumn]="'toCurrency'">
+                  <p-sortIcon [field]="'toCurrency'"></p-sortIcon>
+               </span>
+               <input pInputText type="text" (input)="dt.filter($event.target.value,'toCurrency','startsWith')" placeholder="Search">             
+            </th>
+            <th pResizableColumn>Buy Rate
+               <span [pSortableColumn]="'buyRate'">
+                  <p-sortIcon [field]="'buyRate'"></p-sortIcon>
+               </span>
+               <input pInputText type="text" (input)="dt.filter($event.target.value,'buyRate','startsWith')" placeholder="Search">             
+            </th>
+            <th pResizableColumn>Sell Rate
+               <span [pSortableColumn]="'sellRate'">
+                  <p-sortIcon [field]="'sellRate'"></p-sortIcon>
+               </span>
+               <input pInputText type="text" (input)="dt.filter($event.target.value,'sellRate','startsWith')" placeholder="Search">             
+            </th>
+            <th pResizableColumn>Fee
+               <span [pSortableColumn]="'fee'">
+                  <p-sortIcon [field]="'fee'"></p-sortIcon>
+               </span>
+               <input pInputText type="text" (input)="dt.filter($event.target.value,'fee','startsWith')" placeholder="Search">             
+            </th>            
+            <th pResizableColumn>Created
+               <span [pSortableColumn]="'created'">
+                  <p-sortIcon [field]="'created'"></p-sortIcon>
+               </span>
+               <input pInputText type="text" (input)="dt.filter($event.target.value,'created','startsWith')" placeholder="Search">             
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-exchange>
+          <tr>
+            <td>{{exchange?.srNo}}</td>
+            <td>{{exchange?.pair}}</td>
+            <td>{{exchange?.fromCurrency}}</td>
+            <td>{{exchange?.toCurrency}}</td>  
+            <td>{{exchange?.buyRate}}</td>  
+            <td>{{exchange?.sellRate}}</td>  
+            <td>{{exchange?.fee}}</td>
+            <td>{{appService.getDisplayDateFormat(exchange?.created)}}</td>      
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+             <td [attr.colspan]="columns.length">
+                  No Records Found 
+             </td>
+          </tr>
+        </ng-template>          
+        </p-table>
+        <!--End Of Ptable-->
+    </div>
+  </div>
+  <!--Table For Exchange rates-->

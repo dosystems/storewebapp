@@ -1,0 +1,470 @@
+<div class="card">
+  <div class="card-header">
+    <span class="card-heading text-uppercase" *ngIf="productId;else showAdd">
+      Edit Product
+    </span>
+    <ng-template #showAdd>
+      <span class="card-heading text-uppercase">
+        Add Product
+      </span>
+    </ng-template>
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" title="Back" onclick="window.history.back()">
+        <span class="fa fa-arrow-left"></span>
+      </button>
+    </div>
+
+  </div>
+  <div class="card-body background-white">
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+      <!-- Category selection sction starts -->
+      <div class="card bottom-30">
+        <div class="card-header" role="tab" id="headingOne">
+          <h5 class="mb-0 productHeadingFont">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <i class="fa fa-sitemap"></i>&nbsp;&nbsp;Category
+            </a>
+          </h5>
+        </div>
+        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+          <div class="card-body">
+            <div class="card boxshadownull bottom-15" *ngFor="let category of categories; let i=index">
+              <div class="card-body background-white">
+
+                <form class="background-white">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      <div class="form-group bottom-0">
+                        <div class="col-12 ui-fluid text-left">
+                          <p-autoComplete [(ngModel)]="category.tree" [ngModelOptions]="{standalone: true}" name="tree" (completeMethod)="getAllCategories($event)"
+                            [suggestions]="allCategories" field="tree" [size]="25" placeholder="Search category" [minLength]="3"
+                            (onSelect)="selectCategory($event,category)">
+                            </p-autoComplete>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4" *ngIf="category.name">
+                      <div class="form-group bottom-0">
+                        <div class="col-12">
+                          <input type="text" class="form-control" [(ngModel)]="category.name" [ngModelOptions]="{standalone: true}" disabled>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-1 m-t-5">
+                      <span (click)="removeCategory(i)" class="deleteIcon cursor m-t-5" data-toggle="tooltip" title="Remove category">
+                        <i class="fa fa-trash-o"></i>
+                      </span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <a class="add-item cursor" data-toggle="tooltip" (click)="addNewCategory()" title="Add new Category">
+              <i class="fa fa-plus"></i>&nbsp;Add category</a>
+          </div>
+        </div>
+      </div>
+      <!-- Category section ends -->
+
+      <!-- general info section starts -->
+      <div class="card bottom-30">
+        <div class="card-header" role="tab" id="headingTwo">
+          <h5 class="mb-0 productHeadingFont">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;General Info
+            </a>
+          </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="card-body">
+            <div class="card boxshadownull bottom-15">
+              <div class="card-body background-white">
+                <form [formGroup]="productForm" novalidate>
+                  <div class="form-group">
+                    <div class="col-sm-8 ui-fluid text-left">
+                      <p-autoComplete [(ngModel)]="merchantDetails" [ngModelOptions]="{standalone: true}" (completeMethod)="searchMerchants($event)"
+                        [suggestions]="merchants" field="companyName" [size]="25" placeholder="Search Merchant Company" [minLength]="3">
+                        </p-autoComplete>
+                        <span class="help-block text-danger" *ngIf="submitted && !productData?.ownerId"> Please select Merchant
+                        </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-8 ui-fluid text-left">
+                      <p-autoComplete name="Brand" [(ngModel)]="brandDetails" [ngModelOptions]="{standalone: true}" (completeMethod)="searchBrands($event)"
+                        [suggestions]="brands" field="name" [size]="25" placeholder="Search brand name" [minLength]="3">
+                        </p-autoComplete>
+                        <span class="help-block text-danger" *ngIf="submitted && !productData?.brandId"> Please select Brand
+                        </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <input class="form-control" [(ngModel)]="product.euroPercentage" type="text" [formControl]="productForm.controls['euroPercentage']"
+                        placeholder="Euro percentage" (keypress)="appService.Validate($event,'float')">
+                        <span class="help-block text-danger" *ngIf="submitted && productForm.controls['euroPercentage'].invalid"> Please
+                        enter euro percentage</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <input class="form-control" [(ngModel)]="product.buxPercentage" type="text" [formControl]="productForm.controls['buxPercentage']"
+                        placeholder="Bux percentage" (keypress)="appService.Validate($event,'float')">
+                        <span class="help-block text-danger" *ngIf="submitted && productForm.controls['buxPercentage'].invalid"> Please
+                        enter bux percentage</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <input class="form-control" id="input-1" [(ngModel)]="product.name" type="text" [formControl]="productForm.controls['name']"
+                        placeholder="Product name">
+                        <span class="help-block text-danger" *ngIf="submitted && productForm.controls['name'].invalid"> Please
+                        enter product name</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <textarea class="form-control" [(ngModel)]="product.shortDesc" [ngClass]="{active:submitted && productForm.controls['shortDesc'].invalid}"
+                        id="textarea" placeholder="Short description" name="short Desc" [formControl]="productForm.controls['shortDesc']"
+                        type="text"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <p-multiSelect [options]="multiSelectCountries" [style]="{'height':'100%','width':'100%'}" [(ngModel)]="supportCountries" [ngModelOptions]="{standalone: true}"></p-multiSelect>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <p-checkbox [(ngModel)]="Refundable" label="Returnable" binary="true" [ngModelOptions]="{standalone: true}"></p-checkbox>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <my-date-picker [ngClass]="{active:submitted && productForm.controls['visibleDate'].invalid}" [options]="appService.myDatePickerOptions"
+                        [formControl]="productForm.controls['visibleDate']" [(ngModel)]="product.visibleDate" placeholder="Visible date"></my-date-picker>
+                        <br>
+                        <span class="help-block text-danger" *ngIf="submitted && productForm.controls['visibleDate'].invalid">Please
+                        select visible date</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-8">
+                      <my-date-picker [ngClass]="{active:submitted && productForm.controls['expiryDate'].invalid}" [options]="appService.myDatePickerOptions"
+                        placeholder="Expiry date" [(ngModel)]="product.expiryDate" [formControl]="productForm.controls['expiryDate']"></my-date-picker>
+                        <span class="help-block text-danger" *ngIf="submitted && productForm.controls['expiryDate'].invalid">Please
+                        select expiry date</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-8" id="desc">
+                      <div class="summernote"></div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- General info section ends -->
+
+      <!--Adreess heading Starts-->
+      <div class="card bottom-30">
+        <div class="card-header" role="tab" id="Address">
+          <div class="row">
+            <div class="col-sm-6 col-md-4 col-lg-2">
+              <h5 class="mb-0 productHeadingFont">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThre" aria-expanded="false" aria-controls="collapseThre">
+                  <i class="fa fa-address-card"></i>&nbsp;&nbsp;Address
+                </a>
+              </h5>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <button class="btn btn-outline-info btn-rounded btn-xs transition text-right" (click)="onClickUseAddress()">
+                Use Vendor Address</button>
+            </div>
+          </div>
+        </div>
+        <div id="collapseThre" class="collapse" role="tabpanel" aria-labelledby="Address">
+          <div class="card-body">
+            <div class="card boxshadownull bottom-15">
+              <div class="card-body background-white">
+                <form [formGroup]="addressForm" novalidate>
+                  <div class="row form-group">
+                      <div class="col-sm-8">
+                          <input type="text" placeholder="Name" [(ngModel)]="address.name" class="form-control form-control-sm" [ngClass]="{active:submitted && addressForm.controls['name'].invalid}"
+                            [formControl]="addressForm.controls['name']">
+                        </div>
+                  </div>
+                  <div class="row form-group">
+                      <div class="col-sm-8">
+                        <input type="text" placeholder="phone" [maxlength]="15" minlength="10" [(ngModel)]="address.phone" class="form-control form-control-sm" [ngClass]="{active:submitted && addressForm.controls['phone'].invalid}"
+                          [formControl]="addressForm.controls['phone']">
+                          <span class="help-block text-danger" *ngIf="addressForm.get('phone') && addressForm.get('phone'). hasError('minlength')">Minimum 10 numbers is required</span>
+                        </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-8">
+                      <input type="text" placeholder="Street Name" [(ngModel)]="address.street" class="form-control form-control-sm" [ngClass]="{active:submitted && addressForm.controls['street'].invalid}"
+                        [formControl]="addressForm.controls['street']">
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-8">
+                      <input type="text" placeholder="City" [(ngModel)]="address.city" class="form-control form-control-sm" [ngClass]="{active:submitted && addressForm.controls['city'].invalid}"
+                        [formControl]="addressForm.controls['city']">
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-8">
+                      <input type="text" placeholder="State" [(ngModel)]="address.state" class="form-control form-control-sm" [ngClass]="{active:submitted && addressForm.controls['state'].invalid}"
+                        [formControl]="addressForm.controls['state']">
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-8 ui-fluid text-left">
+                      <p-autoComplete name="Country" [(ngModel)]="address.country" (completeMethod)="getCountriesList($event)" [suggestions]="countries"
+                        field="name" [size]="25" placeholder="Search country name" [minLength]="2" [formControl]="addressForm.controls['country']">
+                        </p-autoComplete>
+                        <span class="help-block text-danger" *ngIf="submitted && addressForm.controls['country'].invalid"> Please
+                            select Country
+                          </span>
+                        <span class="help-block text-danger" *ngIf="countryValidation">Please Select Valid Country</span>
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-8">
+                      <input type="text" placeholder="Zipcode" [(ngModel)]="address.zip" class="form-control form-control-sm" [ngClass]="{active:submitted && addressForm.controls['zip'].invalid}"
+                        [formControl]="addressForm.controls['zip']">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Adreess heading ends-->
+
+      <!-- Image upload section starts -->
+      <div class="card bottom-30">
+        <div class="card-header" role="tab" id="headingThree">
+          <h5 class="mb-0 productHeadingFont">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              <i class="fa fa-camera"></i>&nbsp;&nbsp;Images upload
+            </a>
+          </h5>
+        </div>
+        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="card-body">
+            <div class="card boxshadownull bottom-15" *ngFor="let image of images;let i=index">
+
+
+              <div class="card-body background-white">
+                <div class="row">
+                  <div class="col-sm-3  mt-2">
+                    <div class="form-group bottom-0">
+                      <select class="form-control" [ngClass]="{active:submitted && !images[i].Color}" placeholder="Enter color" [(ngModel)]="images[i].Color"
+                        [ngModelOptions]="{standalone: true}">
+
+                        <option [selected]="true" value="Default">Default</option>
+                        <option *ngFor="let color of colors" [value]="color">{{color}}</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-5">
+                    <div class="form-group bottom-0">
+                      <image-upload (removed)="onRemovedPhoto($event,i)" [uploadedFiles]="images[i].images" (uploadFinished)="onUploadFinished($event,i)"
+                        [style]="customStyle" [max]="5">
+                        </image-upload>
+                    </div>
+                  </div>
+                  <div class="col-sm-1 m-t-5">
+                    <span (click)="removeImageSection(i)" class="deleteIcon cursor m-t-5" data-toggle="tooltip" title="Remove image section">
+                      <i class="fa fa-trash-o"></i>
+                    </span>
+                  </div>
+                </div>
+                <button class="btn btn-info btn-rounded btn-sm pull-right" (click)="saveImages(i)"> Upload</button>
+              </div>
+            </div>
+            <a class="add-item cursor" data-toggle="tooltip" title="Add new color Image" (click)="addImage()">
+              <i class="fa fa-plus">&nbsp;</i>Add New Color Images</a>
+          </div>
+        </div>
+      </div>
+      <!-- Image upload section ends -->
+
+
+      <!-- Attributes section starts -->
+      <div class="card bottom-30">
+        <div class="card-header" role="tab" id="headingFive">
+          <h5 class="mb-0 productHeadingFont">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              <i class="fa fa-list-ul"></i>&nbsp;&nbsp;Attributes
+            </a>
+          </h5>
+        </div>
+        <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive">
+          <div class="card-body">
+            <div *ngFor="let attribute of attributes; let i=index">
+              <div class="card boxshadownull bottom-15" *ngIf="!attribute.dafaultInventory">
+                <div class="card-body background-white">
+                  <form class="background-white">
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <div class="form-group bottom-0">
+                          <div class="col-12 ui-fluid text-left">
+                            <p-autoComplete [(ngModel)]="attribute.name" [ngModelOptions]="{standalone: true}" name="name" (completeMethod)="searchAttributes($event)"
+                              [suggestions]="allAttributes" field="name" [size]="25" placeholder="Search Attributes" [minLength]="1">
+                              </p-autoComplete>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-1 m-t-5">
+                        <span (click)="removeAttribute(i)" class="deleteIcon cursor m-t-5" data-toggle="tooltip" title="Remove attribute">
+                          <i class="fa fa-trash-o"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <a class="add-item cursor" data-toggle="tooltip" (click)="addattribute()" title="Add new attribute">
+              <i class="fa fa-plus"></i>&nbsp;Add attribute</a>
+          </div>
+        </div>
+      </div>
+      <!-- Attributes section end -->
+
+      <!-- Inventries section starts -->
+      <div class="card bottom-30">
+        <div class="card-header" role="tab" id="headingFour">
+          <h5 class="mb-0 productHeadingFont">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" (click)="OnInventoryClick()" href="#collapseFour" aria-expanded="false"
+              aria-controls="collapseFour">
+              <i class="fa fa-cubes"></i>&nbsp;&nbsp;Inventory
+              </a>
+          </h5>
+        </div>
+        <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" *ngIf="attributes&&attributes.length>0">
+          <div class="card-body">
+            <div class="card boxshadownull bottom-15">
+              <div class="card-body background-white">
+                <div>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th *ngFor="let attribute of attributes;let i=index" class="text-capitalize">{{attribute.name.name}}</th>
+
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="inventories && inventories.length >0 ">
+
+                      <tr *ngFor="let key of inventories;let j=index">
+
+                        <td class="text-center" *ngFor="let attribute of attributes ;let i=index">
+                          <div *ngIf="(!attribute.name.name=='')&&(!defaultInventoryOptions.includes(attribute.name.name))">
+                            <input class="form-control text-capitalize" type="text" [(ngModel)]="inventories[j][attributes[i].name.name]" [ngModelOptions]="{standalone: true}"
+                              name="key_{{i}}{{j}}">
+                          </div>
+                          <div *ngIf="defaultInventoryOptions.includes(attribute.name.name)">
+                            <input *ngIf="attribute.name.name != 'Quantity'" class="form-control" type="number" min="0" [(ngModel)]="inventories[j][attributes[i].name.name]"
+                              [ngModelOptions]="{standalone: true}" name="key_{{i}}{{j}}">
+                              <input *ngIf="attribute.name.name == 'Quantity'" class="form-control" type="number" min="1" oninput="validity.valid||(value='');"
+                                [(ngModel)]="inventories[j][attributes[i].name.name]" [ngModelOptions]="{standalone: true}"
+                                name="key_{{i}}{{j}}">
+                          </div>
+                        </td>
+                        <td>
+                          <span (click)="removeInventory(j)" class="deleteIcon cursor m-t-5" data-toggle="tooltip" title="Remove inventory">
+                            <i class="fa fa-trash-o"></i>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+            <a class="add-item cursor" data-toggle="tooltip" (click)="addInventory()" title="Add new Inventory">
+              <i class="fa fa-plus"></i>&nbsp;Add Inventory</a>
+          </div>
+        </div>
+      </div>
+      <!-- Inventries section end -->
+
+      <!-- Privacy Policy sction starts -->
+      <div class="card bottom-30">
+        <div class="card-header" role="tab" id="headingSeven">
+          <h5 class="mb-0 productHeadingFont">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+              <i class="fa fa-shield"></i>&nbsp;&nbsp;Privacy Policy
+            </a>
+          </h5>
+        </div>
+        <div id="collapseSeven" class="collapse" role="tabpanel" aria-labelledby="headingSeven">
+          <div class="card-body">
+            <div class="card boxshadownull bottom-15">
+              <div class="card-body background-white">
+                <div class="form-group">
+                  <div class="col-sm-12" id="policy">
+                    <div class="summernote"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Privacy Policy section ends -->
+
+      <p class="active" *ngIf="submitted && !productData?.categories"> Please select category</p>
+      <p class="active" *ngIf="submitted && (productData?.availableCountries.length == 0 ||productData?.availableCountries.length < 1 )"> Please select Available Countries</p>
+      <p class="active" *ngIf="submitted && (!productData?.ownerId || !productData?.brandId || productForm.invalid)">
+        Please fill the details in General Info
+      </p>
+      <p class="active" *ngIf="submitted && (addressForm.status == 'INVALID'||countryValidation)">
+        Please fill the details in Address
+      </p>
+      <p class="active" *ngIf="submitted &&
+       productData?.images?.length > 0 &&  (productData?.images[0].Color == '' || productData?.images[0].images.length == 0)">
+        Please upload images
+        </p>
+        <p class="active" *ngIf="submitted && inventorySectionValidation">
+          Please provide valid data in inventory section
+        </p>
+
+
+
+
+        <button [disabled]="disabled" class="btn btn-info btn-rounded btn-sm pull-right" (click)="saveOrUpdateProduct(productForm)">
+        <span *ngIf="productId;else showCreateButton">
+          Update
+        </span>
+        <ng-template #showCreateButton>
+          Create
+        </ng-template>
+      </button>
+        <button class="btn btn-info btn-rounded btn-sm pull-right" onclick="window.history.back()">
+        Cancel
+      </button>
+
+
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,187 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+html{
+    height: 100%;
+    min-height: 100%;
+}
+
+body{
+    // height: 100%;
+    font-family: $font-family;
+    font-size: 14px;
+    color: $text-color;  
+}
+
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
+    font-weight: normal;
+    small{
+        font-size: 70%;
+    }
+}
+
+
+.transition{
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+}
+
+
+//---------widget---------------
+.widget-controls{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    padding: 10px 20px;
+    font-size: 14px;
+    a{
+        color:$default-color;
+        margin-left: 7px;
+        line-height: 1;
+        vertical-align: top;
+        display: inline-block;            
+        &:hover{
+            color: rgba($default-color, 0.7);
+        }
+        &.dropdown-toggle:after{
+            display: none;
+        }
+    }
+    ul.dropdown-menu{
+        min-width: 9rem;
+        padding: 0;
+        border-radius: 0;
+        li{
+            padding: 4px;
+            overflow: hidden;
+            a{
+                color: $main-color;
+                font-size: 13px; 
+                width: 100%;           
+            }
+            &:hover{               
+                background-color: $main-color;
+            } 
+            &:hover a{
+                color: $navbar-text-color;
+            }
+        }
+    } 
+   
+}
+
+
+.card.fullscreened{
+  //  @include theme-bg($body-bg-gradient-color-1, $body-bg-gradient-color-2);
+    .card-header{
+        line-height: 35px;
+        .widget-controls{
+            padding: 20px;
+            a{
+                margin-left: 12px;
+            }
+            a.setting{
+                display: none;
+            }
+        }
+    }
+    &.card-primary{
+        background: $primary-color;       
+    }
+    &.card-success{
+        background: $success-color;
+    }
+    &.card-info{
+        background: $info-color;
+    }
+    &.card-warning{
+        background: $warning-color;
+    }
+    &.card-danger{
+        background: $danger-color;
+    }
+}
+
+
+.scrolling{
+    height: 100%;
+    overflow-y: scroll;
+    padding-bottom: 60px;
+}
+.no-margin{
+    margin: 0;
+}
+.bottom-15{
+    margin-bottom: 15px;
+}
+.bottom-30{
+    margin-bottom: 30px;
+}
+.m-t-5{
+    margin-top:5px;
+}
+.mbm-20{
+    margin-bottom: -20px;
+}
+.res-img{
+    width: 100%;
+}
+.chart-outher{
+    width: 55%;
+    margin: 0 auto;
+}
+.p-t-10{
+    padding-top: 10%;
+}
+.o-visible{
+    overflow: visible;
+}
+.w-150{
+    width: 150px;
+}
+.w-200{
+    width: 200px;
+}
+.w-100p{
+    width: 100%;
+}
+.h-100p{
+    height: 100%;
+}
+
+
+@media (max-width: 543px) {
+    .chart-outher{
+        width: 100%;
+    }
+}
+
+// Small devices (landscape phones, 544px and up)
+@media (min-width: 544px) and (max-width: 767px) { 
+    .chart-outher{
+        width: 85%;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) and (max-width: 991px) { 
+
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) and (max-width: 1199px) { 
+    .chart-outher{
+        width: 65%;
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+    
+}

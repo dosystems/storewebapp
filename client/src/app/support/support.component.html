@@ -1,0 +1,346 @@
+<!--Display all tickets list here-->
+
+
+
+
+<div class="block mt-5">
+        <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            <b class="card-heading text-uppercase">Support TICKETS</b>
+                        </div>
+                        <div class="col-6 text-right">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onSelectOptions('Add',null)">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="row">
+                        <div class=" ml-3 col-sm-4 col-md-3 ml-auto">
+                            <div class="input-group mb-3">
+                                <input #gb type="text" pInputText class="form-control" placeholder="Search subject/message" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                                <span class="input-group-addon">
+                                    <i class="icon icon-magnify"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div >
+                            <p-table  #dt [value]="tickets" [responsive]="true" [paginator]="true" [rows]="20" [resizableColumns]="true" [rowsPerPageOptions]="[20,50]"
+                            [lazy]="true" (onLazyLoad)="getAllTickets($event)" [totalRecords]="totalRecords">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style=" width: 50px;" pResizableColumn>S.No</th>
+                                    <th pResizableColumn style=" width: 100px;">TicketId
+                                        <span [pSortableColumn]="'ticketId'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input class="inputClass" pInputText type="text" (input)="dt.filter($event.target.value,'ticketId','equals')" placeholder=" Search">
+                                    </th>
+                                    <!-- <th pResizableColumn> UserId
+                                            <span [pSortableColumn]="'userId'">
+                                                <p-sortIcon></p-sortIcon>
+                                            </span>
+                                            <input pInputText type="text" (input)="dt.filter($event.target.value,'userId','equals')" style="width:100%" placeholder=" Search">
+                                        </th> -->
+                
+                
+                                    <th pResizableColumn style=" width: 120px;">Subject
+                                        <span [pSortableColumn]="'subject'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input class="inputClass" pInputText type="text" (input)="dt.filter($event.target.value,'subject','startsWith')" style="width:100%"
+                                            placeholder=" Search">
+                                    </th>
+                
+                                    <th pResizableColumn style=" width: 120px;">Category
+                                        <span [pSortableColumn]="'category'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <p-dropdown appendTo="body" [options]="categoryTypes" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'category','equals')"
+                                            styleClass="ui-column-filter"></p-dropdown>
+                                    </th>
+                                    <th pResizableColumn>Message
+                                        <span [pSortableColumn]="'message'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input class="inputClass" pInputText type="text" (input)="dt.filter($event.target.value,'message','startsWith')" placeholder=" Search">
+                                    </th>
+                
+                                    <th pResizableColumn style=" width: 120px;">Created On
+                                        <span [pSortableColumn]="'created'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input class="inputClass" pInputText type="text" (input)="dt.filter($event.target.value,'created','equals')" placeholder=" Search">
+                                    </th>
+                                    <th pResizableColumn style=" width: 170px;">Admin Updated On
+                                        <span [pSortableColumn]="'adminLastUpdated'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input class="inputClass" pInputText type="text" (input)="dt.filter($event.target.value,'adminLastUpdated','equals')" placeholder=" Search">
+                                    </th>
+                                    <th pResizableColumn style=" width: 90px;">Status
+                                        <span [pSortableColumn]="'status'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input class="inputClass" pInputText type="text" (input)="dt.filter($event.target.value,'status','equals')" placeholder=" Search">
+                                    </th>
+                
+                                    <th pResizableColumn style=" width: 90px;">Options</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-ticket>
+                                <tr>
+                                    <td class="text-center">{{ticket.serialNo}}</td>
+                                    <td class="text-left">
+                                        <span *ngIf="ticket.ticketId">{{ticket.ticketId}}</span>
+                                    </td>
+                                    <!-- <td class="text-left">
+                                            <span>{{ticket.userId}}</span>
+                                        </td> -->
+                                    <!-- <td class="text-left">
+                                            <span>{{ticket?.createdBy?.name}}</span>
+                                        </td> -->
+                                    <td class="text-left">
+                                        <span>{{ticket.subject}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-capitalize">{{ ticket.category }}</span>
+                                    </td>
+                
+                                    <td class="text-left">
+                                        <span>{{ticket?.message}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="small">{{ticket.created | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="small">{{ticket.adminLastUpdated | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge  badge-success"> {{ ticket.status }} </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- <span class="badge badge-danger badge-pill mr-1" data-toggle="tooltip" title="Delete" id="pointer" (click)="onSelectOptions('Delete', ticket)">
+                                                <i class="fa fa-trash"></i>
+                                            </span> -->
+                                        <span class="btn btn-sm btn-alt" data-toggle="tooltip" title="Details" id="pointer" (click)="onSelectOptions('Details', ticket)">
+                                            Details
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+
+                    <div *ngIf="tickets.length==0">
+                        <p class="text-center">No Tickets Found</p>
+                    </div>
+                    
+                </div>
+            </div>
+</div>
+
+
+
+<!--To Add ticket details in modal box-->
+<div class="modal fade" id="ticketDetailsAddModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-color">
+                    <span>Add Ticket</span>
+
+                </h5>
+            </div>
+            <hr>
+            <div class="modal-body text-left">
+                <form [formGroup]="form" novalidate>
+                    <div class="form-group row text-right">
+                        <label class="col-sm-3 form-control-label m-t-5" for="subject">Subject</label>
+                        <div class="col-sm-9">
+                            <input [ngClass]="{active:submitted && !form.controls['subject'].valid}" [formControl]="form.controls['subject']" class="form-control checking-field"
+                                type="text" name="subject">
+                        </div>
+                    </div>
+                    <div class="form-group row text-right">
+                        <label class="col-sm-3 form-control-label m-t-5" for="reply">Category</label>
+                        <div class="col-sm-9 select-wrapper">
+                            <select class="form-control checking-field" [formControl]="form.controls['category']" name="category" [ngClass]="{active:submitted && !form.controls['category'].valid}">
+                                <option value="null" [selected]="true" [disabled]="true">Select Category</option>
+                                <option *ngFor="let option of categoryList" [value]="option">{{option}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row text-right">
+                        <label class="col-sm-3 form-control-label m-t-5" for="message">Message</label>
+                        <div class="col-sm-9">
+                            <textarea [ngClass]="{active:submitted && !form.controls['message'].valid}" [formControl]="form.controls['message']" class="form-control checking-field"
+                                name="message" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row text-right">
+                        <div class="col-sm-12" role="group" aria-label="Second group">
+                            <button class="btn btn-outline-secondary btn-rounded btn-sm mr-1" type="button" data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-outline-secondary btn-rounded btn-sm" [disabled]="disableSubmitButton" (click)="addTicket(form)" type="submit">Create</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- To show ticket details in modal box -->
+<div class="modal fade" id="ticketDetailsReplyModal" role="dialog" *ngIf="ticketDetails">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-color">
+                    <span class="mr-3">Ticket Details</span>
+                    <button class="mt-4 btn btn-outline-secondary btn-rounded btn-sm" type="button" (click)="getTicketConversationBasedOnId(ticketId)">
+                        <span class="icon icon-sync"></span>
+                        <!-- Refresh -->
+                    </button>
+                </h5>
+
+                <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+            </div>
+            <hr>
+            <div class="modal-body text-left">
+                <form [formGroup]="form" novalidate *ngIf="ticketDetails">
+                    <div class="form-group row text-right">
+                        <label class="col-sm-3 form-control-label m-t-5" for="ticketId">Ticket Id</label>
+                        <div class="col-sm-9">
+                            <input [ngClass]="{active:submitted && !form.controls['ticketId'].valid}" [formControl]="form.controls['ticketId']" class="form-control checking-field"
+                                readonly="readonly" [(ngModel)]="ticketDetails.ticketId" type="text" name="ticketId">
+                        </div>
+                    </div>
+                    <div class="form-group row text-right">
+                        <label class="col-sm-3 form-control-label m-t-5" for="subject">Subject</label>
+                        <div class="col-sm-9">
+                            <input [ngClass]="{active:submitted && !form.controls['subject'].valid}" [formControl]="form.controls['subject']" class="form-control checking-field"
+                                readonly="readonly" [(ngModel)]="ticketDetails.subject" type="text" name="subject">
+                        </div>
+                    </div>
+                    <div class="form-group row text-right">
+                        <label class="col-sm-3 form-control-label m-t-5" for="reply">Category</label>
+                        <div class="col-sm-9">
+                            <select class="form-control checking-field" [(ngModel)]="ticketDetails.category" [formControl]="form.controls['category']"
+                                name="category" [ngClass]="{active:submitted && !form.controls['category'].valid}" disabled>
+                                <option [ngValue]="undefined" [selected]="true" [disabled]="true">Select Category</option>
+                                <option *ngFor="let option of categoryList" [value]="option">{{option}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- chat container code start-->
+                <div class="chat-container bottom-15 " slim-scroll [slimScrollOptions]="{height: modalHeight}">
+                    <ul class="media-list" id="media-list">
+                        <li *ngIf="ticketDetails" class="media">
+                            <div class="media-body rounded right">
+                                <div class="media-heading">
+                                    <h6 class="d-inline text-capitalize pull-right">{{ticketDetails.userName}}</h6>
+                                    <span class="d-inline pull-left">
+                                        <i class="fa fa-clock-o"></i>
+                                        {{ticketDetails.created | date:"dd MMMM, yyyy 'at' HH:mm a"}}
+                                    </span>
+                                </div>
+                                <p>{{ticketDetails.message}}</p>
+                            </div>
+                            <div class="media-right pull-right">
+                                <img class="media-object rounded-circle" src="{{appConfig.uploadUrl}}user/{{ticketDetails.profileImage}}" altSrc="assets/images/user.png"
+                                    onerror="this.src=$(this).attr('altSrc')" alt="User Image">
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- <ul class="media-list" id="media-list">
+                        <li *ngIf="ticketDetails" class="media">
+                            <div class="media-left pull-left">
+                                <img class="media-object rounded-circle" src="{{appConfig.uploadUrl}}user/{{ticketDetails.profileImage}}" altSrc="assets/img/users/user.png"
+                                    onerror="this.src=$(this).attr('altSrc')" alt="author image" height="45px" width="25px">
+                            </div>
+                            <div class="media-body rounded left">
+                                <div class="media-heading">
+                                    <h6 class="d-inline text-capitalize pull-left">{{ticketDetails.userName}}</h6>
+                                    <span class="d-inline pull-right">
+                                        <i class="fa fa-clock-o"></i>
+                                        {{ticketDetails.created | date:"dd MMMM, yyyy 'at' HH:mm a"}}
+                                    </span>
+                                </div>
+                                <p>{{ticketDetails.message}}</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="media-list" id="media-list">
+                        <li *ngFor="let item of chatList" class="media">
+                            <div *ngIf="item.side=='left'" class="media-left">
+                                <img class="media-object rounded-circle" src="{{appConfig.uploadUrl}}user/{{ticketDetails.profileImage}}" altSrc="assets/img/users/user.png"
+                                    onerror="this.src=$(this).attr('altSrc')" alt="author image" height="45px" width="25px">
+                            </div>
+                            <div class="media-body rounded {{item.side}}">
+                                <div class="media-heading">
+                                    <h6 class="d-inline text-capitalize" [ngClass]="{'pull-left': item.side=='left', 'pull-right': item.side=='right'}">{{item.userName}}</h6>
+                                    <span class="d-inline" [ngClass]="{'pull-right': item.side=='left', 'pull-left': item.side=='right'}">
+                                        <i class="fa fa-clock-o"></i>{{item.created | date:"dd MMMM, yyyy 'at' HH:mm a"}}</span>
+                                </div>
+                                <p>{{item.message}}</p>
+                            </div>
+                            <div *ngIf="item.side=='right'" class="media-right">
+                                <img class="media-object rounded-circle" src="{{item.image}}" altSrc="assets/img/user.png" onerror="this.src=$(this).attr('altSrc')"
+                                    alt="author image">
+                            </div>
+                        </li>
+                    </ul> -->
+
+                    <ul class="media-list" id="media-list">
+                        <li *ngFor="let item of chatList" class="media">
+                            <div *ngIf="item.side=='left'" class="media-left">
+                                <img class="media-object rounded-circle" src="assets/images/user1.png" altSrc="assets/images/user1.png" onerror="this.src=$(this).attr('altSrc')"
+                                    alt="author image">
+                            </div>
+                            <div class="media-body rounded {{item.side}}">
+                                <div class="media-heading">
+                                    <h6 class="d-inline text-capitalize" [ngClass]="{'pull-left': item.side=='left', 'pull-right': item.side=='right'}">{{item.userName}}</h6>
+                                    <span class="d-inline" [ngClass]="{'pull-right': item.side=='left', 'pull-left': item.side=='right'}">
+                                        <i class="fa fa-clock-o"></i>{{item.created | date:"dd MMMM, yyyy 'at' HH:mm a"}}</span>
+                                </div>
+                                <p>{{item.message}}</p>
+                            </div>
+                            <div *ngIf="item.side=='right'" class="media-right">
+                                <img class="media-object rounded-circle" src="assets/images/user.png" altSrc="assets/images/user.png" alt="User Image">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- chat container -->
+            </div>
+
+            <div class="modal-footer">
+                <!-- To show reply button -->
+                <form [formGroup]="replyForm" novalidate>
+                    <div class="form-group col-12 no-margin">
+                        <div class="input-group">
+                            <input type="text" value="" class="form-control" placeholder="Enter your text..." [ngClass]="{active:submitted && !replyForm.controls['reply'].valid}"
+                                [formControl]="replyForm.controls['reply']" [(ngModel)]="reply">
+                            <div class="input-group-btn">
+                                <button class="btn btn-main" type="button" (click)="addReplyToTicket(replyForm)" [disabled]="disableSubmitButton">
+                                    <!-- <i class="icon-icon-send"></i> -->send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

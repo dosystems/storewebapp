@@ -1,0 +1,456 @@
+<div class="block mt-1">
+  <div class="container">
+    <ul class="breadcrumbs mt-1">
+      <li>
+        <span>{{ productDetails?.categoryDetails }}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="block product-block" *ngIf="productDetails">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-4">
+
+        <!-- Product Gallery -->
+        <div class="main-image" *ngIf="SelectedItem">
+          <img src="{{SelectedItem.big}}" class="zoom" onerror="this.src='/assets/images/default/product-medium.jpg'" />
+          <div class="dblclick-text">
+            <span>Double click for enlarge</span>
+          </div>
+          <a class="zoom-link">
+            <i class="icon icon-zoomin"></i>
+          </a>
+        </div>
+        <div class="product-previews-wrapper">
+          <div class="product-previews-carousel" id="previewsGallery">
+            <a *ngFor="let img of images ; index as i; first as isFirst">
+              <img class="imagepadding productdetailsthumbimage" src='{{photoPath}}s/{{img}}' alt="Image"  (click)="selectImage(img)" (mouseenter)="selectImage(img)"
+                onerror="this.src='/assets/images/default/product-small.jpg'" />
+            </a>
+          </div>
+        </div>
+        <!-- /Product Gallery -->
+      </div>
+      <div class="col-12 col-md-6 col-lg-8 col-xl-5 zoomcontainerwidth" *ngIf="productDetails">
+        <div class="product-info-block classic">
+            <div class="product-info-top" *ngIf="productDetails&& productDetails.rating">
+                <!-- <div class="product-sku">SKU:<span>Stock Keeping Unit</span></div> -->
+                <div class="rating">
+
+                    <span  *ngFor="let rate of rates;let i=index">
+                        <i *ngIf="productDetails&& productDetails.rating&&productDetails.rating.rating &&(i<productDetails.rating.rating)" class="icon icon-star fill"></i>
+                        <i *ngIf="productDetails&& productDetails.rating&&productDetails.rating.rating &&(i>=productDetails.rating.rating)" class="icon icon-star"></i>
+                      </span>
+                  <span class="count" *ngIf="productDetails&&productDetails.rating&&productDetails.rating.buyersCount">{{productDetails?.rating?.buyersCount}} customer review(s)</span>
+                </div>
+              </div>
+          <div class="product-name-wrapper">
+            <h1 class="product-name">{{productDetails?.name}}</h1>
+            <div class="product-labels">
+            </div>
+          </div>
+          <div class="product-availability mt-2" *ngIf="orderDetails&&orderDetails.inventory">Availability:
+            <span *ngIf="orderDetails.inventory.Available > 0">In Stock</span>
+            <span *ngIf="orderDetails.inventory.Available == 0||orderDetails.inventory.Available <0"> Out Of Stock</span>
+            <span *ngIf="orderDetails.inventory.Available < 4 && orderDetails.inventory.Available > 0">
+              {{ orderDetails?.inventory?.Available }}&nbsp;Item(s) </span>
+            <span *ngIf="orderDetails.inventory.Available >4">
+              4+ Item(s)</span>
+          </div>
+          <div class="product-description" *ngIf="productDetails&&productDetails.shortDesc" >
+            <p  class="textFloatable" data-toggle="tooltip" title="{{productDetails?.shortDesc}}"> {{productDetails?.shortDesc}}</p>
+            <!-- <br>
+            <span *ngIf="productDetails.ownerName" class="mt-3">Sold by:
+              <a routerLink="/merchantDetails/{{productDetails?.ownerId}}" class="linkColor text-capitalize">
+                <b>{{productDetails?.ownerName}}</b>
+              </a>
+            </span> -->
+          </div>
+          <div class="product-options">
+            <div class="product-size swatches" *ngIf="showSize">
+              <span class="option-label">Size:</span>
+              <ul class="size-list" *ngFor="let inv of productDetails.inventories;let i=index;">
+                <li [ngClass]="{active: selectedSizeIndex == i}" *ngIf="inv.Color == selectedColor" [ngClass]="{active:(inv.Color == selectedColor && selectedSizeIndex==i)}">
+                  <a (click)="changeSize(i)">
+                    <span class="value">{{inv?.Size}}</span>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+            <div class="product-color swatches" *ngIf="showColor">
+              <span class="option-label">Color:</span>
+              <ul class="color-list" *ngFor="let image of productDetails.images; let i =index">
+                <li [ngClass]="{active: image.Color== selectedColor}" *ngIf="image.images.length>0">
+                  <a *ngIf="image.Color=='Blue'" (click)="selectImage(image.images[0],image)" data-toggle="tooltip" data-placement="top" title="{{image.Color}}">
+                    <span class="value">
+                      <img class="productdetailsthumbimage" src="assets/images/colorswatch/color-blue.png" onerror="this.src='/assets/images/colorswatch/color-grey.png'">
+                    </span>
+                  </a>
+                  <a *ngIf="image.Color=='Red'" (click)="selectImage(image.images[0],image)" data-toggle="tooltip" data-placement="top" title="Red"
+                    data-value="Red" data-image="images/products/product-color-red.jpg">
+                    <span class="value">
+                      <img class="productdetailsthumbimage" src="assets/images/colorswatch/color-red.png" onerror="this.src='/assets/images/colorswatch/color-grey.png'">
+                    </span>
+                  </a>
+                  <a *ngIf="image.Color=='Green'" (click)="selectImage(image.images[0],image)" data-toggle="tooltip" data-placement="top" title="Green"
+                    data-value="Green">
+                    <span class="value">
+                      <img class="productdetailsthumbimage" src="assets/images/colorswatch/color-green.png" onerror="this.src='/assets/images/colorswatch/color-grey.png'">
+                    </span>
+                  </a>
+                  <a *ngIf="image.Color=='Yellow'" (click)="selectImage(image.images[0],image)" data-toggle="tooltip" data-placement="top"
+                    title="Yellow" data-value="yellow">
+                    <span class="value">
+                      <img class="productdetailsthumbimage" src="assets/images/colorswatch/color-yellow.png" onerror="this.src='/assets/images/colorswatch/color-grey.png'">
+                    </span>
+                  </a>
+                  <a *ngIf="image.Color=='Black'" (click)="selectImage(image.images[0],image)" data-toggle="tooltip" data-placement="top" title="Black"
+                    data-value="grey" data-image="images/products/product-color-grey.jpg">
+                    <span class="value">
+                      <img class="productdetailsthumbimage" src="assets/images/colorswatch/color-black.png" onerror="this.src='/assets/images/colorswatch/color-grey.png'">
+                    </span>
+                  </a>
+                  <a *ngIf="image.Color=='White'" (click)="selectImage(image.images[0],image)" data-toggle="tooltip" data-placement="top" title="White"
+                    data-value="White" data-image="images/products/product-color-grey.jpg">
+                    <span class="value">
+                      <img class="productdetailsthumbimage" src="assets/images/colorswatch/color-white.png" onerror="this.src='/assets/images/colorswatch/color-grey.png'">
+                    </span>
+                  </a>
+                  <a *ngIf="image.Color=='Default'" (click)="selectImage(image.images[0],image)" data-toggle="tooltip" data-placement="top"
+                    title="Default" data-value="Default" data-image="images/products/product-color-grey.jpg">
+                    <span class="value">
+                      <img src="assets/images/colorswatch/color-grey.png" onerror="this.src='/assets/images/colorswatch/color-grey.png'">
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="product-qty">
+              <span class="option-label">Qty:</span>
+              <div class="qty qty-changer">
+                <fieldset>
+                  <input type="button" value="&#8210;" class="decrease1" (click)="grandTotalChange(orderDetails,'decrease')">
+                  <input type="text" class="qty-input" value="{{orderDetails?.quantity}}" data-min="1">
+                  <input type="button" value="+" class="increase1" (click)="grandTotalChange(orderDetails,'increase')">
+
+                </fieldset>
+              </div>
+            </div>
+          </div>
+          <div class="product-actions">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="product-meta">
+                  <span class="whish" *ngIf="!productDetails.isFavorite">
+                    <a class="pointer" (click)="addToWishList(productDetails._id)">
+                      <i class="icon icon-heart"></i> Add to wishlist</a>
+
+                  </span>
+                  <span class="whish2" *ngIf="productDetails.isFavorite&&productDetails.favoriteId">
+                    <a class="pointer" (click)="removeFromWishList(productDetails.favoriteId,productDetails._id)">
+                      <i class="icon icon-heart"></i> Remove From wishlist</a>
+
+                  </span>
+                </div>
+                <div class="social">
+                  <div class="share-button toLeft">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-8" *ngIf="productDetails&&productDetails.inventories&&productDetails.inventories[0]&&productDetails.inventories[0].Price">
+                <div class="price">
+                  <span class="old-price" *ngIf="orderDetails&&orderDetails.inventory&&orderDetails.inventory.Price&&orderDetails.inventory.MRP&&orderDetails.inventory.Price != orderDetails.inventory.MRP">
+                    <span class="money">
+                      <span *ngFor="let c of orderDetails.inventory.MRPCurrency | currencyConvertor : appService?.selectedCurrency?.name">
+                        {{appService?.selectedCurrency?.symbol}}&nbsp;{{ appService.decimalValues(c[appService.selectedCurrency.name])}}
+                      </span> 
+                    </span>
+
+                  </span>
+                  <span class="special-price">
+                    <span class="money" *ngIf="orderDetails&&orderDetails.inventory&&orderDetails.inventory.Currency&&orderDetails.quantity">
+                      <span *ngFor="let c of orderDetails.inventory.Currency | currencyConvertor : appService?.selectedCurrency?.name">
+                        {{appService?.selectedCurrency?.symbol}}&nbsp;{{ (appService.decimalValues(c[appService.selectedCurrency.name])* orderDetails.quantity)}}
+                      </span>
+                    </span>
+                  </span><br>
+                </div>
+              </div>
+
+              <div class="col-12 text-right">
+                <div class="price">
+                  <span class="old-price" *ngIf="orderDetails&&orderDetails.inventory&&orderDetails.inventory.Price&&orderDetails.inventory.MRP&&orderDetails.inventory.Price != orderDetails.inventory.MRP">
+                      <span class="money">
+                        <span *ngFor="let c of orderDetails.inventory.MRPCurrency | currencyConvertor : appService?.buxCurrency" title="{{c[appService.buxCurrency]}}">
+                            <img class="bitcoinWidth" src="assets/images/bitcoinblack.png" /> {{appService.decimalValues(c[appService.buxCurrency])}}
+                        </span>
+                      </span>
+                    </span>
+                    <span class="special-price" *ngIf="orderDetails&&orderDetails.inventory&&orderDetails.inventory.Currency">
+                      <span *ngFor="let c of orderDetails.inventory.Currency | currencyConvertor : appService?.buxCurrency" title="{{c[appService.buxCurrency]}}">
+                          <img class="bitcoinWidth" src="assets/images/bitcoin.png" /> {{appService.decimalValues(c[appService.buxCurrency])}}
+                      </span>
+                    </span>
+                  </div>
+                    <p  *ngIf="orderDetails&&orderDetails.inventory&&orderDetails.inventory.Price&&orderDetails.inventory.MRP&&orderDetails.inventory.Price != orderDetails.inventory.MRP">
+                        <span class="priceText">You Save :</span>
+                        <span class="text-danger" >
+                            ({{savePercentage}}%)</span>
+                      </p>
+              </div>
+            </div>
+            <div class="row text-right">
+              <div class="col-6 col-md-7 norightpadding">
+                <button [disabled]="disabled" (click)="productAddToCartOrBuy(productDetails,orderDetails,'buy')" class="btn btn-alt btn-lg">
+                  <span>Buy Now</span>
+                </button>
+              </div>
+              <div class="col-6 col-md-5">
+                <button [disabled]="disabled" (click)="productAddToCartOrBuy(productDetails,orderDetails,'cart')" class="btn btn-lg pr-2">
+                  <i class="icon icon-cart"></i>
+                  <span>Add to cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-3" style="border-left:1px solid #e8e8e8">
+
+        <div class="row" style="border-bottom:1px solid #e8e8e8">
+            <div class="ml-5" >
+                <p *ngIf="productDetails.ownerName">Sold by
+                  </p>
+                <p class="my-3" >
+                      <span *ngIf="productDetails.ownerName" >
+                          <i class="icon icon-user" style="color:goldenrod"></i>&nbsp; <a routerLink="/merchantDetails/{{productDetails?.ownerId}}" class="linkColor text-capitalize">
+                           <b>{{productDetails?.ownerName}}</b>
+                        </a>
+                      </span>
+                </p>
+            </div>
+        </div>
+        <div class="box-icon-row hidden-quickview" >
+          
+           
+          <div class="box-left-icon-bg">
+            <div class="box-icon">
+              <i class="icon icon-truck"></i>
+            </div>
+            <div class="box-text">
+              <div class="title">TRUSTED SHIPPING</div>
+              Free shipping when you spend 100 BUX and above
+            </div>
+          </div>
+          <div class="box-left-icon-bg">
+            <div class="box-icon">
+              <i class="icon icon-gift"></i>
+            </div>
+            <div class="box-text">
+              <div class="title">ALWAYS AUTHENTIC</div>
+              We only sell 100% authentic products
+            </div>
+          </div>
+          <div class="box-left-icon-bg">
+            <div class="box-icon">
+              <i class="icon icon-undo"></i>
+            </div>
+            <div class="box-text">
+              <div class="title">EASY RETURNS</div>
+              Free returns on eligible items so you can shop with ease
+            </div>
+          </div>
+          <div class="box-left-icon-bg">
+              <div class="box-icon">
+                <i class="icon icon-cart"></i>
+              </div>
+              <div class="box-text">
+                <div class="title">SECURE SHOPPING</div>
+                Your data is always protected
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row spacediv"></div>
+  <div class="block">
+    <div class="tabaccordion">
+      <div class="container">
+        <ul class="nav nav-tabs product-tab" role="tablist">
+          <li>
+            <a href="#Tab1" role="tab" data-toggle="tab" class="active">Description</a>
+          </li>
+          <!-- <li>
+            <a href="#Tab2" role="tab" data-toggle="tab">Custom tab</a>
+          </li> -->
+          <li *ngIf="productDetails&&productDetails.sizeChart" >
+            <a href="#Tab3" role="tab" data-toggle="tab">Sizing Guide</a>
+          </li>
+
+          <li>
+            <a href="#Tab5" role="tab" data-toggle="tab" (click)="getAllReviews()">Reviews</a>
+          </li>
+
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="Tab1">
+            <span [innerHTML]="productDetails?.longDesc"></span>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="Tab2">
+            <h3 class="custom-color">Take a trivial example which of us ever undertakes</h3>
+            <p>Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because
+              occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial
+              example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it?
+              But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences,
+              or one who avoids a pain that produces no resultant pleasure </p>
+            <ul class="marker-simple-list two-columns">
+              <li>Nam liberempore</li>
+              <li>Cumsoluta nobisest</li>
+              <li>Eligendptio cumque</li>
+              <li>Nam liberempore</li>
+              <li>Cumsoluta nobisest</li>
+              <li>Eligendptio cumque</li>
+            </ul>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="Tab3">
+            <div *ngIf="productDetails&&productDetails.sizeChart">
+              <img class="productdetailsthumbimage" src='{{appConfig.imageUrl}}sizeChart/m/{{productDetails?.sizeChart}}' onerror="this.src='/assets/images/default/product-small.jpg'"
+              />
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="Tab5">
+
+            <!--Review-->
+            <div id="shopify-product-reviews" data-id="8501355271">
+              <style scoped="">
+                .spr-container {
+                  padding: 24px;
+                  border-color: #ECECEC;
+                }
+
+                .spr-review,
+                .spr-form {
+                  border-color: #ECECEC;
+                }
+              </style>
+
+              <div class="spr-container">
+                <div class="spr-header">
+                  <h2 class="spr-header-title" *ngIf="productDetails&& productDetails.rating">Customer Reviews</h2>
+                  <div class="spr-summary">
+                    <span class="spr-starrating spr-summary-starrating" *ngFor="let rate of rates;let i=index">
+                      <i *ngIf="productDetails&& productDetails.rating&&productDetails.rating.rating &&(i<productDetails.rating.rating)" class="spr-icon spr-icon-star"></i>
+                      <i *ngIf="productDetails&& productDetails.rating&&productDetails.rating.rating &&(i>=productDetails.rating.rating)" class="spr-icon spr-icon-star spr-icon-star-empty"></i>
+                    </span>
+                    <span class="spr-summary-caption" *ngIf="productDetails&& productDetails.rating">
+                      <span class="spr-summary-actions-togglereviews">Based on {{productDetails?.rating?.buyersCount}} review(s)</span>
+                    </span>
+                    <span class="spr-summary-actions">
+                      <a class="spr-summary-actions-newreview pointer textColorRed" (click)="showWriteReview='true'">Write a review</a>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="spr-content">
+                  <div class="spr-form" *ngIf="showWriteReview">
+                    <form [formGroup]="reviewsForm" novalidate>
+                      <h3 class="spr-form-title pointer textColorRed" (click)="showReview()">Write a review</h3>
+                      <fieldset class="spr-form-review">
+                        <div class="spr-form-review-rating" id="rate1">
+                          <label class="spr-form-label" for="review[rating]">Rating</label>
+                          <p-rating formControlName="rating" name="rating" class="ratings" [cancel]="false"></p-rating>
+                        </div>
+
+                        <span *ngIf="submitted&&reviewsForm.controls['rating'].invalid" class="text-danger"> Please Give Rating</span>
+                        <div class="spr-form-review-title">
+                          <label class="spr-form-label" for="review_title_8501355271">Review Title</label>
+                          <input class="spr-form-input spr-form-input-text " type="text" name="review[title]" [ngClass]="{active:submitted && reviewsForm.controls['title'].invalid}"
+                            [formControl]="reviewsForm.controls['title']" [(ngModel)]="reviews.title" placeholder="Give your review a title">
+                        </div>
+
+                        <div class="spr-form-review-body">
+                          <label class="spr-form-label" for="review_body_8501355271">Body of Review
+                            <span class="spr-form-review-body-charactersremaining">(1500)</span>
+                          </label>
+                          <div class="spr-form-input">
+                            <textarea class="spr-form-input spr-form-input-textarea " name="review[body]" [formControl]="reviewsForm.controls['comment']"
+                              [ngClass]="{active:submitted && reviewsForm.controls['comment'].invalid}" [(ngModel)]="reviews.comment"
+                              maxlength="1500" placeholder="Write your comments here"></textarea>
+
+                          </div>
+                        </div>
+                      </fieldset>
+
+                      <fieldset class="spr-form-actions">
+                        <input [disabled]="disabled" type="submit" class="spr-button spr-button-primary button button-primary btn btn-primary" value="Submit Review"
+                          (click)="onRatingSubmit(reviewsForm)">
+                      </fieldset>
+                    </form>
+                  </div>
+                  <div class="spr-reviews" id="reviews_8501355271">
+                    <div class="spr-review" id="spr-review-8613369" *ngFor="let review of allReviews;let r =index">
+                      <div class="spr-review-header">
+                        <span id="{{r}}_{{review.title}}" class="spr-starrating spr-summary-starrating" *ngFor="let rate of rates;let i=index">
+                          <i *ngIf="review&& review.rating &&(i<review.rating)" class="spr-icon spr-icon-star"></i>
+                          <i *ngIf="review&& review.rating &&(i>=review.rating)" class="spr-icon spr-icon-star spr-icon-star-empty"></i>
+                        </span>
+                        <h3 class="spr-review-header-title">{{review?.title}}</h3>
+                        <span class="spr-review-header-byline">
+                          <strong>{{review?.createdBy?.name}}</strong> on
+                          <strong>{{review?.created}}</strong><br>
+
+                          <span *ngIf="review.createdBy&&review.createdBy.buyer &&review.createdBy.buyer.address&&review.createdBy.buyer.address.length>0"> From:<strong>{{review?.createdBy?.buyer?.address[0]?.country}}</strong></span>
+                        </span>
+                      </div>
+
+                      <div class="spr-review-content">
+                        <p class="spr-review-content-body">{{review?.data}}
+                        </p>
+                      </div>
+                      <div class="spr-review-footer">
+                        <a *ngIf="!review.inappropriate" class="pointer textColorRed spr-review-reportreview" (click)="updateReview(review._id)">Report as Inappropriate</a>
+                        <a *ngIf="review.inappropriate" class=" spr-review-reportreview">This review has been reported</a>
+
+                      </div>
+                    </div>
+                    <!-- paginator -->
+                    <div class="d-flex p-2 bd-highlight justify-content-center mb-3" *ngIf="pages>1">
+                      <p-paginator [rows]="appConfig.productsPerPage" (onPageChange)="paginate($event)" [totalRecords]="totalRecords" [pageLinkSize]="pages"></p-paginator>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+        <!--End Tab Content-->
+      </div>
+    </div>
+  </div>
+  <!--End Tab Content-->
+</div>
+
+
+
+<!-- relevent Products  -->
+<div class="block bottom-space" *ngIf="productDetails&&productDetails.releventCategory">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+        <!-- <h3 class="textColorRed">Related Products</h3> -->
+       <ross-products-by-categories [category]="productDetails.releventCategory"   [productId]="productDetails._id"></ross-products-by-categories>
+      </div>
+      </div>
+    </div>
+  </div>

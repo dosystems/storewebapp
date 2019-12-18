@@ -1,0 +1,15 @@
+<div class="row sub-breadcrumb bottom-15">
+    <div class="col-12">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a routerLink="/dashboard">Home</a>
+            </li>
+            <li *ngFor="let breadcrumb of breadcrumbs; let i = index;" class="breadcrumb-item">
+                <a [hidden]="i == (breadcrumbs.length - 1)" [routerLink]="[breadcrumb.url]">{{breadcrumb.name}}</a>
+                <span [hidden]="i != (breadcrumbs.length - 1)">
+                    <b>{{breadcrumb.name}}</b>
+                </span>
+            </li>
+        </ol>
+    </div>
+</div>

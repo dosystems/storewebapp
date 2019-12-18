@@ -1,0 +1,46 @@
+<!-- Display Packages Info -->
+<div class="row">
+  <div class="col-sm-6 col-lg-4 bottom-15" *ngFor="let plan of plans">
+    <div class="card" widget="">
+      <div class="card-body widget-body text-center">
+        <h3 class="text-info">
+          {{plan.name}}
+        </h3>
+        <h1>
+          <i class="fa fa-euro mr-1"></i> {{plan.price}}
+        </h1>
+        <p>
+          {{plan.duration}} months validity
+        </p>
+        <button class="btn btn-info btn-rounded btn-sm mt-4" type="button" (click)="askUserToUpgradePakage(plan)">Upgrade</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Show package upgrade modal -->
+<div class="modal" id="showPackageUpgradeModel" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12">
+
+                <div class="text-beautify">
+                  <p>Are you sure want to upgrade package ?</p>
+                </div>
+              </div>
+              <div class="col-sm-12 text-center">
+                <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">No</button>
+                <button class="btn btn-outline-info btn-rounded btn-sm" (click)="upgradeUserPackage()" [disabled]="disableSubmitButton" type="submit">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

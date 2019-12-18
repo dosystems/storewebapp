@@ -1,0 +1,17 @@
+<!-- Deal Carousel -->
+<div class="title" *ngIf="products&&products.length>0">
+  <h2 class="custom-color">Popular Products</h2>
+  <div class="toggle-arrow"></div>
+  <div class="carousel-arrows"></div>
+</div>
+<div class="collapsed-content">
+  <div class="deal-carousel-23 products-grid seven-in-row product-variant-3">
+    <!-- Product Item -->
+    <div *ngFor="let product of products;let i=index" class="product-item large" >
+      <ross-product  [Product]="product"></ross-product>
+    </div>
+  
+    <!-- /Product Item -->
+  </div>
+</div>
+<!-- /Deal Carousel -->

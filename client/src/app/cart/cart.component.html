@@ -1,0 +1,154 @@
+
+
+<div class="block mb-5" *ngIf="orders&&orders.length>0">
+  <div class="container">
+    <div class="title center p-5">
+      <h4 *ngIf="pageType == 'Cart'"> <a routerLink="/">Home</a></h4>
+    </div>
+    <div class="row"  *ngIf="orders&&orders.length>0">
+      <div class="col-12 offset-md-1 col-md-7">
+          <h4 *ngIf="pageType == 'Cart'">Shopping cart</h4>
+        <div  class="card" [ngClass]="{'orderClassTop': j==0,'orderClass': j>0}" *ngFor="let order of orders;let j=index">
+          <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-2">
+                    <div class="photo">
+                      <a routerLink="/details/{{order?.entityId}}">
+                        <img class="imgclass" src="{{appConfig.imageUrl}}entity/s/{{order?.images[0]}}" onerror="this.src='assets/images/default/product-small.jpg'">
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-8">
+                      <b> <a data-toggle="tooltip" title="{{order?.entityName }}" routerLink="/details/{{order?.entityId}}">{{order?.entityName| limitTo : 100}}</a> </b>
+                      <p *ngIf="order&&order.currencies&&order.currencies.length>0">
+                        <span *ngFor="let c of order.currencies | currencyConvertor : appService?.selectedCurrency?.name">
+                            <b> {{appService?.selectedCurrency?.symbol}}{{ appService.decimalValues(c[appService.selectedCurrency.name])}}</b>
+                        </span>
+                      </p>
+                      <p *ngIf="order&&(order.currencies&&order.currencies.length==0)">
+                          <b>{{appService?.defaultCurrency?.symbol}}{{order?.inventory?.Price}}</b>
+                      </p>
+                   <p class="small"> Order now and receive it <span class="text-success">soon</span></p>
+                    <span  class="fontSmall" *ngIf="order.ownerName" >Sold by:
+                      <b>{{order?.ownerName}}</b>
+                    </span><br>
+                    <span class="text-danger orderErrorMessage">{{order?.message}}</span>
+
+                    <div *ngIf="!order.isReturnable">
+                        <span> <i class="icon icon-close"></i><i class="icon icon-undo"></i>This item cannot be exchanged or returned
+                        </span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-2 ">
+                            <div class="select-wrapper" pull-right >
+                            <select   (change)="updateOrderQuantity(order,$event.target.value)" class="form-control small" [(ngModel)]='order.quantity'>
+                                <option class="small" *ngFor="let qty of quantities" [value]="qty">{{qty}}</option>
+                            </select>
+                          </div>
+                        <!-- </div> -->
+                    
+                      <div class="small" title="Remove" pull-right >
+                          <a class="pointer"  (click)="showDeleteModel(order._id)"> <i class="icon icon-trash-alt"></i>&nbsp;Remove</a> 
+                        </div>
+                  </div>
+            </div>
+            
+
+          </div>
+        </div>
+        <div class="col-12 nopadding my-4">
+            <a class="btn btn-alt btn-sm" routerLink="/products">CONTINUE SHOPPING</a>
+        </div>
+      </div>
+     
+      <div class="col-12 mt-5 col-md-3" *ngIf="orders&&orders.length>0">
+        <div class="card p-3">
+            <div>
+                <h4 class="mb-2"> Order Summary: </h4>
+                <p class="small  mb-0">
+                    Subtotal:
+                    <strong class="emphasis pull-right">
+                      <span *ngIf="grandTotal2">{{appService?.selectedCurrency?.symbol}} {{appService.decimalValues(grandTotal2)}}</span>
+                      <span *ngIf="!grandTotal2">{{appService?.selectedCurrency?.symbol}} {{appService.decimalValues(grandTotal)}}</span>
+                    </strong>
+                </p>
+                <p class="small">
+                    <span >&nbsp;</span>
+                    <strong class="emphasis pull-right">
+                      <span  *ngIf="grandTotalBux">(<img class="bitcoinSmall" src="assets/images/bitcoinblack.png" /> {{appService.decimalValues(grandTotalBux)}})</span>
+                    </strong>
+                </p>
+                <p class="small ">
+                    Shipping:
+                    <strong class="emphasis pull-right">
+                    {{appService?.selectedCurrency?.symbol}}{{ShippingAmount}}0
+                    </strong>
+                </p>
+                <hr>
+                <p class="small  mb-0">
+                    <span>TOTAL:</span>
+                    <strong class="emphasis pull-right">
+                    <span *ngIf="grandTotal2">{{appService?.selectedCurrency?.symbol}} {{appService.decimalValues(grandTotal2)}}</span>
+                    <span *ngIf="!grandTotal2">{{appService?.selectedCurrency?.symbol}} {{appService.decimalValues(grandTotal)}}</span>
+                    </strong>
+                </p>
+                <p class="small">
+                  <span >&nbsp;</span>
+                  <strong class="emphasis pull-right">
+                  <span  *ngIf="grandTotalBux">(<img class="bitcoinSmall" src="assets/images/bitcoinblack.png" /> {{appService.decimalValues(grandTotalBux)}})</span>
+                </strong>
+                </p>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button class="btn btn-alt btn-sm width100" (click)="onProceedtoCheckOutClick()" > <span class="checkoutjustify">
+              <span *ngIf="grandTotal2">{{appService?.selectedCurrency?.symbol}} {{appService.decimalValues(grandTotal2)}}</span>
+              <span *ngIf="!grandTotal2">{{appService?.selectedCurrency?.symbol}} {{appService.decimalValues(grandTotal)}}</span> Secure Checkout</span></button>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<div *ngIf="noOrders&&orders&&orders.length==0" class="block fullheight fullwidth empty-cart" style="width: 1306px; margin-left: -653px; height: 577px;">
+  <div class="container">
+    <div class="image-empty-cart">
+      <img src="//cdn.shopify.com/s/files/1/1323/8471/t/16/assets/empty-basket.png?12414483359855823661" alt="">
+      <div class="text-empty-cart-1">SHOPPING CART IS</div>
+      <div class="text-empty-cart-2">EMPTY</div>
+    </div>
+    <div>
+    </div>
+  </div>
+</div>
+<!-- order Delete Model -->
+<div id="deleteOrder" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <p> Are you sure you want to delete order? </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-alt mt-4" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger mb-1" [disabled]="disableButton" (click)="deleteOrder(orderId)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- relevent Products  -->
+<div class="block" *ngIf="releventCategory&&orders&&orders.length>0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+       <ross-products-by-categories  [category]="releventCategory" [productId]="productId"></ross-products-by-categories>
+      </div>
+      </div>
+    </div>
+  </div>

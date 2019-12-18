@@ -1,0 +1,49 @@
+<div class="sidebar" [ngClass]="{'menu-collapsed': isMenuCollapsed}" (mouseleave)="hoverElemTop=-200">
+    <ul class="nav nav-sidebar flex-column" perfectScrollbar>
+        <li *ngFor="let item of menuItems" class="sidebar-list-item">           
+            
+            <a *ngIf="!item.routerLink && !item.subMenu" [attr.href]="item.url || ''" [attr.target]="item.target || ''" (mouseenter)="hoverItem($event, item)"  class="sidebar-list-link">
+                <i class="fa {{ item.icon }}"></i><span>{{ item.title }}</span>
+            </a>
+
+            <a *ngIf="item.routerLink && !item.subMenu" [routerLink]="[item.routerLink]" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}" (click)="collapseMenu($event, item)" (mouseenter)="hoverItem($event, item)" class="sidebar-list-link">
+                <i class="fa {{ item.icon }}"></i><span>{{ item.title }}</span>
+            </a>
+       
+            <a *ngIf="item.subMenu" [attr.href]="''" (click)="collapseMenu($event, item)" (mouseenter)="hoverItem($event, item)" class="sidebar-list-link">
+                <i class="fa {{ item.icon }}"></i><span>{{ item.title }}</span>
+                <b class="fa fa-angle-down"></b>
+            </a>
+
+            <ul *ngIf="item.subMenu" class="sidebar-sublist">
+                <li *ngFor="let subitem of item.subMenu" class="sidebar-sublist-item">            
+
+                    <a *ngIf="subitem.subMenu" [attr.href]="''" (click)="collapseMenu($event, item)" (mouseenter)="hoverItem($event, item)" class="sidebar-list-link subitem-submenu-link">
+                        <span>{{ subitem.title }}</span>
+                        <b class="fa fa-angle-down"></b>
+                    </a>
+
+                    <ul *ngIf="subitem.subMenu" class="sidebar-sublist subitem-submenu-list">
+                        <li *ngFor="let subSubitem of subitem.subMenu" (mouseenter)="hoverItem($event, item)">
+                        <a *ngIf="!subSubitem.routerLink" (mouseenter)="hoverItem($event, item)" [attr.href]="subSubitem.url || ''" [attr.target]="subSubitem.target || ''">
+                            {{ subSubitem.title }}</a>
+                        <a *ngIf="subSubitem.routerLink" (mouseenter)="hoverItem($event, item)" [attr.target]="subSubitem.target || ''" [routerLink]="[subSubitem.routerLink]" routerLinkActive="active-link">
+                            {{ subSubitem.title }}</a>
+                        </li>
+                    </ul>
+
+                    <a *ngIf="item.routerLink && !subitem.subMenu" [routerLink]="[subitem.routerLink]" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}" (click)="collapseMenu($event, item)" (mouseenter)="hoverItem($event, item)">
+                        {{ subitem.title}}
+                    </a>
+
+                    <a *ngIf="!item.routerLink && !subitem.subMenu" [attr.href]="subitem.url || ''" [attr.target]="subitem.target || ''" (mouseenter)="hoverItem($event, item)">
+                        {{ subitem.title}}
+                    </a>
+
+                </li>
+            </ul>
+
+        </li>
+    </ul>
+    <div class="sidebar-hover-elem" [ngStyle]="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px'}" [ngClass]="{'show-hover-elem': showHoverElem }"></div>
+</div>

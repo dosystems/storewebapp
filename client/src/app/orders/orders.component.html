@@ -1,0 +1,115 @@
+<div class="block block-minicart" *ngIf="orders&&orders.length>0">
+  <div class="minicart-content-wrapper">
+    <div class="block-title">
+      <span>Recently added item(s)</span>
+    </div>
+    <a class="btn-minicart-close" title="Close">&#10060;</a>
+    <div class="block-content">
+      <div class="minicart-items-wrapper overflowed">
+        <ol class="minicart-items" *ngIf="orders&&orders.length>0">
+          <li class="item product product-item" *ngFor="let order of orders">
+            <div class="product">
+              <a class="product-item-photo" href="#" title="{{order?.entityName}}">
+                <span class="product-image-container">
+                  <span class="product-image-wrapper">
+                    <img class="product-image-photo" src="{{appConfig.imageUrl}}entity/{{order?.image[0]}}" onerror="this.src='assets/images/default/product-small.jpg'">
+                  </span>
+                </span>
+              </a>
+              <div class="product-item-details">
+                <div class="product-item-name">
+                  <a href="#">{{order?.entityName}}</a>
+                </div>
+                <div class="product-item-qty">
+                  <label class="label">Qty</label>
+                  <input class="item-qty cart-item-qty" maxlength="12" value="{{order?.quantity}}">
+                  <button class="update-cart-item" style="display: none" title="Update">
+                    <span>Update</span>
+                  </button>
+                </div>
+                <div class="product-item-pricing">
+                  <div class="price-container">
+                    <span class="price-wrapper">
+                      <span class="price-excluding-tax">
+                        <span class="minicart-price">
+                          <span class="price">
+                            <img class="bitcoinWidth" src="assets/images/" />{{order?.inventory?.price}}</span>
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                  <div class="product actions">
+                    <div class="secondary">
+                      <a (click)="ShowDeleteModel(order._id,'deleteOrder')" class="action delete" title="Remove item">
+                        <span>Delete</span>
+                      </a>
+                    </div>
+                    <div class="primary">
+                      <a class="action edit" routerLink="/cart" title="Edit item">
+                        <span>Edit</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="subtotal">
+        <span class="label">
+          <span>Subtotal</span>
+        </span>
+        <div class="amount price-container">
+          <span class="price-wrapper">
+            <span class="price">
+                {{appService?.selectedCurrency?.symbol}}{{totalPrice}}</span>
+          </span>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="secondary">
+          <a routerLink="/cart" class="btn btn-alt">
+            <i class="icon icon-cart"></i>
+            <span>View and edit cart</span>
+          </a>
+        </div>
+        <div class="primary">
+          <a class="btn" routerLink="/checkout">
+            <i class="icon icon-external-link"></i>
+            <span>Go to Checkout</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!--  to show delete Model -->
+<div id="deleteOrder" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <p> Are you sure you want to delete order?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-alt mt-4" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger mb-1" (click)="deleteOrder(orderId)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="block block-minicart" *ngIf="orders&&orders.length==0">
+  <div class="minicart-content-wrapper">
+    <div class="block-title">
+      <span>No item(s) Added</span>
+    </div>
+  </div>
+</div>

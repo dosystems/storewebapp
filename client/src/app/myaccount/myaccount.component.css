@@ -1,0 +1,8 @@
+.white-card {
+    height: 250px;
+}
+
+ /*For OverFlowing Of Select Box in Filter HEader*/
+ select.form-control:not([size]):not([multiple]) {
+    height: 35px;
+}

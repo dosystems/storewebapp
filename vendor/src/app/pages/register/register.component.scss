@@ -1,0 +1,36 @@
+@import "../../theme/styles/variables";
+
+.register-container{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    .card{
+        padding: 15px;
+        .btn-link{
+            padding: 0;
+            &.forgot{
+                font-size: 14px;
+            }
+            &:hover{
+                color: $primary-color;
+            }
+        }
+       
+    }
+}
+
+.middle{
+    margin: 10vh auto 5vh auto;
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+}
+label{
+    font: bold !important;
+}
+.head-color{
+    background-color: rgba(0,0,0,.03)  
+}

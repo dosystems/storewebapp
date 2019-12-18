@@ -1,0 +1,30 @@
+
+modal-body{
+    max-height: calc(100vh - 500px);
+    overflow-y: auto;   
+}
+.widthAction{
+    width:75px;
+}
+.widthDate{
+    width:113px;
+}
+.widthAvail{
+    width:84px;
+}
+.widthName{
+    width:150px;
+}
+.widthShortDesc{
+    width:160px;
+}
+.widthCategories{
+    width:120px;
+}
+.widthcreatedBy{
+    width:100px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}

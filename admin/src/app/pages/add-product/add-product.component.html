@@ -1,0 +1,291 @@
+<div class="card boxshadownull">
+    <div class="card-body">
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="card bottom-30">
+                <div class="card-header" role="tab" id="headingOne">
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fa fa-sitemap"></i>&nbsp;&nbsp;Category
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-body">
+                        <div class="card boxshadownull bottom-15" *ngFor="let cat of addCategories; let i=index">
+                            <div class="card-body background-white">
+                                <a class="removebutton" data-toggle="tooltip" title="Remove Category" *ngIf="i>0">
+                                    <i class="fa fa-close" (click)="removeCategory(i)"></i>
+                                </a>
+                                <form class="background-white">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="form-group bottom-0">
+                                                <div class="col-12 ui-fluid text-left">
+                                                    <p-autoComplete [(ngModel)]="addCategories[i].tree" [ngModelOptions]="{standalone: true}" name="name" (completeMethod)="getAllCategories($event)"
+                                                        [suggestions]="categories" field="tree" [size]="25" placeholder="Search category"
+                                                        [minLength]="3" (onSelect)="selectCategory($event,i)">
+                                                    </p-autoComplete>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4" *ngIf="addCategories[i].name">
+                                            <div class="form-group bottom-0">
+                                                <div class="col-12">
+                                                    <input type="text" class="form-control" [(ngModel)]="addCategories[i].name" [ngModelOptions]="{standalone: true}" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <a class="add-item cursor" data-toggle="tooltip" (click)="addCategory()" title="Add new Category">
+                            <i class="fa fa-plus"></i>&nbsp;Add category</a>
+                        <!-- <button class="btn btn-info btn-rounded btn-sm pull-right" (click)="onClickSave(addCategories,'category')">Save
+                      </button> -->
+                    </div>
+                </div>
+            </div>
+            <div class="card bottom-30">
+                <div class="card-header" role="tab" id="headingFive">
+                    <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            <i class="fa fa-list-ul"></i>&nbsp;&nbsp;Attributes
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive">
+                    <div class="card-body">
+                        <div class="card boxshadownull bottom-15" *ngFor="let attribute of attributes; let i=index">
+                            <div class="card-body background-white">
+                                <a class="removebutton" *ngIf="i>0" data-toggle="tooltip" title="Remove Attribute">
+                                    <i class="fa fa-close" (click)="removeAttribute(i)"></i>
+                                </a>
+                                <form class="background-white">
+
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="form-group bottom-0">
+                                                <div class="col-12 ui-fluid text-left">
+                                                    <p-autoComplete [(ngModel)]="attributes[i].name" [ngModelOptions]="{standalone: true}" name="name" (completeMethod)="searchAttributes($event)"
+                                                        [suggestions]="selectedAttributes" field="name" [size]="25" placeholder="Search Attributes"
+                                                        [minLength]="1" >
+                                                    </p-autoComplete>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+
+                        <a class="add-item cursor" data-toggle="tooltip" (click)="addattribute()" title="Add new attribute">
+                            <i class="fa fa-plus"></i>&nbsp;Add attribute</a>
+                        <!-- <button class="btn btn-info btn-rounded btn-sm pull-right" (click)="onClickSave(attributes,'attributes')">Save
+                      </button> -->
+                    </div>
+                </div>
+            </div>
+            <div class="card bottom-30">
+                <div class="card-header" role="tab" id="headingTwo">
+                    <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                            (click)="(detailsValidation=false)">
+                            <i class="fa fa-info-circle"></i>&nbsp;&nbsp;General Info
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="card-body">
+                        <div class="card boxshadownull bottom-15">
+                            <div class="card-body background-white">
+                                <form [formGroup]="productForm" novalidate>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 ui-fluid text-left">
+                                            <p-autoComplete [(ngModel)]="owner" [ngModelOptions]="{standalone: true}" name="owner" (completeMethod)="searchOwners($event)"
+                                                [suggestions]="users" field="displayName" [size]="25" placeholder="Search Merchant Name"
+                                                [minLength]="3" (onSelect)="detailsValidation=false">
+                                            </p-autoComplete>
+                                            <span class="help-block text-danger" *ngIf="!owner&&detailsSubmitted"> Please select Merchant </span>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 ui-fluid text-left">
+                                            <p-autoComplete [(ngModel)]="brand" [ngModelOptions]="{standalone: true}" name="Brand" (completeMethod)="searchBrands($event)"
+                                                [suggestions]="brands" field="name" [size]="25" placeholder="Search Brand Name"
+                                                [minLength]="3" (onSelect)="detailsValidation=false">
+                                            </p-autoComplete>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="input-1" type="text" [formControl]="productForm.controls['name']" placeholder="Product name"
+                                                [(ngModel)]="product.name">
+                                            <span class="help-block text-danger" *ngIf="detailsSubmitted && productForm.controls['name'].invalid"> Please Enter Name</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control" [ngClass]="{active:detailsSubmitted && productForm.controls['shortDesc'].invalid}" id="textarea"
+                                                placeholder="Short description" name="short Desc" [formControl]="productForm.controls['shortDesc']"
+                                                [(ngModel)]="product.shortDesc" type="text"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+                                            <my-date-picker [ngClass]="{active:detailsSubmitted && productForm.controls['visibleDate'].invalid}" [options]="startDate"
+                                                [(ngModel)]="product.visibleDate" [formControl]="productForm.controls['visibleDate']"
+                                                placeholder="Visible date" (dateChanged)="onStartDateChanged($event)"></my-date-picker>
+                                            <br>
+                                            <span class="help-block text-danger" *ngIf="detailsSubmitted && productForm.controls['visibleDate'].invalid">Please select visible date</span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+                                            <my-date-picker [ngClass]="{active:detailsSubmitted && productForm.controls['expiryDate'].invalid}" [options]="endDate" placeholder="Expiry date"
+                                                [(ngModel)]="product.expiryDate" [formControl]="productForm.controls['expiryDate']"></my-date-picker>
+                                            <span class="help-block text-danger" *ngIf="detailsSubmitted && productForm.controls['expiryDate'].invalid">Please select expiry date</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8" id="desc">
+                                            <div class="summernote"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card bottom-30">
+                <div class="card-header" role="tab" id="headingThree">
+                    <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="fa fa-camera"></i>&nbsp;&nbsp;Images upload
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="card-body">
+                        <div class="card boxshadownull bottom-15" *ngFor="let image of images;let i=index">
+
+
+                            <div class="card-body background-white">
+                                <a class="removebutton" *ngIf="i>0" data-toggle="tooltip" title="Remove Image Section">
+                                    <i class="fa fa-close" (click)="removeImageSection(i)"></i>
+                                </a>
+                                <div class="row">
+                                    <div class="col-sm-3  mt-2">
+                                        <div class="form-group bottom-0">
+                                            <select class="form-control" [ngClass]="{active:submitted &&(images[i].Color=='')}" id="input-1" type="text" placeholder=" Enter color"
+                                                [(ngModel)]="images[i].Color" [ngModelOptions]="{standalone: true}">
+
+                                                <option [selected]="true" value="Default">Default</option>
+                                                <option *ngFor="let color of colors" [value]="color">{{color}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group bottom-0">
+                                            <image-upload (removed)="onRemovedPhoto($event,i)" [uploadedFiles]="images[i].images" (uploadFinished)="onUploadFinished($event,i)"
+                                                [style]="customStyle" [max]="5">
+                                            </image-upload>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <button class="btn btn-info btn-rounded btn-sm pull-right" (click)="saveImages(i)"> Upload</button>
+                            </div>
+                        </div>
+                        <a class="add-item cursor" data-toggle="tooltip" title="Add new color Image" (click)="addImage()">
+                            <i class="fa fa-plus">&nbsp;</i>Add New Color Images</a>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="card bottom-30">
+                <div class="card-header" role="tab" id="headingFour">
+                    <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" (click)="OnInventoryClick()" href="#collapseFour" aria-expanded="false"
+                            aria-controls="collapseFour">
+                            <i class="fa fa-cubes"></i>&nbsp;&nbsp;Inventory
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" *ngIf="attributes&&attributes.length>0">
+                    <div class="card-body">
+                        <div class="card boxshadownull bottom-15">
+                            <div class="card-body background-white">
+                                <div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th *ngFor="let attribute of attributes;let i=index" class="text-capitalize">{{attribute.name.name}}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="inventories && inventories.length >0 ">
+
+                                            <tr *ngFor="let key of inventories;let j=index">
+
+                                                <td class="text-center" *ngFor="let attribute of attributes ;let i=index">
+                                                    <div *ngIf="(!attribute.name.name=='')&&(attribute.name.name != 'Price'&& attribute.name.name != 'Quantity' && attribute.name.name != 'MRP')">
+                                                        <input class="form-control text-capitalize" type="text" [(ngModel)]="inventories[j][attributes[i].name.name]" [ngModelOptions]="{standalone: true}"
+                                                            name="key_{{i}}{{j}}">
+                                                    </div>
+                                                    <div *ngIf="(attribute.name.name == 'Price'|| attribute.name.name == 'Quantity' || attribute.name.name == 'MRP')">
+                                                        <input class="form-control" type="number" min="0" [(ngModel)]="inventories[j][attributes[i].name.name]" [ngModelOptions]="{standalone: true}"
+                                                            name="key_{{i}}{{j}}">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                        <a class="add-item cursor" data-toggle="tooltip" (click)="addInventory()" title="Add new Inventory">
+                            <i class="fa fa-plus"></i>&nbsp;Add Inventory</a>
+                        <!-- <button class="btn btn-info btn-rounded btn-sm pull-right mb-1" (click)="onClickSave('','inventories')">Save
+                      </button> -->
+                    </div>
+                </div>
+            </div>
+
+            <p class="active" *ngIf="categoryValidation"> Please select category</p>
+            <p class="active" *ngIf="imagesValidation"> Please upload images</p>
+            <p class="active" *ngIf="inventoriesValidation"> Please save Inventories </p>
+            <p class="active" *ngIf="detailsValidation"> Please fill the details in General Info </p>
+
+
+
+            <button [disabled]="disabled" class="btn btn-info btn-rounded btn-sm pull-right" (click)="SaveProduct(product,productForm)">
+                    <ng-template [ngIf]="productId" [ngIfElse]="ShowAdd">
+                         Update
+                          </ng-template>
+                          <ng-template #ShowAdd>
+                            Save
+                          </ng-template>
+            </button>
+            
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,555 @@
+<!-- <div class="card overflowvisible" widget="">
+    <div class="card-header">
+        <span class="card-heading text-uppercase">MY ACCOUNT</span>
+       
+        <div class="widget-controls">
+            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAccountDetails()">
+                <span class="fa fa-refresh"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+                <span class="fa fa-chevron-down"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+                <span class="fa fa-chevron-up"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+                <span class="fa fa-expand"></span>
+            </button>
+            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+                <span class="fa fa-compress"></span>
+            </button>
+        </div>
+        
+    </div>
+    <div class="card-body widget-body">
+
+        <form [formGroup]="myAccountForm" novalidate>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Company Name</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.companyName" [ngClass]="{active:submitted && myAccountForm.controls['companyName'].invalid}"
+                                [formControl]="myAccountForm.controls['companyName']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Contact Person</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.displayName" [ngClass]="{active:submitted && myAccountForm.controls['displayName'].invalid}"
+                                [formControl]="myAccountForm.controls['displayName']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Email</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input disabled type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.email" [ngClass]="{active:submitted && myAccountForm.controls['email'].invalid}"
+                                [formControl]="myAccountForm.controls['email']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Phone</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.phoneNumber" [ngClass]="{active:submitted && myAccountForm.controls['phoneNumber'].invalid}"
+                                [formControl]="myAccountForm.controls['phoneNumber']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Product Category</b>
+                        </label>
+                        <div class="col-sm-7 ui-fluid text-left">
+                            <p-autoComplete field="tree" [(ngModel)]="accountDetails.productCategory" [suggestions]="categories" (completeMethod)="getAllCategories($event)"
+                                [formControl]="myAccountForm.controls['productCategory']" [size]="45"></p-autoComplete>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Brand</b>
+                        </label>
+                        <div class="col-sm-7 ui-fluid text-left">
+                            <p-autoComplete field="name" [(ngModel)]="accountDetails.brand" [suggestions]="brands" (completeMethod)="searchBrands($event)" [formControl]="myAccountForm.controls['brand']"
+                                [size]="45"></p-autoComplete>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Location</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.location" [ngClass]="{active:submitted && myAccountForm.controls['location'].invalid}"
+                                [formControl]="myAccountForm.controls['location']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Website</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.website" [ngClass]="{active:submitted && myAccountForm.controls['website'].invalid}"
+                                [formControl]="myAccountForm.controls['website']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Shop title</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.shopTitle" [ngClass]="{active:submitted && myAccountForm.controls['shopTitle'].invalid}"
+                                [formControl]="myAccountForm.controls['shopTitle']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Logo</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="file" (change)="uploadFile($event.target.files)">
+                            <img *ngIf="accountDetails.logo" src="{{imageUrlPath}}{{accountDetails.logo}}" height="40" width="50">
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Google</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.socialMediaLinks[0]" [ngClass]="{active:submitted && myAccountForm.controls['google'].invalid}"
+                                [formControl]="myAccountForm.controls['google']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Facebook</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.socialMediaLinks[1]" [ngClass]="{active:submitted && myAccountForm.controls['facebook'].invalid}"
+                                [formControl]="myAccountForm.controls['facebook']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Twitter</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.socialMediaLinks[2]" [ngClass]="{active:submitted && myAccountForm.controls['twitter'].invalid}"
+                                [formControl]="myAccountForm.controls['twitter']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row  ">
+                        <label class="col-sm-2 form-control-label m-t-5  text-right">
+                            <b>Shop Policy</b>
+                        </label>
+                        <div class="col-sm-9" id="description">
+                            <div class="summernote"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="row justify-content-center mt-4">
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="updateAccountDetails()">Save Changes</button>
+        </div>
+
+    </div>
+</div> -->
+
+<form [formGroup]="myAccountForm" novalidate>
+
+    <div class="card overflowvisible bottom-15" widget="">
+        <div class="card-header">
+            <span class="card-heading text-uppercase">Store details</span>
+
+        </div>
+        <div class="card-body widget-body">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Store Name</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.shopTitle" [ngClass]="{active:submitted && myAccountForm.controls['shopTitle'].invalid}"
+                                [formControl]="myAccountForm.controls['shopTitle']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Website</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.website" [ngClass]="{active:submitted && myAccountForm.controls['website'].invalid}"
+                                [formControl]="myAccountForm.controls['website']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Email</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input disabled type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.email" [ngClass]="{active:submitted && myAccountForm.controls['email'].invalid}"
+                                [formControl]="myAccountForm.controls['email']">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Logo</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="file" (change)="uploadFile($event.target.files)">
+                            <img *ngIf="accountDetails.logo" src="{{imageUrlPath}}{{accountDetails.logo}}" height="40" width="50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Facebook</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.socialMediaLinks[1]" [ngClass]="{active:submitted && myAccountForm.controls['facebook'].invalid}"
+                                [formControl]="myAccountForm.controls['facebook']">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Twitter</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.socialMediaLinks[2]" [ngClass]="{active:submitted && myAccountForm.controls['twitter'].invalid}"
+                                [formControl]="myAccountForm.controls['twitter']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card overflowvisible bottom-15" widget="">
+        <div class="card-header">
+            <span class="card-heading text-uppercase">Seller details</span>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>First Name</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.firstName" [ngClass]="{active:submitted && myAccountForm.controls['firstName'].invalid}"
+                                [formControl]="myAccountForm.controls['firstName']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Last Name</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.lastName" [ngClass]="{active:submitted && myAccountForm.controls['lastName'].invalid}"
+                                [formControl]="myAccountForm.controls['lastName']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Company Legal name</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.companyName" [ngClass]="{active:submitted && myAccountForm.controls['companyName'].invalid}"
+                                [formControl]="myAccountForm.controls['companyName']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Company Phone </b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="accountDetails.phoneNumber" [ngClass]="{active:submitted && myAccountForm.controls['phoneNumber'].invalid}"
+                                [formControl]="myAccountForm.controls['phoneNumber']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Street</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="address.street" [ngClass]="{active:submitted && myAccountForm.controls['street'].invalid}"
+                                [formControl]="myAccountForm.controls['street']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>City </b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="address.city" [ngClass]="{active:submitted && myAccountForm.controls['city'].invalid}"
+                                [formControl]="myAccountForm.controls['city']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>State</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="address.state" [ngClass]="{active:submitted && myAccountForm.controls['state'].invalid}"
+                                [formControl]="myAccountForm.controls['state']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Country</b>
+                        </label>
+                        <div class="col-sm-7 ui-fluid text-left">
+                            <p-autoComplete name="Country" [(ngModel)]="address.country" (completeMethod)="getCountriesList($event)" [suggestions]="countries"
+                                field="name" [size]="25" placeholder="Search country name" [minLength]="3" [formControl]="myAccountForm.controls['country']">
+                            </p-autoComplete>
+                            <span class="help-block text-danger" *ngIf="submitted && myAccountForm.controls['country'].invalid">Please
+                                select Country</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Zipcode</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="address.zip" [ngClass]="{active:submitted && myAccountForm.controls['zip'].invalid}"
+                                [formControl]="myAccountForm.controls['zip']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card overflowvisible bottom-15" widget="">
+        <div class="card-header">
+            <span class="card-heading text-uppercase">Documents</span>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Upload KYC Documents</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="file" (change)="uploadKYCFile($event.target.files)" multiple>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="col-sm-7 offset-sm-4">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card overflowvisible bottom-15" widget="">
+        <div class="card-header">
+            <span class="card-heading text-uppercase">Bank details</span>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Beneficiary Name</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="bankDetails.beneficiaryName" [ngClass]="{active:submitted && myAccountForm.controls['beneficiaryName'].invalid}"
+                                [formControl]="myAccountForm.controls['beneficiaryName']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Bank Name</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="bankDetails.bankName" [ngClass]="{active:submitted && myAccountForm.controls['bankName'].invalid}"
+                                [formControl]="myAccountForm.controls['bankName']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>Branch</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="bankDetails.branch" [ngClass]="{active:submitted && myAccountForm.controls['branch'].invalid}"
+                                [formControl]="myAccountForm.controls['branch']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Account Number</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="bankDetails.accountNumber" [ngClass]="{active:submitted && myAccountForm.controls['accountNumber'].invalid}"
+                                [formControl]="myAccountForm.controls['accountNumber']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-4 form-control-label m-t-5 text-right">
+                            <b>IBAN</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="bankDetails.IBAN" [ngClass]="{active:submitted && myAccountForm.controls['IBAN'].invalid}"
+                                [formControl]="myAccountForm.controls['IBAN']">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="row">
+                        <label class="col-sm-3 form-control-label m-t-5 text-right">
+                            <b>Swift Code</b>
+                        </label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="bankDetails.swiftCode" [ngClass]="{active:submitted && myAccountForm.controls['swiftCode'].invalid}"
+                                [formControl]="myAccountForm.controls['swiftCode']">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card overflowvisible bottom-15" widget="">
+        <div class="card-header">
+            <span class="card-heading text-uppercase">OTHERS</span>
+
+        </div>
+        <div class="card-body widget-body">
+            <div class="row bottom-15">
+                <div class="col-md-12">
+                    <div class="row  ">
+                        <label class="col-sm-2 form-control-label m-t-5  text-right">
+                            <b>Shop Policy</b>
+                        </label>
+                        <div class="col-sm-9" id="description">
+                            <div class="summernote"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<div class="row justify-content-center mt-4">
+    <button class="btn btn-info btn-rounded btn-sm" (click)="updateAccountDetails()">Save Changes</button>
+</div>
+

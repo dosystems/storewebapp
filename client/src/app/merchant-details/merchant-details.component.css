@@ -1,0 +1,6 @@
+.imgclass2 {
+    height: 100px !important;
+    width: 100% !important;
+    object-fit: contain;
+    max-width: 200px !important;
+}

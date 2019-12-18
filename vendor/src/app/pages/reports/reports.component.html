@@ -1,0 +1,501 @@
+<div class="row tabs-newlook">
+    <div class="w-100p">
+        <div class="clearfix">
+            <ul class="nav nav-tabs top pull-left w-100p">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" routerLink="/reports/productSalesReport" routerLinkActive="active">Product Sales Report</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" routerLink="/reports/shippingReport" routerLinkActive="active">Shipping Report</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" routerLink="/reports/subscriptionReport" routerLinkActive="active">Subscription Report</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" routerLink="/reports/salesSummery" routerLinkActive="active">Sales Summary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" routerLink="/reports/reviews" routerLinkActive="active">Reviews</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content top">
+            <div class="tab-pane active">
+                <!-- Sales report and shipping report start -->
+                <div class="card overflowvisible" widget="" *ngIf="reportType == 'productSalesReport' || reportType == 'shippingReport'">
+                    <!-- Form header content start -->
+                    <div class="card-header">
+                        <span class="card-heading text-uppercase" *ngIf="reportType === 'productSalesReport'">Product Sales Report</span>
+                        <span class="card-heading text-uppercase" *ngIf="reportType === 'shippingReport'">Shipping Report</span>
+
+                        <div class="widget-controls">
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+                                <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllReports('')">
+                                <span class="fa fa-refresh"></span>
+                            </button>
+
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+                                <span class="fa fa-chevron-down"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+                                <span class="fa fa-chevron-up"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+                                <span class="fa fa-expand"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+                                <span class="fa fa-compress"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Form header content end -->
+
+
+                    <!-- Global filter content start-->
+                    <div class="card-body widget-body">
+                        <div class="row">
+                            <div class="col-sm-4 ml-auto">
+                                <div class="input-group input-group-sm bottom-15">
+                                    <input type="text" class="form-control" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    Global Filter End -->
+
+
+                        <p-table #dt [value]="reports" [responsive]="true" [paginator]="true" [rows]="appService.rowNum" [resizableColumns]="true"
+                            [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" class="overflowvisible"
+                            [exportFilename]='reportType' [columns]="exportCsvColoumns" [globalFilterFields]="['_id.entityName','totalQuantity','totalAmount','_id.status']">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th class="sno-size" pResizableColumn>S.No </th>
+                                    <th pResizableColumn class="width_100">Product Name
+                                        <span [pSortableColumn]="'_id.entityName'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'_id.entityName','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                    <th pResizableColumn class="width_90px">Quantity
+                                        <span [pSortableColumn]="'totalQuantity'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'totalQuantity','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                    <th pResizableColumn class="width_70" *ngIf="reportType === 'productSalesReport'">Amount
+                                        <span [pSortableColumn]="'totalAmount'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'totalAmount','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                    <th pResizableColumn class="width_120px" *ngIf="reportType === 'shippingReport'">Status
+                                        <span [pSortableColumn]="'_id.status'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <p-dropdown appendTo="body" [options]="shippingStatus" (onChange)="dt.filter($event.value,'_id.status', 'equals')"></p-dropdown>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-report>
+                                <tr>
+                                    <td>{{report.serialNo}}</td>
+                                    <td>
+                                        <a routerLink="/productdetails" [queryParams]="{id:report._id.entityId}">
+                                            {{report?._id?.entityName}}
+                                        </a>
+                                    </td>
+                                    <td class="text-center">{{report.totalQuantity}}</td>
+                                    <td class="text-right" *ngIf="reportType === 'productSalesReport'">
+                                        {{appService.decimalValues(report?.totalAmount)}}
+                                    </td>
+                                    <td class="text-center" *ngIf="reportType === 'shippingReport'">
+                                        <span class="badge badge-pill badge-{{appService.getStatusColor(report?._id?.status)}} text-capitalize">{{ report?._id?.status }}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <tr>
+                                    <td colspan="10">
+                                        No records found
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                    </div>
+                </div>
+                <!-- Sales report and shipping report end -->
+
+                <!-- For Subscription history start -->
+                <div class="card overflowvisible" widget="" *ngIf="reportType === 'subscriptionReport'">
+                    <!-- Form header content start -->
+                    <div class="card-header">
+                        <span class="card-heading text-uppercase">Subscription Report</span>
+
+                        <div class="widget-controls">
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="ds.exportCSV()">
+                                <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getSubscriptionReport('')">
+                                <span class="fa fa-refresh"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+                                <span class="fa fa-chevron-down"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+                                <span class="fa fa-chevron-up"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+                                <span class="fa fa-expand"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+                                <span class="fa fa-compress"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Form header content end -->
+
+
+                    <!-- Global filter content start-->
+                    <div class="card-body widget-body">
+                        <div class="row">
+                            <div class="col-sm-4 ml-auto">
+                                <div class="input-group input-group-sm bottom-15">
+                                    <input type="text" class="form-control" placeholder="Search" (input)="ds.filterGlobal($event.target.value, 'contains')">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    Global Filter End -->
+
+                        <p-table #ds [value]="subscriptions" [responsive]="true" [paginator]="true" [rows]="appService.rowNum" [resizableColumns]="true"
+                            [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" class="overflowvisible"
+                            [lazy]="true" (onLazyLoad)="getSubscriptionReport($event)" exportFilename='subscription_reports'
+                            [columns]="subscriptionExportColumns" [globalFilterFields]="['planName', 'duration', 'endDate', 'actualAmount', 'ammountPaid', 'status', 'startDate']">
+
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width:70px" pResizableColumn>S.No #</th>
+
+                                    <th pResizableColumn >Plan
+                                        <span [pSortableColumn]="'planName'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'planName','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                    <th pResizableColumn style="width:90px">Amount
+                                        <span [pSortableColumn]="'actualAmount'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'actualAmount','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                    <th pResizableColumn style="width:170px">Duration (Months)
+                                        <span [pSortableColumn]="'duration'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'duration','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                    <th pResizableColumn style="width:140px">Start Date
+                                        <span [pSortableColumn]="'startDate'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'startDate','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                    <th pResizableColumn style="width:140px">Expiry Date
+                                        <span [pSortableColumn]="'endDate'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="ds.filter($event.target.value,'endDate','startsWith')" placeholder=" Search">
+                                    </th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-subscription>
+                                <tr>
+                                    <td>{{subscription.serialNo}}</td>
+                                    <td>{{subscription?.planName}}</td>
+
+                                    <td class="text-right">
+                                        {{appService.decimalValues(subscription?.actualAmount)}}
+                                    </td>
+
+                                    <td class="text-center">
+                                        {{subscription?.duration}}
+                                    </td>
+
+                                    <td>
+                                        {{appService.getDisplayDateFormat(subscription?.startDate)}}
+                                    </td>
+
+                                    <td>
+                                        {{appService.getDisplayDateFormat(subscription?.endDate)}}
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <tr>
+                                    <td colspan="10">
+                                        No records found
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                    </div>
+
+
+                </div>
+                <!-- Subscription history end -->
+
+
+                <!-- Sales Summary starts -->
+
+
+                <div class="card overflowvisible" widget="" *ngIf="reportType == 'salesSummery' ">
+                    <!-- Form header content start -->
+                    <div class="card-header">
+                        <span class="card-heading text-uppercase">Sales Summary</span>
+
+                        <div class="widget-controls">
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="dt.exportCSV()">
+                                <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllReports('')">
+                                <span class="fa fa-refresh"></span>
+                            </button>
+
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+                                <span class="fa fa-chevron-down"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+                                <span class="fa fa-chevron-up"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+                                <span class="fa fa-expand"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+                                <span class="fa fa-compress"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Form header content end -->
+
+
+                    <!-- Global filter content start-->
+                    <div class="card-body widget-body">
+                        <div class="row">
+                            <div class="col-sm-4 ml-auto">
+                                <div class="input-group input-group-sm bottom-15">
+                                    <input type="text" class="form-control" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    Global Filter End -->
+
+
+                        <p-table #dt [value]="salesSummary" [responsive]="true" [paginator]="true" [rows]="appService.rowNum" [resizableColumns]="true"
+                            [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" class="overflowvisible"
+                            [lazy]="true" (onLazyLoad)="getSalesSummary($event)" exportFilename='Sales_Summary_report' [columns]="exportCsvColoumns"
+                            [globalFilterFields]="['totalQuantity','totalAmount']">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th class="sno-size" pResizableColumn>S.No </th>
+
+                                    <th pResizableColumn class="width_100">Quantity #
+                                        <span [pSortableColumn]="'totalQuantity'">
+                                            <p-sortIcon [field]="'totalQuantity'"></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'totalQuantity','startsWith')" placeholder=" Search">
+                                    </th>
+                                    <th pResizableColumn class="width_100">Amount
+                                        <span [pSortableColumn]="'totalAmount'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'totalAmount','startsWith')" placeholder=" Search">
+                                    </th>
+                                    <th pResizableColumn class="width_100">Date
+                                        <span [pSortableColumn]="'dates'">
+                                            <p-sortIcon></p-sortIcon>
+                                        </span>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-saleSummary>
+                                <tr>
+                                    <td>{{saleSummary.serialNo}}</td>
+                                    <td>
+                                            {{saleSummary?.totalQuantity}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{saleSummary?.totalAmount}}
+                                    </td>
+                                    <td>
+                                        {{saleSummary?.dates }}
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <tr>
+                                    <td colspan="10">
+                                        No records found
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                    </div>
+                </div>
+
+                <!-- Sales Summary Ends -->
+
+                <!-- Reviews report starts -->
+
+                <div class="card overflowvisible" widget="" *ngIf="reportType == 'reviews' ">
+                    <!-- Form header content start -->
+                    <div class="card-header">
+                        <span class="card-heading text-uppercase">Reviews</span>
+
+                        <div class="widget-controls">
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="ds.exportCSV()">
+                                <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getAllReports('')">
+                                <span class="fa fa-refresh"></span>
+                            </button>
+
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+                                <span class="fa fa-chevron-down"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+                                <span class="fa fa-chevron-up"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+                                <span class="fa fa-expand"></span>
+                            </button>
+                            <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+                                <span class="fa fa-compress"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Form header content end -->
+
+
+                    <!-- Global filter content start-->
+                    <div class="card-body widget-body">
+                        <div class="row">
+                            <div class="col-sm-4 ml-auto">
+                                <div class="input-group input-group-sm bottom-15">
+                                    <input type="text" class="form-control" placeholder="Search" (input)="ds.filterGlobal($event.target.value, 'contains')">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--    Global Filter End -->
+
+
+                        <p-table #ds [value]="reviews" [responsive]="true" [paginator]="true" [rows]="appService.rowNum" [resizableColumns]="true"
+                            [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords" class="overflowvisible"
+                            [lazy]="true" (onLazyLoad)="getReviews($event)" exportFilename='Reviews' [columns]="reviewsCsv"
+                            [globalFilterFields]="['entityName','comment','rating','userName']">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pResizableColumn style="width:60px">S.No</th>
+                                    <th pResizableColumn style="width:120px">Review Title
+                                        <span [pSortableColumn]="'title'">
+                                             <p-sortIcon [field]="'title'"></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'title','startsWith')" placeholder="Search">
+                                    </th>
+                                    <th pResizableColumn >Review
+                                        <span [pSortableColumn]="'comment'">
+                                           <p-sortIcon [field]="'comment'"></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'comment','startsWith')" placeholder="Search">
+                                    </th>
+                                    <th pResizableColumn style="width:100px">Rating
+                                        <span [pSortableColumn]="'rating'">
+                                           <p-sortIcon [field]="'rating'"></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'rating','startsWith')" placeholder="Search">
+                                    </th>
+                                    <th pResizableColumn>Product
+                                        <span [pSortableColumn]="'entityName'">
+                                          <p-sortIcon [field]="'entityName'"></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'entityName','startsWith')" placeholder="Search">
+                                    </th>
+                                    <th pResizableColumn style="width:140px">Reviewed By
+                                        <span [pSortableColumn]="'createdBy.name'">
+                                           <p-sortIcon [field]="'createdBy.name'"></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'createdBy.name','startsWith')" placeholder="Search">
+                                    </th>
+                                    <th pResizableColumn style="width:110px">Created On
+                                        <span [pSortableColumn]="'created'">
+                                           <p-sortIcon [field]="'created'"></p-sortIcon>
+                                        </span>
+                                        <input pInputText type="text" class="width_100" (input)="ds.filter($event.target.value,'created','startsWith')" placeholder="Search">
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-review>
+                                <tr>
+                                    <td> {{review?.serialNo}} </td>
+                                    <td title="{{review?.title}}">
+                                        <a class="linkColor" (click)="ViewModal(review)">{{ appService.capitalize(review?.title)}}</a>
+                                    </td>
+                                    <td title="{{ review?.comment }}">{{ review?.comment }}</td>
+                                    <td class="noCursor">
+                                        <p-rating [ngModel]="review?.rating" readonly="true" stars="5" [cancel]="false"></p-rating>
+                                    </td>
+                                    <td title="{{review.entityName}}">
+                                        <a routerLink="/details/Product" [queryParams]="{id:review?.entityId}"> {{review?.entityName}} </a>
+                                    </td>
+                                    <td>
+                                        <a routerLink="/details/Customer" [queryParams]="{ id:review?.userId }">{{review?.createdBy?.name}}</a>
+                                    </td>
+                                    <td> {{appService.getDisplayDateFormat(review?.created)}} </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <tr>
+                                    <td colspan="7">
+                                        No records found
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                    </div>
+                </div>
+
+                <!-- Review report ends -->
+
+            </div>
+        </div>
+    </div>
+</div>

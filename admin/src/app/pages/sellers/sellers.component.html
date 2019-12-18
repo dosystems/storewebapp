@@ -1,0 +1,360 @@
+<div class="card overflowvisible" widget="">
+  <div class="card-header">
+    <span class="card-heading text-uppercase">Merchants</span>
+    <!--Widget Controls-->
+    <div class="widget-controls">
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" data-backdrop="static" data-keyboard="false" (click)="exportCSV()">
+        <i class="fa fa-file-o"></i>&nbsp;Export to CSV
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs" type="button" (click)="getTotalSellersList()">
+        <span class="fa fa-refresh"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="expand" style="display: none;">
+        <span class="fa fa-chevron-down"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="collapse">
+        <span class="fa fa-chevron-up"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="fullscreen">
+        <span class="fa fa-expand"></span>
+      </button>
+      <button class="btn btn-outline-info btn-rounded btn-xs transition" type="button" data-widgster="restore" style="display: none;">
+        <span class="fa fa-compress"></span>
+      </button>
+    </div>
+    <!--WidgetControls-->
+  </div>
+  <div class="card-body widget-body">
+    <!-- Global Filter-->
+    <div class="row">
+      <div class="col-sm-4 ml-auto">
+        <div class="input-group input-group-sm bottom-15">
+          <input type="text" class="form-control" placeholder="Search Name/Email/Phone" (input)="dt.filterGlobal($event.target.value, 'contains')">
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Of Global Filter-->
+
+    <!-- P-Table -->
+    <p-table #dt [value]="totalSellersList" [columns]="ExportCsv" exportFilename="Merchants" [lazy]="true" (onLazyLoad)="getTotalSellersList($event)"
+      [paginator]="true" [rows]="appService.rowNum" [rowsPerPageOptions]="appService.rowValue" [totalRecords]="totalRecords"
+      [responsive]="true" [resizableColumns]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pResizableColumn style="width:50px">S.No</th>
+          <th pResizableColumn style="width:100px">Company
+            <span [pSortableColumn]="'companyName'">
+              <p-sortIcon [field]="'companyName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'companyName','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn style="width:140px">Contact Person
+            <span [pSortableColumn]="'displayName'">
+              <p-sortIcon [field]="'displayName'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'displayName','startsWith')" placeholder="Search">
+          </th>          
+          <th pResizableColumn style="width:120px">Email
+            <span [pSortableColumn]="'email'">
+              <p-sortIcon [field]="'email'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'email','startsWith')" placeholder="Search">
+          </th>
+          <th pResizableColumn style="width:100px">Phone
+            <span [pSortableColumn]="'phoneNumber'">
+              <p-sortIcon [field]="'phoneNumber'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'phoneNumber','startsWith')" placeholder="Search">
+          </th>
+         
+          <th pResizableColumn style="width:100px">Location
+            <span [pSortableColumn]="'address.country'">
+              <p-sortIcon [field]="'address.country'"></p-sortIcon>
+            </span>
+          </th>
+          <th pResizableColumn style="width:170px">Last Activity
+            <span [pSortableColumn]="'lastActivity'">
+              <p-sortIcon [field]="'lastActivity'"></p-sortIcon>
+            </span>
+          </th>
+          <th pResizableColumn style="width:110px" >Products #
+            <span [pSortableColumn]="'noOfProducts'">
+              <p-sortIcon [field]="'noOfProducts'"></p-sortIcon>
+            </span>
+          </th>
+          <th pResizableColumn style="width:170px">Products Amt($)
+            <span [pSortableColumn]="'totalAmount'">
+              <p-sortIcon [field]="'totalAmount'"></p-sortIcon>
+            </span>
+          </th>
+          <th pResizableColumn style="width:170px">Business Vol($)
+            <span [pSortableColumn]="'totalAmount'">
+              <p-sortIcon [field]="'totalAmount'"></p-sortIcon>
+            </span>
+          </th>
+          
+          <th pResizableColumn style="width:110px">Created On
+            <span [pSortableColumn]="'created'">
+              <p-sortIcon [field]="'created'"></p-sortIcon>
+            </span>
+            <input pInputText type="text" class="inputPad" (input)="dt.filter($event.target.value,'created','startsWith')" placeholder="MM/DD/YYYY">
+          </th>
+          <th pResizableColumn style="width:90px">Status
+              <span [pSortableColumn]="'status'">
+                <p-sortIcon [field]="'status'"></p-sortIcon>
+              </span>
+              <p-dropdown appendTo="body" [options]="Status" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,'status', 'equals')"></p-dropdown>
+            </th>
+          <th pResizableColumn style="width:100px">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{user?.srNo}}</td>
+          <td>
+            <a routerLink="/details/Merchant" [queryParams]="{id:user?._id}">{{user?.companyName}}</a>
+          </td>
+          <td>{{ user?.displayName }} </td>
+          <td>{{user?.email}}</td>
+          <td>{{user?.phoneNumber}}</td>
+         
+          <td >{{ user?.address?.country }} </td>
+          <td title="{{user?.lastActivity}}">{{appService.getDisplayDateFormat(user?.lastActivity,'MM/DD/YYYY  hh:mm:ss a')}}</td>
+
+          <td>
+            <span class="badge badge-pill badge-info" [ngClass]="{'pointer':user.noOfProducts}" 
+            [routerLink]="user?.noOfProducts ? '/products' : null"
+              [queryParams]="user?.noOfProducts ? {ownerId:user?._id} : null">{{user?.noOfProducts}}</span>
+          </td>
+
+          <td class="text-right">{{appService.decimalValues(user?.totalAmount)}}</td>
+          <td class="text-right">{{ appService.decimalValues(user?.bussinessVolume) }}</td>
+          <td>{{appService.getDisplayDateFormat(user?.created)}}</td>
+          <td>
+              <span *ngIf="user?.status" class="badge badge-{{ appService.getStatusColor(user?.status) }}"> {{user?.status }} </span>
+            </td>
+          <td class="text-right">
+              <span *ngIf="user.status&&(user.status=='Blocked'||user.status=='NotVerified')"class="mr-1 badge badge-success pointer cursor" title="Approve" (click)="onClickActions('Approve',user)">
+                  <i class="fa fa-check"></i>
+                </span>
+            <span *ngIf="user.status&&user.status=='Verified'" class="mr-1 badge badge-danger pointer cursor" title="Block" (click)="onClickActions('Block',user)">
+                <i class="fa fa-ban"></i>
+              </span>
+            <span class="mr-1 badge badge-primary pointer cursor" title="Edit" (click)="onClickActions('edit',user)">
+              <i class="fa fa-edit"></i>
+            </span>
+            <span class="mr-1 badge badge-danger pointer cursor" title="Delete" (click)="onClickActions('delete',user)">
+              <i class="fa fa-trash"></i>
+            </span>
+            <span class="badge badge-warning pointer cursor" title="Reset Password" (click)="onClickActions('ResetPwd',user)">
+              <i class="fa fa-key"></i>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+         <tr>
+            <td [attr.colspan]="columns.length">
+                 No Records Found 
+            </td>
+         </tr>
+      </ng-template>       
+    </p-table>
+    <!--End Of Ptable-->
+  </div>
+
+</div>
+
+
+
+<!--Edit MOdal For Editing Buyer-->
+
+<div class="modal fade" id="addOrEdit" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered margi_top_90">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+        <h5 class="modal-title text-color">
+          <b>Edit Merchant </b>
+        </h5>
+      </div>
+      <div class="modal-body padding">
+        <form [formGroup]="sellerForm" novalidate>
+         
+         <div class="row">
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5 text-right">Company Name</label>
+            <div class="col-sm-7">
+              <input [ngClass]="{active:submitted && sellerForm.controls['companyName'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['companyName']"
+                class="form-control" type="text" name="Name" [(ngModel)]="sellerData.companyName">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('companyName').touched && sellerForm.get('companyName').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5 text-right">Contact Person</label>
+            <div class="col-sm-7">
+              <input [ngClass]="{active:submitted && sellerForm.controls['displayName'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['displayName']"
+                class="form-control" type="text" name="Name" [(ngModel)]="sellerData.displayName">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('displayName').touched && sellerForm.get('displayName').invalid">Maximum of 20 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5  text-right" for="email">Email</label>
+            <div class="col-sm-7">
+              <input type="text" [ngClass]="{active:submitted && sellerForm.controls['email'].invalid}" [formControl]="sellerForm.controls['email']"
+                class="form-control" [(ngModel)]="sellerData.email">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('email').touched && sellerForm.get('email').invalid">Enter valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5 text-right"> Phone</label>
+            <div class="col-sm-7 ui-fluid">
+              <input [maxlength]="15" [minlength]="10" [ngClass]="{active:submitted && sellerForm.controls['phoneNumber'].invalid}" [formControl]="sellerForm.controls['phoneNumber']"
+                [(ngModel)]="sellerData.phoneNumber" type="text" class="form-control" (keypress)="appService.Validate($event,'int')">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('phoneNumber').touched && sellerForm.get('phoneNumber').invalid">Minimum of 10 Numbers</span>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5 text-right"> Product Category</label>
+            <div class="col-sm-7 ui-fluid">
+              <p-autoComplete [(ngModel)]="Category" [ngModelOptions]="{standalone: true}"  (completeMethod)="getAllCategories($event)"
+                [suggestions]="categories" field="tree" [inputStyle]="{'width':'100%'}" placeholder="Search productCategory" [minLength]="3">
+              </p-autoComplete>
+               <span class="help-block text-danger" *ngIf = "submitted && !sellerData.productCategory">Please Select Category</span>
+              </div>
+          </div>
+
+
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5 text-right"> Brand</label>
+            <div class="col-sm-7">
+              <p-autoComplete [(ngModel)]="Brand" [ngModelOptions]="{standalone: true}"  (completeMethod)="searchBrands($event)"
+                [suggestions]="brands" field="name" [inputStyle]="{'width':'100%'}" placeholder="Search Brand" [minLength]="1">
+              </p-autoComplete>
+               <span class="help-block text-danger" *ngIf = "submitted && !sellerData.brand" >Please Select Brand</span>
+               </div>
+          </div>   
+
+
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5 text-right">Website </label>
+            <div class="col-sm-7">
+              <input  [maxlength]="40" [formControl]="sellerForm.controls['website']"
+                class="form-control" type="text" name="Name" [(ngModel)]="sellerData.website">
+            </div>
+          </div>
+
+          <div class="form-group col-md-6 row">
+            <label class="col-sm-5 form-control-label m-t-5 text-right">Location </label>
+            <div class="col-sm-7">
+              <input [ngClass]="{active:submitted && sellerForm.controls['location'].invalid }" [maxlength]="20" [formControl]="sellerForm.controls['location']"
+                class="form-control" type="text" name="Name" [(ngModel)]="sellerData.location">
+              <span class="help-block text-danger" *ngIf="sellerForm.get('location').touched && sellerForm.get('location').invalid">Please enter location</span>
+            </div>
+          </div>               
+
+         </div>
+        </form>
+        <div class="form-group row">
+          <div class="col-sm-12 adjustButtons" role="group" aria-label="Second group">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="UpdateSeller()">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Edit MOdal For Editing Buyer-->
+
+<!--Delete Modal for Deleting -->
+<div class="modal fade" id="deleteSeller">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text_center">Are you sure to delete the record?</div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer text_center border_top">
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="deleteSeller()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal End-->
+
+
+<!--Activate Block reject Modal  -->
+<div class="modal fade" id="BlockOrActivateSeller">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title text_center">Are you sure to {{type}} the Merchant?</div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer text_center border_top">
+          <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-outline-info transition btn-rounded float-right btn-sm" (click)="blockOrActivateUser(accessStatus)">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Activate Block reject Modal End-->
+
+<!-- For Resetting the Password-->
+<div class="modal fade" id="ResetPassword" role="dialog">
+  <div class="modal-dialog modal-md modal-dialog-centered margi_top_90">
+    <div class="modal-content">
+      <div class="modal-header noborder">
+        <h5 class="modal-title text-color">
+          <b>Reset Password </b>
+        </h5>
+      </div>
+      <div class="modal-body padding">
+        <form [formGroup]="resetForm" novalidate>
+
+          <div class="form-group row">
+            <label class="col-sm-4 form-control-label m-t-5 text-right ">New Password</label>
+            <div class="col-sm-8">
+              <input [ngClass]="{active:submitted && resetForm.controls['newPassword'].invalid }" [maxlength]="20" [formControl]="resetForm.controls['newPassword']"
+                class="form-control" type="password" name="Name" [(ngModel)]="resetPwd.newPassword">
+              <span class="help-block text-danger" *ngIf="resetForm.get('newPassword').touched && resetForm.get('newPassword').invalid">Password Must be With One UpperCase or LowerCase, One Special Charecter & One Number
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-4 form-control-label m-t-5 text-right">Confirm Password</label>
+            <div class="col-sm-8">
+              <input [ngClass]="{active:submitted && resetForm.controls['confirmPassword'].invalid }" [maxlength]="20" [formControl]="resetForm.controls['confirmPassword']"
+                class="form-control" type="password" name="Name" [(ngModel)]="resetPwd.confirmPassword">
+              <span class="help-block text-danger" *ngIf="resetForm.get('confirmPassword').touched && resetForm.get('confirmPassword').invalid">PassWords Not Matching</span>
+            </div>
+          </div>
+
+        </form>
+        <div class="form-group row text-right">
+          <div class="col-sm-12" role="group" aria-label="Second group">
+            <button class="btn btn-outline-info btn-rounded btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-outline-info btn-rounded btn-sm" (click)="resetPassword()">
+              Reset
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- For Resetting the Password-->

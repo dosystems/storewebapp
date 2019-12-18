@@ -1,0 +1,15 @@
+td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+textarea {
+  width: 240px;
+  height: 80px;
+}
+.scrollModal {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}

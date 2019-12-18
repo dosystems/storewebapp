@@ -1,0 +1,138 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.nav.az-navbar{
+    height: 60px;
+    align-items: center;
+    background-color: $default-color;
+    border-bottom: 1px solid #e9ebee;
+    .navbar-brand{
+        width: 205px;
+        padding-top: 0;
+        font-size: 0;
+        margin-left: 10px;
+    }
+}
+
+#lines{ 
+    border-bottom: 7px double;
+    border-top: 2px solid;
+    //border-color: rgba(255, 255, 255, 0.9);
+    content: "";
+    height: 3px;
+    width: 20px;
+    box-sizing: content-box;
+    cursor: pointer;
+    &:hover{
+        opacity: 0.8;
+    }
+}
+
+.app-search{
+    position: relative;
+    margin-left: 20px;
+    a {        
+        position: absolute;
+        top: 3px;
+        right: 14px;
+        font-size: 16px;
+        color: rgba($dark-color, 0.3);
+    }
+    .form-control {
+        border: 1px solid rgba($dark-color,0.1);
+        font-size: 13px;
+        letter-spacing: 0.03em;
+        height: 30px;
+        color: $dark-color;
+        padding: 7px 40px 7px 20px;
+        background: rgba($navbar-text-color,0.05);
+        box-shadow: none;
+        border-radius: 30px;
+        width: 190px;
+    }
+}
+
+//@include placeholder-color(rgba($navbar-text-color,0.5));
+.right-section{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.user-menu{
+    font-size: 14px;
+    .dropdown-toggle::after{
+        display: none;
+    }
+    .dropdown-menu{
+        right: 0;
+        top: auto !important;
+        left: auto !important;
+        margin-top: 10px;
+        padding-top: 0;
+        overflow: hidden;
+        border-radius: 0;
+        font-size: 14px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        -webkit-transform: none !important;
+        -moz-transform: none !important;
+        -ms-transform: none !important;
+        -o-transform: none !important; 
+        transform: none !important;
+        a {
+            color: $main-color;     
+            &:hover {
+                color: $navbar-text-color;
+                background-color: $main-color;
+            }
+            i{
+                margin-right: 8px;
+            }
+        }
+    }
+}
+
+.user-link{
+    margin-right: 6px;
+    span{
+        color: $dark-color;
+        margin-left: 7px;
+        letter-spacing: 0.02em;
+    }
+    img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    &:hover, &:focus{
+        text-decoration: none;
+    }   
+}
+
+.user-info{
+    background-color: $main-color;
+    padding: 8px;
+    text-align: center;
+    width: 240px;
+    margin-bottom: 5px;
+    img{
+        width: 100px;
+        height: 100px;
+        margin-top: 5px;
+        border-radius: 50%;
+    }
+    p{   
+        color: #ebebeb;
+        margin-top: 10px;
+    }
+    small{
+        display: block;
+    }
+}
+
+
+@media (max-width: 767px){ 
+    .nav.az-navbar .navbar-brand{
+        width: auto;
+    }
+}
