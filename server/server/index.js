@@ -15,7 +15,7 @@ mongoose.Promise = Promise;
 
 // connect to mongo db
 const mongoUri = config.mongo.test;
-mongoose.connect(mongoUri, { useMongoClient: true });
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`);
 });

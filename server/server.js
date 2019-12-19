@@ -6,6 +6,8 @@ import config from './server/config/config';
 import app from './server/config/express';
 
 
+
+
 const debug = require('debug')('express-mongoose-es6-rest-api:index');
 
 // make bluebird default Promise
@@ -16,7 +18,7 @@ mongoose.Promise = Promise;
 
 // connect to mongo db
 const mongoUri = config.mongo.host;
-mongoose.connect(mongoUri, { useMongoClient: true });
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`);
 });
