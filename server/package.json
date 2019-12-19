@@ -98,7 +98,7 @@
     "babel-preset-react": "6.24.1",
     "babel-register": "6.24.1",
     "install-peers": "1.0.3",
-    "webpack-dev-server": "3.10.0",
+    "webpack-dev-server": "3.1.11",
     "winston-redis": "1.0.0"
   },
   "engines": {
